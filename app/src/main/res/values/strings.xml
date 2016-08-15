@@ -1,0 +1,39 @@
+<resources>
+    
+    <string name="open">open</string>
+    <string name="close">close</string>
+    
+    <string name="app_name">智慧骑行</string>
+    <string name="bluetooth_name">蓝牙设备名称:</string>
+    <string name="bluetooth_electricity">蓝牙设备电量:</string>
+    <string name="bluetooth_status">蓝牙连接状态:</string>
+    <string name="bluetooth_status1">关闭</string>
+    <string name="bluetooth_status1_1">正在关闭</string>
+    <string name="bluetooth_status2">开启</string>
+    <string name="bluetooth_status2_1">正在开启</string>
+    <string name="bluetooth_status3">已断开</string>
+    <string name="bluetooth_status4">已连接</string>
+    <string name="bluetooth_status5">您的设备不支持蓝牙</string>
+    <string name="bluetooth_connection">连接蓝牙设备</string>
+    <string name="bluetooth_disconnection">断开蓝牙设备</string>
+    <string name="open_bluetooth">打开蓝牙</string>
+    <string name="close_bluetooth">关闭蓝牙</string>
+    <string name="next_step">下一步</string>
+    <string name="start">起点：</string>
+    <string name="end">终点：</string>
+    <string name="navigation">导航</string>
+    <string name="gps_prompt">请手动打开gps定位</string>
+    <string name="path_condition_error">路线条件有误</string>
+    <string name="path_calculation_error">路线计算有误</string>
+    <string name="path_coordinate_error">路线坐标有误</string>
+    <string name="path_plan_error">路线规划有误</string>
+    <string name="path_draw_error">路线绘制有误</string>
+    <string name="network_disconnect">请检查网络连接</string>
+    <string name="network_type">您现在的网络类型是：</string>
+
+    <string name="app_id">输入您讯飞的appid</string>
+    <string name="tts_role_default">xiaoyan</string>
+    <string name="tts_speed_key">tts_speed</string>
+    <string name="tts_volume_key">tts_volume</string>
+    <string name="tts_pitch_key">tts_pitch</string>
+</resources>
