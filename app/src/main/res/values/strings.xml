@@ -1,8 +1,12 @@
 <resources>
-    
+
     <string name="open">open</string>
     <string name="close">close</string>
-    
+    <string name="home_page">首页</string>
+    <string name="device_management">设备管理</string>
+    <string name="message">消息</string>
+    <string name="setting">设置</string>
+
     <string name="app_name">智慧骑行</string>
     <string name="bluetooth_name">蓝牙设备名称:</string>
     <string name="bluetooth_electricity">蓝牙设备电量:</string>

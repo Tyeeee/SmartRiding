@@ -20,7 +20,6 @@ import com.yjt.app.utils.LogUtil;
 
 public abstract class BaseFragment extends Fragment implements AMapNaviListener, AMapNaviViewListener, GeocodeSearch.OnGeocodeSearchListener {
 
-
     protected abstract void gpsOpenStatus(boolean b);
 
     protected abstract void initNaviSuccess();

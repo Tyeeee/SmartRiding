@@ -10,8 +10,7 @@ import com.yjt.app.R;
 import com.yjt.app.utils.ActivityUtil;
 import com.yjt.app.utils.LogUtil;
 
-public abstract class BaseActivity extends AppCompatActivity  {
-
+public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -104,6 +103,11 @@ public abstract class BaseActivity extends AppCompatActivity  {
     }
 
     /**
+     * 控件初始化
+     */
+    protected abstract void findViewById();
+
+    /**
      * 设置监听
      */
     protected abstract void setListener();
@@ -137,9 +141,6 @@ public abstract class BaseActivity extends AppCompatActivity  {
      * 其他操作
      */
     protected abstract void endOperation();
-
-
-    
 
 
     /**
@@ -195,7 +196,7 @@ public abstract class BaseActivity extends AppCompatActivity  {
     protected String getStringContent(int stringId) {
         return getResources().getString(stringId);
     }
-    
-    
+
+
 }
 
