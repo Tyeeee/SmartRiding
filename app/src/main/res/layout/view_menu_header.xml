@@ -6,7 +6,6 @@
     android:id="@+id/rlHeader"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dp_100"
-    android:background="@color/colorAccent"
     tools:context="com.yjt.app.MainActivity">
 
     <com.yjt.app.ui.widget.CircleImageView
@@ -21,8 +20,8 @@
         android:layout_marginRight="@dimen/dp_15"
         android:layout_marginStart="@dimen/dp_30"
         android:contentDescription="@null"
+        app:text_color="@android:color/white"
         android:src="@mipmap/ic_launcher"
-        app:border_color="@android:color/darker_gray"
         app:border_width="@dimen/dp_1"/>
 
     <LinearLayout

@@ -8,6 +8,8 @@ import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.ViewConfiguration;
 
+import com.yjt.app.base.BaseApplication;
+
 /**
  * 页面显示单位转换工具
  *
@@ -16,16 +18,14 @@ import android.view.ViewConfiguration;
 public class DensityUtil {
 
     private static DensityUtil mDensityUtil;
-    private Context mContext;
 
-    private DensityUtil(Context context) {
+    private DensityUtil() {
         // cannot be instantiated
-        this.mContext = context;
     }
 
-    public static synchronized DensityUtil getInstance(Context context) {
+    public static synchronized DensityUtil getInstance() {
         if (mDensityUtil == null) {
-            mDensityUtil = new DensityUtil(context);
+            mDensityUtil = new DensityUtil();
         }
         return mDensityUtil;
     }
@@ -37,28 +37,28 @@ public class DensityUtil {
     }
 
     public int getScreenWidth() {
-        return mContext.getResources().getDisplayMetrics().widthPixels;
+        return BaseApplication.getInstance().getResources().getDisplayMetrics().widthPixels;
     }
 
     public int getScreenHeight() {
-        return mContext.getResources().getDisplayMetrics().heightPixels;
+        return BaseApplication.getInstance().getResources().getDisplayMetrics().heightPixels;
     }
 
     public float getDensity() {
-        return mContext.getResources().getDisplayMetrics().density;
+        return BaseApplication.getInstance().getResources().getDisplayMetrics().density;
     }
 
     public int getDensityDpi() {
-        return mContext.getResources().getDisplayMetrics().densityDpi;
+        return BaseApplication.getInstance().getResources().getDisplayMetrics().densityDpi;
     }
 
     public int dp2px(float dpValue) {
-        final float scale = mContext.getResources().getDisplayMetrics().density;
+        final float scale = BaseApplication.getInstance().getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
 
     public int px2dp(float pxValue) {
-        final float scale = mContext.getResources().getDisplayMetrics().density;
+        final float scale = BaseApplication.getInstance().getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
 
@@ -74,10 +74,10 @@ public class DensityUtil {
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     public int getNavigationBarStatus() {
-        boolean hasMenuKey = ViewConfiguration.get(mContext).hasPermanentMenuKey();
+        boolean hasMenuKey = ViewConfiguration.get(BaseApplication.getInstance()).hasPermanentMenuKey();
         boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
         if (!hasMenuKey && !hasBackKey) {
-            return mContext.getResources().getDimensionPixelSize(mContext.getResources().getIdentifier("navigation_bar_height", "dimen", "android"));
+            return BaseApplication.getInstance().getResources().getDimensionPixelSize(BaseApplication.getInstance().getResources().getIdentifier("navigation_bar_height", "dimen", "android"));
         } else {
             return 0;
         }

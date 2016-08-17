@@ -10,4 +10,8 @@
         <attr name="text_size" format="dimension"/>
         <attr name="text_padding" format="dimension"/>
     </declare-styleable>
+
+    <declare-styleable name="AutoScaleTextView">
+        <attr name="minTextSize" format="dimension"/>
+    </declare-styleable>
 </resources>

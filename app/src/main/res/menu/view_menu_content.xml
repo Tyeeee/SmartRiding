@@ -20,5 +20,5 @@
             android:icon="@mipmap/ic_launcher"
             android:title="@string/setting"/>
     </group>
-    
+
 </menu>

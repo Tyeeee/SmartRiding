@@ -1,6 +1,7 @@
 package com.yjt.app.utils;
 
 import android.content.Context;
+import android.os.Build;
 
 import com.yjt.app.constant.Regex;
 
@@ -70,4 +71,11 @@ public class VersionUtil {
         return true;
     }
 
+    public boolean isJellyBean() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
+    }
+
+    public boolean isKitKat() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+    }
 }

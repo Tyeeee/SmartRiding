@@ -72,7 +72,7 @@ public class CircleImageView extends ImageView {
         super(context, attrs, defStyle);
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CircleImageView, defStyle, 0);
         mBorderWidth = array.getDimensionPixelSize(R.styleable.CircleImageView_border_width, 0);
-        mBorderColor = array.getColor(R.styleable.CircleImageView_border_color, Color.BLACK);
+        mBorderColor = array.getColor(R.styleable.CircleImageView_border_color, Color.TRANSPARENT);
         isBorderOverlay = array.getBoolean(R.styleable.CircleImageView_border_overlay, false);
         mFillColor = array.getColor(R.styleable.CircleImageView_fill_color, Color.TRANSPARENT);
         mText = array.getString(R.styleable.CircleImageView_text);
