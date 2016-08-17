@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
+//apply plugin: 'com.neenbedankt.android-apt'
 
 // 获取当前系统时间
 def releaseTime() {
@@ -130,9 +130,9 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:multidex:1.0.1'
     compile'com.android.support:design:24.1.1'
-    compile 'com.jakewharton:butterknife:8.2.1'
-    apt 'com.jakewharton:butterknife-compiler:8.2.1'
     compile 'com.tencent.bugly:crashreport:latest.release'
+//    compile 'com.jakewharton:butterknife:8.2.1'
+//    apt 'com.jakewharton:butterknife-compiler:8.2.1'
 //    compile files('libs/AMap3DMap_3.3.1_AMapNavi_1.8.0_20160420.jar')
 //    compile files('libs/Msc.jar')
 //    compile files('libs/AMap_Search_V3.2.1_20160308.jar')

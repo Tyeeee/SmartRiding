@@ -10,15 +10,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yjt.app.ui.base.BaseActivity;
+import com.yjt.app.ui.widget.CircleImageView;
 import com.yjt.app.utils.SnackBarUtil;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -27,7 +24,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private DrawerLayout drawerLayout;
     private NavigationView nvMenu;
     private RelativeLayout rlHeader;
-    private ImageView ivHeader;
+    private CircleImageView civHead;
     private TextView tvAccountName;
     private TextView tvTelphoneNumber;
     private ActionBarDrawerToggle mToggle;
@@ -77,7 +74,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         nvMenu = (NavigationView) findViewById(R.id.nvMenu);
         rlHeader = (RelativeLayout) nvMenu.getHeaderView(0).findViewById(R.id.rlHeader);
-        ivHeader = (ImageView) nvMenu.getHeaderView(0).findViewById(R.id.ivHead);
+        civHead = (CircleImageView) nvMenu.getHeaderView(0).findViewById(R.id.civHead);
         tvAccountName = (TextView) nvMenu.getHeaderView(0).findViewById(R.id.tvAccountName);
         tvTelphoneNumber = (TextView) nvMenu.getHeaderView(0).findViewById(R.id.tvTelphoneNumber);
     }
