@@ -37,7 +37,8 @@
                 android:id="@+id/rlHeader"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_150"
-                android:layout_alignParentTop="true">
+                android:layout_alignParentTop="true"
+                android:clickable="true">
 
                 <com.yjt.app.ui.widget.CircleImageView
                     android:id="@+id/civHead"

@@ -53,4 +53,14 @@ public class Constant {
 
     public static final int COLOR_DEFAULT = 0x999999;
     public static final int SIZE_DEFAULT = 0x999999;
+
+    public static final int DRAWABLE_TOP = 0x000001;
+    public static final int DRAWABLE_LEFT = 0x000002;
+    public static final int DRAWABLE_RIGHT = 0x000003;
+    public static final int DRAWABLE_BOTTOM = 0x000004;
+
+    public static final int FRAGMENT_HOME_PAGE = 0;
+    public static final int FRAGMENT_DEVICE_MANAGEMENT = 1;
+    public static final int FRAGMENT_MESSAGE = 2;
+    public static final int FRAGMENT_SETTING = 3;
 }
