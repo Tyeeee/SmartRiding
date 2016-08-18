@@ -1,16 +1,31 @@
 package com.yjt.app.ui.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import com.amap.api.navi.model.AMapNaviCross;
-import com.amap.api.navi.model.AMapNaviInfo;
-import com.amap.api.navi.model.NaviInfo;
-import com.amap.api.services.geocoder.GeocodeResult;
+import com.yjt.app.R;
 import com.yjt.app.ui.base.BaseFragment;
 
 
 public class MessageFragment extends BaseFragment {
-    
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        findViewById();
+        setListener();
+        initialize(savedInstanceState);
+        return inflater.inflate(R.layout.fragment_message, container, false);
+    }
+
     @Override
     protected void findViewById() {
 
@@ -43,56 +58,6 @@ public class MessageFragment extends BaseFragment {
 
     @Override
     protected void endOperation() {
-
-    }
-
-    @Override
-    protected void gpsOpenStatus(boolean b) {
-
-    }
-
-    @Override
-    protected void initNaviSuccess() {
-
-    }
-
-    @Override
-    protected void calculateRouteSuccess() {
-
-    }
-
-    @Override
-    protected void calculateRouteFailure(int i) {
-
-    }
-
-    @Override
-    protected void naviInfoUpdated(AMapNaviInfo aMapNaviInfo) {
-
-    }
-
-    @Override
-    protected void naviInfoUpdate(NaviInfo naviInfo) {
-
-    }
-
-    @Override
-    protected void openCrossView(AMapNaviCross aMapNaviCross) {
-
-    }
-
-    @Override
-    protected void closeCrossView() {
-
-    }
-
-    @Override
-    protected void naviCancel() {
-
-    }
-
-    @Override
-    protected void geocodeSearched(GeocodeResult geocodeResult, int i) {
 
     }
 }

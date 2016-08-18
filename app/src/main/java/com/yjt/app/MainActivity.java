@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -30,6 +29,7 @@ import com.yjt.app.ui.widget.CircleImageView;
 import com.yjt.app.ui.widget.LinearLayoutDividerItemDecoration;
 import com.yjt.app.utils.FragmentHelper;
 import com.yjt.app.utils.SnackBarUtil;
+import com.yjt.app.utils.ViewUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +50,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private LinearLayoutManager mLayoutManager;
     private FixedStickyViewAdapter mAdapter;
 
-    private FrameLayout flContent;
     private FragmentHelper mHelper;
 
     private Handler mFragmentHandler;
@@ -92,20 +91,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void findViewById() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        flContent = (FrameLayout) findViewById(R.id.flContent);
-        rvMenu = (RecyclerView) findViewById(R.id.rvMenu);
-        rlHeader = (RelativeLayout) findViewById(R.id.rlHeader);
-        civHead = (CircleImageView) findViewById(R.id.civHead);
-        tvAccountName = (TextView) findViewById(R.id.tvAccountName);
-        tvTelphoneNumber = (TextView) findViewById(R.id.tvTelphoneNumber);
+        toolbar = ViewUtil.getInstance().findView(this, R.id.toolbar);
+        drawerLayout = ViewUtil.getInstance().findView(this, R.id.drawerLayout);
+        rvMenu = ViewUtil.getInstance().findView(this, R.id.rvMenu);
+        rlHeader = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.rlHeader, this);
+        civHead = ViewUtil.getInstance().findView(this, R.id.civHead);
+        tvAccountName = ViewUtil.getInstance().findView(this, R.id.tvAccountName);
+        tvTelphoneNumber = ViewUtil.getInstance().findView(this, R.id.tvTelphoneNumber);
     }
 
     @Override
     protected void setListener() {
         drawerLayout.addDrawerListener(mToggle);
-        rlHeader.setOnClickListener(this);
         mAdapter.setOnItemClickListener(this);
     }
 
