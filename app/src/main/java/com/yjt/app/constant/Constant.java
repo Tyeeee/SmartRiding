@@ -59,8 +59,24 @@ public class Constant {
     public static final int DRAWABLE_RIGHT = 0x000003;
     public static final int DRAWABLE_BOTTOM = 0x000004;
 
-    public static final int FRAGMENT_HOME_PAGE = 0;
-    public static final int FRAGMENT_DEVICE_MANAGEMENT = 1;
-    public static final int FRAGMENT_MESSAGE = 2;
-    public static final int FRAGMENT_SETTING = 3;
+    public static class ITEM_POSITION {
+        public static final int HOME = 0;
+        public static final int DEVICE = 1;
+        public static final int MESSAGE = 2;
+        public static final int SETTING = 3;
+    }
+
+    public static class ITEM_TYPE {
+        public static final int HEADER_VIEW = 0x5001;
+        public static final int CONTENT_VIEW = 0x5003;
+        public static final int FOOTER_VIEW = 0x5004;
+        public static final int OTHER_VIEW = 0x5005;
+    }
+
+    public static class PAGE {
+        public static final int HOME = 0x01;
+        public static final int DEVICE = 0x02;
+        public static final int MESSAGE = 0x03;
+        public static final int SETTING = 0x04;
+    }
 }

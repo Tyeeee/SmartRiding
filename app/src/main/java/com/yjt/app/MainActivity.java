@@ -2,6 +2,7 @@ package com.yjt.app;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PersistableBundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
@@ -21,8 +22,13 @@ import com.yjt.app.ui.adapter.FixedStickyViewAdapter;
 import com.yjt.app.ui.adapter.MenuAdapter;
 import com.yjt.app.ui.adapter.binder.MenuBinder;
 import com.yjt.app.ui.base.BaseActivity;
+import com.yjt.app.ui.fragment.DeviceFragment;
+import com.yjt.app.ui.fragment.HomeFragment;
+import com.yjt.app.ui.fragment.MessageFragment;
+import com.yjt.app.ui.fragment.SettingFragment;
 import com.yjt.app.ui.widget.CircleImageView;
 import com.yjt.app.ui.widget.LinearLayoutDividerItemDecoration;
+import com.yjt.app.utils.FragmentHelper;
 import com.yjt.app.utils.SnackBarUtil;
 
 import java.util.ArrayList;
@@ -34,7 +40,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle mToggle;
-    private FrameLayout flContent;
+
     private RelativeLayout rlHeader;
     private CircleImageView civHead;
     private TextView tvAccountName;
@@ -43,6 +49,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private RecyclerView rvMenu;
     private LinearLayoutManager mLayoutManager;
     private FixedStickyViewAdapter mAdapter;
+
+    private FrameLayout flContent;
+    private FragmentHelper mHelper;
+
+    private Handler mFragmentHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +128,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         menu4.setIcon(R.mipmap.ic_launcher);
         menu4.setTitle(getResources().getString(R.string.setting));
         menus.add(menu4);
+        mHelper = new FragmentHelper(getSupportFragmentManager(), R.id.flContent);
+        mHelper.addItem(new FragmentHelper.OperationInfo(this, Constant.ITEM_POSITION.HOME, HomeFragment.class));
+        mHelper.addItem(new FragmentHelper.OperationInfo(this, Constant.ITEM_POSITION.DEVICE, DeviceFragment.class));
+        mHelper.addItem(new FragmentHelper.OperationInfo(this, Constant.ITEM_POSITION.MESSAGE, MessageFragment.class));
+        mHelper.addItem(new FragmentHelper.OperationInfo(this, Constant.ITEM_POSITION.SETTING, SettingFragment.class));
 
         mToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
         mLayoutManager = new LinearLayoutManager(this);
@@ -144,25 +160,34 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void onItemClick(int position) {
         switch (position) {
-            case Constant.FRAGMENT_HOME_PAGE:
-                SnackBarUtil.getInstance().showSnackBar(drawerLayout, "FRAGMENT_HOME_PAGE", Snackbar.LENGTH_SHORT);
+            case Constant.ITEM_POSITION.HOME:
+                mHelper.show(Constant.ITEM_POSITION.HOME, false);
                 drawerLayout.closeDrawers();
                 break;
-            case Constant.FRAGMENT_DEVICE_MANAGEMENT:
-                SnackBarUtil.getInstance().showSnackBar(drawerLayout, "FRAGMENT_DEVICE_MANAGEMENT", Snackbar.LENGTH_SHORT);
+            case Constant.ITEM_POSITION.DEVICE:
+                mHelper.show(Constant.ITEM_POSITION.DEVICE, false);
                 drawerLayout.closeDrawers();
                 break;
-            case Constant.FRAGMENT_MESSAGE:
-                SnackBarUtil.getInstance().showSnackBar(drawerLayout, "FRAGMENT_MESSAGE", Snackbar.LENGTH_SHORT);
+            case Constant.ITEM_POSITION.MESSAGE:
+                mHelper.show(Constant.ITEM_POSITION.MESSAGE, false);
                 drawerLayout.closeDrawers();
                 break;
-            case Constant.FRAGMENT_SETTING:
-                SnackBarUtil.getInstance().showSnackBar(drawerLayout, "FRAGMENT_SETTING", Snackbar.LENGTH_SHORT);
+            case Constant.ITEM_POSITION.SETTING:
+                mHelper.show(Constant.ITEM_POSITION.SETTING, false);
+                drawerLayout.closeDrawers();
+                break;
+            default:
+                mHelper.show(Constant.ITEM_POSITION.HOME, false);
                 drawerLayout.closeDrawers();
                 break;
         }
     }
 
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        showExitDialog();
+    }
 
     @Override
     protected void getSavedInstanceState(Bundle savedInstanceState) {
@@ -189,5 +214,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     }
 
-//    public native String stringFromJNI();
+    public void setFragmentHandler(Handler handler) {
+        this.mFragmentHandler = handler;
+    }
 }

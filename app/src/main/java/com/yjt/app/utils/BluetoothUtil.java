@@ -21,7 +21,7 @@ public class BluetoothUtil {
         return mBluetoothUtil;
     }
 
-    public void releaseInstance() {
+    public static void releaseInstance() {
         if (mBluetoothUtil != null) {
             mBluetoothUtil = null;
         }

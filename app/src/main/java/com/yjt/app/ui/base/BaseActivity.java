@@ -1,5 +1,7 @@
 package com.yjt.app.ui.base;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -7,8 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 
 import com.yjt.app.R;
+import com.yjt.app.base.BaseApplication;
 import com.yjt.app.utils.ActivityUtil;
+import com.yjt.app.utils.FragmentUtil;
 import com.yjt.app.utils.LogUtil;
+import com.yjt.app.utils.ViewUtil;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -193,10 +198,20 @@ public abstract class BaseActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
-    protected String getStringContent(int stringId) {
-        return getResources().getString(stringId);
+    protected void showExitDialog() {
+        ViewUtil.getInstance().showAlertDialog(this, getString(R.string.prompt_title), getString(R.string.exit_prompt_content), getString(R.string.enter), getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                endOperation();
+                BaseApplication.getInstance().releaseReference();
+            }
+        }, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }, null);
     }
-
-
 }
 

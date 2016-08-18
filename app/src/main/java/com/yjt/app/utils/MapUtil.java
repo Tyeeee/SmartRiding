@@ -5,6 +5,7 @@ package com.yjt.app.utils;
 
 import android.text.Html;
 import android.text.Spanned;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.amap.api.maps.model.LatLng;
@@ -23,7 +24,26 @@ import java.util.List;
 
 public class MapUtil {
 
-    public static String checkEditText(EditText editText) {
+    private static MapUtil mMapUtil;
+
+    private MapUtil() {
+        // cannot be instantiated
+    }
+
+    public static synchronized MapUtil getInstance() {
+        if (mMapUtil == null) {
+            mMapUtil = new MapUtil();
+        }
+        return mMapUtil;
+    }
+
+    public static void releaseInstance() {
+        if (mMapUtil != null) {
+            mMapUtil = null;
+        }
+    }
+
+    public String checkEditText(EditText editText) {
         if (editText != null && editText.getText() != null
                 && !(editText.getText().toString().trim().equals(""))) {
             return editText.getText().toString().trim();
@@ -32,11 +52,11 @@ public class MapUtil {
         }
     }
 
-    public static Spanned stringToSpan(String src) {
+    public Spanned stringToSpan(String src) {
         return src == null ? null : Html.fromHtml(src.replace("\n", "<br />"));
     }
 
-    public static String colorFont(String src, String color) {
+    public String colorFont(String src, String color) {
         StringBuffer strBuf = new StringBuffer();
 
         strBuf.append("<font color=").append(color).append(">").append(src)
@@ -44,12 +64,12 @@ public class MapUtil {
         return strBuf.toString();
     }
 
-    public static String makeHtmlNewLine() {
+    public String makeHtmlNewLine() {
         return "<br />";
     }
 
-    public static String makeHtmlSpace(int number) {
-        final String  space  = "&nbsp;";
+    public String makeHtmlSpace(int number) {
+        final String space = "&nbsp;";
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < number; i++) {
             result.append(space);
@@ -57,7 +77,7 @@ public class MapUtil {
         return result.toString();
     }
 
-    public static String getFriendlyLength(int lenMeter) {
+    public String getFriendlyLength(int lenMeter) {
         if (lenMeter > 10000) // 10 km
         {
             int dis = lenMeter / 1000;
@@ -65,9 +85,9 @@ public class MapUtil {
         }
 
         if (lenMeter > 1000) {
-            float         dis  = (float) lenMeter / 1000;
+            float dis = (float) lenMeter / 1000;
             DecimalFormat fnum = new DecimalFormat("##0.0");
-            String        dstr = fnum.format(dis);
+            String dstr = fnum.format(dis);
             return dstr + Constant.Kilometer;
         }
 
@@ -84,28 +104,28 @@ public class MapUtil {
         return dis + Constant.Meter;
     }
 
-    public static boolean IsEmptyOrNullString(String s) {
+    public boolean IsEmptyOrNullString(String s) {
         return (s == null) || (s.trim().length() == 0);
     }
 
     /**
      * 把LatLng对象转化为LatLonPoint对象
      */
-    public static LatLonPoint convertToLatLonPoint(LatLng latlon) {
+    public LatLonPoint convertToLatLonPoint(LatLng latlon) {
         return new LatLonPoint(latlon.latitude, latlon.longitude);
     }
 
     /**
      * 把LatLonPoint对象转化为LatLon对象
      */
-    public static LatLng convertToLatLng(LatLonPoint latLonPoint) {
+    public LatLng convertToLatLng(LatLonPoint latLonPoint) {
         return new LatLng(latLonPoint.getLatitude(), latLonPoint.getLongitude());
     }
 
     /**
      * 把集合体的LatLonPoint转化为集合体的LatLng
      */
-    public static ArrayList<LatLng> convertArrList(List<LatLonPoint> shapes) {
+    public ArrayList<LatLng> convertArrList(List<LatLonPoint> shapes) {
         ArrayList<LatLng> lineShapes = new ArrayList<LatLng>();
         for (LatLonPoint point : shapes) {
             LatLng latLngTemp = convertToLatLng(point);
@@ -117,16 +137,13 @@ public class MapUtil {
     /**
      * long类型时间格式化
      */
-    public static String convertToTime(long time) {
-        SimpleDateFormat df   = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date             date = new Date(time);
+    public String convertToTime(long time) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date(time);
         return df.format(date);
     }
 
-    public static final String HtmlBlack = "#000000";
-    public static final String HtmlGray  = "#808080";
-
-    public static String getFriendlyTime(int second) {
+    public String getFriendlyTime(int second) {
         if (second > 3600) {
             int hour = second / 3600;
             int miniate = (second % 3600) / 60;
@@ -140,7 +157,7 @@ public class MapUtil {
     }
 
     //路径规划方向指示和图片对应
-    public static int getDriveActionID(String actionName) {
+    public int getDriveActionID(String actionName) {
         if (actionName == null || actionName.equals("")) {
             return R.mipmap.dir3;
         }
@@ -171,7 +188,7 @@ public class MapUtil {
         return R.mipmap.dir3;
     }
 
-    public static int getWalkActionID(String actionName) {
+    public int getWalkActionID(String actionName) {
         if (actionName == null || actionName.equals("")) {
             return R.mipmap.dir13;
         }
@@ -209,7 +226,7 @@ public class MapUtil {
         return R.mipmap.dir13;
     }
 
-    public static String getBusPathTitle(BusPath busPath) {
+    public String getBusPathTitle(BusPath busPath) {
         if (busPath == null) {
             return String.valueOf("");
         }
@@ -232,16 +249,16 @@ public class MapUtil {
         return sb.substring(0, sb.length() - 3);
     }
 
-    public static String getBusPathDes(BusPath busPath) {
+    public String getBusPathDes(BusPath busPath) {
         if (busPath == null) {
             return String.valueOf("");
         }
-        long   second       = busPath.getDuration();
-        String time         = getFriendlyTime((int) second);
-        float  subDistance  = busPath.getDistance();
-        String subDis       = getFriendlyLength((int) subDistance);
-        float  walkDistance = busPath.getWalkDistance();
-        String walkDis      = getFriendlyLength((int) walkDistance);
+        long second = busPath.getDuration();
+        String time = getFriendlyTime((int) second);
+        float subDistance = busPath.getDistance();
+        String subDis = getFriendlyLength((int) subDistance);
+        float walkDistance = busPath.getWalkDistance();
+        String walkDis = getFriendlyLength((int) walkDistance);
         return String.valueOf(time + " | " + subDis + " | 步行" + walkDis);
     }
 

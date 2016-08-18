@@ -26,15 +26,7 @@ public class ActivityUtil {
         }
     }
 
-    public static void removeActivity() {
-        for (int i = 0; i < allActList.size(); i++) {
-            if (allActList.get(i).get() != null) {
-                allActList.get(i).get().finish();
-            }
-        }
-    }
-
-    public static void remove() {
+    public static void removeAll() {
         for (int i = 0; i < allActList.size(); i++) {
             if (allActList.get(i).get() != null) {
                 allActList.get(i).get().finish();

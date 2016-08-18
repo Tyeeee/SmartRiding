@@ -17,7 +17,7 @@ import android.widget.ScrollView;
 public class InputUtil {
 
     private static InputMethodManager imm;
-    private static long               mLastClickTime;
+    private static long mLastClickTime;
 
     private static InputUtil mInputUtil;
 
