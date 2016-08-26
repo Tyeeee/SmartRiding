@@ -28,6 +28,8 @@ import java.lang.reflect.Field;
 
 public abstract class BaseFragment extends Fragment {
 
+    protected View mRootView;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

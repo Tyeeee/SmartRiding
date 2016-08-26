@@ -22,10 +22,13 @@ import com.amap.api.services.geocoder.RegeocodeResult;
 import com.autonavi.tbt.TrafficFacilityInfo;
 import com.yjt.app.R;
 import com.yjt.app.ui.base.BaseFragment;
+import com.yjt.app.ui.widget.SearchTextView;
 import com.yjt.app.utils.LogUtil;
+import com.yjt.app.utils.ViewUtil;
 
 public class HomeFragment extends BaseFragment implements AMapNaviListener, AMapNaviViewListener, GeocodeSearch.OnGeocodeSearchListener {
 
+    private SearchTextView stvSearch;
 
     @Override
     public void onAttach(Activity activity) {
@@ -35,20 +38,21 @@ public class HomeFragment extends BaseFragment implements AMapNaviListener, AMap
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        mRootView = inflater.inflate(R.layout.fragment_home, container, false);
         findViewById();
         setListener();
         initialize(savedInstanceState);
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return mRootView;
     }
 
     @Override
     protected void findViewById() {
-
+        stvSearch = ViewUtil.getInstance().findView(mRootView, R.id.stvSearch);
     }
 
     @Override
     protected void setListener() {
-
+        
     }
 
     @Override

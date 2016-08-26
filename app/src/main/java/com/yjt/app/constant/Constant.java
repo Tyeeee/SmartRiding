@@ -64,6 +64,12 @@ public class Constant {
         public static final int DEVICE = 1;
         public static final int MESSAGE = 2;
         public static final int SETTING = 3;
+        public static final int SEARCH_DEVICE = 0;
+        public static final int GENERAL_SETTING = 1;
+        public static final int CHECK_UPDATE = 2;
+        public static final int CLEAR_DATA = 3;
+        public static final int BREAK_LINK = 4;
+        public static final int ABOUT_DEVICE = 5;
     }
 
     public static class ITEM_TYPE {

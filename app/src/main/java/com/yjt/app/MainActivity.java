@@ -1,8 +1,11 @@
 package com.yjt.app;
 
+import android.bluetooth.BluetoothAdapter;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.os.PersistableBundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
@@ -10,13 +13,16 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yjt.app.constant.Constant;
 import com.yjt.app.model.Menu;
+import com.yjt.app.receiver.BluetoothReceiver;
 import com.yjt.app.ui.adapter.FixedStickyViewAdapter;
 import com.yjt.app.ui.adapter.MenuAdapter;
 import com.yjt.app.ui.adapter.binder.MenuBinder;
@@ -27,10 +33,13 @@ import com.yjt.app.ui.fragment.MessageFragment;
 import com.yjt.app.ui.fragment.SettingFragment;
 import com.yjt.app.ui.widget.CircleImageView;
 import com.yjt.app.ui.widget.LinearLayoutDividerItemDecoration;
+import com.yjt.app.utils.BluetoothUtil;
 import com.yjt.app.utils.FragmentHelper;
 import com.yjt.app.utils.SnackBarUtil;
+import com.yjt.app.utils.ToastUtil;
 import com.yjt.app.utils.ViewUtil;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +61,31 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private FragmentHelper mHelper;
 
+    private BluetoothReceiver mReceiver;
+
     private Handler mFragmentHandler;
+    private MainHandler mHandler;
+
+    protected static class MainHandler extends Handler {
+
+        private WeakReference<MainActivity> mActivitys;
+
+        public MainHandler(MainActivity activity) {
+            mActivitys = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            final MainActivity activity = mActivitys.get();
+            if (activity != null) {
+                switch (msg.what) {
+                    default:
+                        break;
+                }
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,29 +141,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        List<Menu> menus = new ArrayList<>();
-        Menu menu1 = new Menu();
-        menu1.setIcon(R.mipmap.ic_launcher);
-        menu1.setTitle(getResources().getString(R.string.home_page));
-        menus.add(menu1);
-        Menu menu2 = new Menu();
-        menu2.setIcon(R.mipmap.ic_launcher);
-        menu2.setTitle(getResources().getString(R.string.device_management));
-        menus.add(menu2);
-        Menu menu3 = new Menu();
-        menu3.setIcon(R.mipmap.ic_launcher);
-        menu3.setTitle(getResources().getString(R.string.message));
-        menus.add(menu3);
-        Menu menu4 = new Menu();
-        menu4.setIcon(R.mipmap.ic_launcher);
-        menu4.setTitle(getResources().getString(R.string.setting));
-        menus.add(menu4);
+        mHandler = new MainHandler(this);
+        mReceiver = new BluetoothReceiver();
+        if (BluetoothUtil.getInstance().isBluetoothSupported() && !BluetoothUtil.getInstance().isBluetoothEnabled()) {
+            registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
+            BluetoothUtil.getInstance().turnOnBluetooth();
+        } else {
+            ToastUtil.getInstance().showToast(this, R.string.bluetooth_status5, Toast.LENGTH_SHORT);
+        }
         mHelper = new FragmentHelper(getSupportFragmentManager(), R.id.flContent);
         mHelper.addItem(new FragmentHelper.OperationInfo(this, Constant.ITEM_POSITION.HOME, HomeFragment.class));
         mHelper.addItem(new FragmentHelper.OperationInfo(this, Constant.ITEM_POSITION.DEVICE, DeviceFragment.class));
         mHelper.addItem(new FragmentHelper.OperationInfo(this, Constant.ITEM_POSITION.MESSAGE, MessageFragment.class));
         mHelper.addItem(new FragmentHelper.OperationInfo(this, Constant.ITEM_POSITION.SETTING, SettingFragment.class));
-
+        mHelper.show(Constant.ITEM_POSITION.HOME, false);
         mToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
         mLayoutManager = new LinearLayoutManager(this);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -138,7 +162,29 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         rvMenu.setLayoutManager(mLayoutManager);
         rvMenu.addItemDecoration(new LinearLayoutDividerItemDecoration(getResources().getColor(android.R.color.black), 1, LinearLayoutManager.VERTICAL));
         mAdapter = new MenuAdapter(this, new MenuBinder(this, rvMenu), false);
-        mAdapter.addItems(menus);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                List<Menu> menus = new ArrayList<>();
+                Menu menu1 = new Menu();
+                menu1.setIcon(R.mipmap.dir1);
+                menu1.setTitle(getResources().getString(R.string.home_page));
+                menus.add(menu1);
+                Menu menu2 = new Menu();
+                menu2.setIcon(R.mipmap.dir1);
+                menu2.setTitle(getResources().getString(R.string.device_management));
+                menus.add(menu2);
+                Menu menu3 = new Menu();
+                menu3.setIcon(R.mipmap.dir1);
+                menu3.setTitle(getResources().getString(R.string.message));
+                menus.add(menu3);
+                Menu menu4 = new Menu();
+                menu4.setIcon(R.mipmap.dir1);
+                menu4.setTitle(getResources().getString(R.string.setting));
+                menus.add(menu4);
+                mAdapter.addItems(menus);
+            }
+        });
         rvMenu.setAdapter(mAdapter);
     }
 
@@ -183,7 +229,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void onBackPressed() {
 //        super.onBackPressed();
-        showExitDialog();
+        if (drawerLayout.isDrawerOpen(Gravity.LEFT)) {
+            drawerLayout.closeDrawers();
+        } else {
+            showExitDialog();
+        }
     }
 
     @Override
@@ -208,7 +258,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void endOperation() {
+        
+    }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (BluetoothUtil.getInstance().isBluetoothSupported() && BluetoothUtil.getInstance().isBluetoothEnabled()) {
+            BluetoothUtil.getInstance().turnOffBluetooth();
+            unregisterReceiver(mReceiver);
+        } else {
+            ToastUtil.getInstance().showToast(this, R.string.bluetooth_status5, Toast.LENGTH_SHORT);
+        }
     }
 
     public void setFragmentHandler(Handler handler) {

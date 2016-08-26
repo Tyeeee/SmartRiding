@@ -20,10 +20,11 @@ public class DeviceFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        mRootView = inflater.inflate(R.layout.fragment_device, container, false);
         findViewById();
         setListener();
         initialize(savedInstanceState);
-        return inflater.inflate(R.layout.fragment_device, container, false);
+        return mRootView;
     }
 
     @Override
