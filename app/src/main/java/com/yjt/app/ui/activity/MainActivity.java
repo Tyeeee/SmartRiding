@@ -36,6 +36,7 @@ import com.yjt.app.ui.widget.CircleImageView;
 import com.yjt.app.ui.widget.LinearLayoutDividerItemDecoration;
 import com.yjt.app.utils.BluetoothUtil;
 import com.yjt.app.utils.FragmentHelper;
+import com.yjt.app.utils.InputUtil;
 import com.yjt.app.utils.SnackBarUtil;
 import com.yjt.app.utils.ToastUtil;
 import com.yjt.app.utils.ViewUtil;
@@ -135,12 +136,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     @Override
-    protected void setListener() {
-        drawerLayout.addDrawerListener(mToggle);
-        mAdapter.setOnItemClickListener(this);
-    }
-
-    @Override
     protected void initialize(Bundle savedInstanceState) {
         mHandler = new MainHandler(this);
         mReceiver = new BluetoothReceiver();
@@ -190,7 +185,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     @Override
+    protected void setListener() {
+        drawerLayout.addDrawerListener(mToggle);
+        mAdapter.setOnItemClickListener(this);
+    }
+
+    @Override
     public void onClick(View view) {
+        InputUtil.getInstance().hideKeyBoard(this, view);
         switch (view.getId()) {
             case R.id.rlHeader:
                 SnackBarUtil.getInstance().showSnackBar(view, getResources().getString(R.string.app_name), Snackbar.LENGTH_SHORT);

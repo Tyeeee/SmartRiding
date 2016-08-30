@@ -99,4 +99,16 @@ public class Constant {
     public static class RequestCode {
         public static final int POINT = 0x4001;
     }
+
+
+    public static class Message {
+        public static final int LOCATION_SUCCESS = 0x5001;
+        public static final int LOCATION_FAILED = 0x5002;
+    }
+
+    public static class Map {
+        public static final long LOCATION_MINIMUM_TIME_INTERVAL = 1000;
+        public static final long LOCATION_TIME_OUT = 10000;
+    }
+
 }

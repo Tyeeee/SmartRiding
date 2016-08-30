@@ -12,7 +12,7 @@ import com.yjt.app.utils.ViewUtil;
 
 public class SearchTextView extends RelativeLayout {
 
-    private TextView tvSearch;
+    private TextView tvPoint;
     private View vLine;
 
     public SearchTextView(Context context) {
@@ -31,24 +31,32 @@ public class SearchTextView extends RelativeLayout {
 
     public void findViewById() {
         LayoutInflater.from(getContext()).inflate(R.layout.textview_search, this);
-        tvSearch = ViewUtil.getInstance().findView(this, R.id.tvSearch);
+        tvPoint = ViewUtil.getInstance().findView(this, R.id.tvPoint);
         vLine = ViewUtil.getInstance().findView(this, R.id.vLine);
     }
 
+    public void setHint(int resId) {
+        tvPoint.setHint(getResources().getString(resId));
+    }
+
+    public void setHint(String text) {
+        tvPoint.setHint(text);
+    }
+
     public void setText(int resId) {
-        tvSearch.setText(getResources().getString(resId));
+        tvPoint.setText(getResources().getString(resId));
     }
 
     public void setText(String text) {
-        tvSearch.setText(text);
+        tvPoint.setText(text);
     }
 
     public String getText() {
-        return tvSearch.getText().toString();
+        return tvPoint.getText().toString();
     }
 
     public void setTextColor(int resId) {
-        tvSearch.setTextColor(resId);
+        tvPoint.setTextColor(resId);
     }
 
     public void setLineVisible(int visible) {

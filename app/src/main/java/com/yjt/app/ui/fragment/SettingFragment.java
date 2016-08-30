@@ -79,11 +79,6 @@ public class SettingFragment extends BaseFragment implements FixedStickyViewAdap
     }
 
     @Override
-    protected void setListener() {
-        mAdapter.setOnItemClickListener(this);
-    }
-
-    @Override
     protected void initialize(Bundle savedInstanceState) {
         mHandler = new SettingHandler(this);
         mLayoutManager = new LinearLayoutManager(getActivity());
@@ -124,6 +119,11 @@ public class SettingFragment extends BaseFragment implements FixedStickyViewAdap
             }
         });
         rvMenu.setAdapter(mAdapter);
+    }
+
+    @Override
+    protected void setListener() {
+        mAdapter.setOnItemClickListener(this);
     }
 
     @Override

@@ -20,10 +20,13 @@
     <string name="nearby">附近</string>
     <string name="route">路线</string>
     <string name="start_point">请输入起点</string>
-    <string name="pass_point">请输入途经点</string>
+    <string name="pass_point">请输入途经点(选填)</string>
     <string name="end_point">请输入终点</string>
     <string name="my_location">我的位置</string>
     <string name="my_collection">我的收藏</string>
+    <string name="location_prompt">正在定位,请稍后...</string>
+    <string name="location_success">定位成功</string>
+    <string name="location_failed">定位失败</string>
 
     <string name="app_name">智慧骑行</string>
     <string name="bluetooth_name">蓝牙设备名称:</string>

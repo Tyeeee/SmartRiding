@@ -34,12 +34,12 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
     }
 
     @Override
-    protected void setListener() {
+    protected void initialize(Bundle savedInstanceState) {
 
     }
 
     @Override
-    protected void initialize(Bundle savedInstanceState) {
+    protected void setListener() {
 
     }
 

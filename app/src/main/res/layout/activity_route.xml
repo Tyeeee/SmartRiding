@@ -116,12 +116,12 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_0.5"
         android:layout_marginBottom="@dimen/dp_15"
-        android:background="@color/gray_979797"/>
+        android:background="@color/gray_999999"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_0.5"
-        android:background="@color/gray_979797"/>
+        android:background="@color/gray_999999"/>
 
     <TextView
         android:id="@+id/tvLocation"
@@ -136,7 +136,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_0.5"
-        android:background="@color/gray_979797"/>
+        android:background="@color/gray_999999"/>
 
     <TextView
         android:id="@+id/tvCollection"
@@ -151,5 +151,5 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_0.5"
-        android:background="@color/gray_979797"/>
+        android:background="@color/gray_999999"/>
 </LinearLayout>

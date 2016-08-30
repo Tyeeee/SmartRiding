@@ -14,10 +14,11 @@ import android.widget.TextView;
 import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Temp;
-import com.yjt.app.ui.activity.MainActivity;
+import com.yjt.app.ui.activity.MapActivity;
 import com.yjt.app.ui.activity.RouteActivity;
 import com.yjt.app.ui.base.BaseFragment;
 import com.yjt.app.ui.widget.SearchTextView;
+import com.yjt.app.utils.InputUtil;
 import com.yjt.app.utils.SnackBarUtil;
 import com.yjt.app.utils.ViewUtil;
 
@@ -29,8 +30,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private SearchTextView stvPassPoint;
     private SearchTextView stvEndPoint;
 
-    private ImageView ivAddPassPoint;
-    private ImageView ivDeletePassPoint;
     private ImageView ivVoice;
 
     private TextView tvSearch;
@@ -53,8 +52,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    public void onClick(View view) {
+        InputUtil.getInstance().hideKeyBoard(getActivity(), view);
+        switch (view.getId()) {
             case R.id.ivExchange:
                 if (!TextUtils.equals(stvStartPoint.getText(), getString(R.string.start_point)) && !TextUtils.equals(stvEndPoint.getText(), getString(R.string.end_point))) {
                     mTempString = stvStartPoint.getText();
@@ -77,29 +77,20 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 bundle3.putInt(Temp.POINT_TYPE.getContent(), Constant.PointType.END);
                 startActivityForResult(RouteActivity.class, Constant.RequestCode.POINT, bundle3);
                 break;
-            case R.id.ivAddPassPoint:
-                ivAddPassPoint.setVisibility(View.GONE);
-                ivDeletePassPoint.setVisibility(View.VISIBLE);
-                stvPassPoint.setText(R.string.pass_point);
-                stvPassPoint.setVisibility(View.VISIBLE);
-                stvPassPoint.setLineVisible(View.VISIBLE);
-                break;
-            case R.id.ivDeletePassPoint:
-                ivAddPassPoint.setVisibility(View.VISIBLE);
-                ivDeletePassPoint.setVisibility(View.GONE);
-                stvPassPoint.setVisibility(View.GONE);
-                stvPassPoint.setLineVisible(View.GONE);
-                break;
             case R.id.ivVoice:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "ivVoice", Snackbar.LENGTH_SHORT);
+                SnackBarUtil.getInstance().showSnackBar(view, "ivVoice", Snackbar.LENGTH_SHORT);
                 break;
             case R.id.tvSearch:
-                if (TextUtils.equals(stvStartPoint.getText(), getString(R.string.start_point))) {
-                    SnackBarUtil.getInstance().showSnackBar(mRootView, getString(R.string.start_point), Snackbar.LENGTH_SHORT);
-                } else if (TextUtils.equals(stvEndPoint.getText(), getString(R.string.end_point))) {
-                    SnackBarUtil.getInstance().showSnackBar(mRootView, getString(R.string.end_point), Snackbar.LENGTH_SHORT);
+                if (TextUtils.isEmpty(stvStartPoint.getText()) || TextUtils.equals(stvStartPoint.getText(), getString(R.string.start_point))) {
+                    SnackBarUtil.getInstance().showSnackBar(view, getString(R.string.start_point), Snackbar.LENGTH_SHORT);
+                } else if (TextUtils.isEmpty(stvEndPoint.getText()) || TextUtils.equals(stvEndPoint.getText(), getString(R.string.end_point))) {
+                    SnackBarUtil.getInstance().showSnackBar(view, getString(R.string.end_point), Snackbar.LENGTH_SHORT);
                 } else {
-                    startActivity(getActivity(), MainActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString(Temp.START_POINT.getContent(), stvStartPoint.getText());
+                    bundle.putString(Temp.PASS_POINT.getContent(), stvPassPoint.getText());
+                    bundle.putString(Temp.END_POINT.getContent(), stvEndPoint.getText());
+                    startActivity(getActivity(), MapActivity.class, bundle);
                 }
                 break;
         }
@@ -112,14 +103,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         stvStartPoint = ViewUtil.getInstance().findViewAttachOnclick(mRootView, R.id.stvStartPoint, this);
         stvPassPoint = ViewUtil.getInstance().findViewAttachOnclick(mRootView, R.id.stvPassPoint, this);
         stvEndPoint = ViewUtil.getInstance().findViewAttachOnclick(mRootView, R.id.stvEndPoint, this);
-        stvStartPoint.setText(R.string.start_point);
+        stvStartPoint.setHint(R.string.start_point);
         stvStartPoint.setLineVisible(View.VISIBLE);
-        stvEndPoint.setText(R.string.end_point);
+        stvPassPoint.setHint(R.string.pass_point);
+        stvStartPoint.setLineVisible(View.VISIBLE);
+        stvEndPoint.setHint(R.string.end_point);
         stvEndPoint.setLineVisible(View.GONE);
 
-        ivAddPassPoint = ViewUtil.getInstance().findViewAttachOnclick(mRootView, R.id.ivAddPassPoint, this);
-        ivAddPassPoint.setVisibility(View.VISIBLE);
-        ivDeletePassPoint = ViewUtil.getInstance().findViewAttachOnclick(mRootView, R.id.ivDeletePassPoint, this);
         ivVoice = ViewUtil.getInstance().findViewAttachOnclick(mRootView, R.id.ivVoice, this);
         tvSearch = ViewUtil.getInstance().findViewAttachOnclick(mRootView, R.id.tvSearch, this);
     }
@@ -158,17 +148,20 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null && resultCode == Constant.Common.RESULT_CODE) {
+            String content = data.getStringExtra(Temp.POINT_CONTENT.getContent());
             switch (requestCode) {
                 case Constant.RequestCode.POINT:
                     switch (data.getIntExtra(Temp.POINT_TYPE.getContent(), -1)) {
                         case Constant.PointType.START:
-                            stvStartPoint.setText(data.getStringExtra(Temp.POINT_CONTENT.getContent()));
+                            stvStartPoint.setText(content);
                             break;
                         case Constant.PointType.PASS:
-                            stvPassPoint.setText(data.getStringExtra(Temp.POINT_CONTENT.getContent()));
+                            if (!TextUtils.equals(content, getString(R.string.pass_point))) {
+                                stvPassPoint.setText(content);
+                            }
                             break;
                         case Constant.PointType.END:
-                            stvEndPoint.setText(data.getStringExtra(Temp.POINT_CONTENT.getContent()));
+                            stvEndPoint.setText(content);
                             break;
                     }
                     break;

@@ -24,7 +24,7 @@
             android:src="@mipmap/dir1"/>
 
         <TextView
-            android:id="@+id/tvSearch"
+            android:id="@+id/tvPoint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -35,6 +35,7 @@
             android:layout_marginRight="@dimen/dp_10"
             android:layout_marginStart="@dimen/dp_20"
             android:background="@null"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/sp_15"/>
 
     </RelativeLayout>
