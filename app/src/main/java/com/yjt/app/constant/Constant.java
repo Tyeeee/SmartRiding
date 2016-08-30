@@ -51,15 +51,15 @@ public class Constant {
     public static final int SIMPLEGPSNAVI = 2;
     public static final int SIMPLEROUTENAVI = 3;
 
-    public static final int COLOR_DEFAULT = 0x999999;
-    public static final int SIZE_DEFAULT = 0x999999;
+    public static final int COLOR_DEFAULT = 0x9999;
+    public static final int SIZE_DEFAULT = 0x9999;
 
-    public static final int DRAWABLE_TOP = 0x000001;
-    public static final int DRAWABLE_LEFT = 0x000002;
-    public static final int DRAWABLE_RIGHT = 0x000003;
-    public static final int DRAWABLE_BOTTOM = 0x000004;
+    public static final int DRAWABLE_TOP = 0x0001;
+    public static final int DRAWABLE_LEFT = 0x0002;
+    public static final int DRAWABLE_RIGHT = 0x0003;
+    public static final int DRAWABLE_BOTTOM = 0x0004;
 
-    public static class ITEM_POSITION {
+    public static class ItemPosition {
         public static final int HOME = 0;
         public static final int DEVICE = 1;
         public static final int MESSAGE = 2;
@@ -72,17 +72,31 @@ public class Constant {
         public static final int ABOUT_DEVICE = 5;
     }
 
-    public static class ITEM_TYPE {
-        public static final int HEADER_VIEW = 0x5001;
-        public static final int CONTENT_VIEW = 0x5003;
-        public static final int FOOTER_VIEW = 0x5004;
-        public static final int OTHER_VIEW = 0x5005;
+    public static class ItemType {
+        public static final int HEADER_VIEW = 0x1001;
+        public static final int CONTENT_VIEW = 0x1002;
+        public static final int FOOTER_VIEW = 0x1003;
+        public static final int OTHER_VIEW = 0x1004;
     }
 
-    public static class PAGE {
-        public static final int HOME = 0x01;
-        public static final int DEVICE = 0x02;
-        public static final int MESSAGE = 0x03;
-        public static final int SETTING = 0x04;
+    public static class Page {
+        public static final int HOME = 0x2001;
+        public static final int DEVICE = 0x2002;
+        public static final int MESSAGE = 0x2003;
+        public static final int SETTING = 0x2004;
+    }
+
+    public static class PointType {
+        public static final int START = 0x300001;
+        public static final int PASS = 0x300002;
+        public static final int END = 0x300003;
+    }
+
+    public static class Common {
+        public static final int RESULT_CODE = 0x4002;
+    }
+
+    public static class RequestCode {
+        public static final int POINT = 0x4001;
     }
 }

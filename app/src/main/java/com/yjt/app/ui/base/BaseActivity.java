@@ -1,17 +1,16 @@
 package com.yjt.app.ui.base;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.Window;
 
 import com.yjt.app.R;
 import com.yjt.app.base.BaseApplication;
 import com.yjt.app.utils.ActivityUtil;
-import com.yjt.app.utils.FragmentUtil;
+import com.yjt.app.utils.InputUtil;
 import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.ViewUtil;
 
@@ -101,77 +100,48 @@ public abstract class BaseActivity extends AppCompatActivity {
                 + " onDestroy() invoked!!");
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                InputUtil.getInstance().hideKeyBoard(event, this);
+                break;
+            default:
+                break;
+        }
+        return false;
+    }
+
     protected void onFinish(String message) {
         super.finish();
         LogUtil.print("onFinish is called: " + message);
         overridePendingTransition(R.anim.slide_left_in, R.anim.slide_right_out);
     }
 
-    /**
-     * 控件初始化
-     */
     protected abstract void findViewById();
 
-    /**
-     * 设置监听
-     */
     protected abstract void setListener();
 
-    /**
-     * 其他初始化
-     */
     protected abstract void initialize(Bundle savedInstanceState);
 
-    /**
-     * 获取备份数据
-     */
     protected abstract void getSavedInstanceState(Bundle savedInstanceState);
 
-    /**
-     * 设置备份数据
-     */
     protected abstract void setSavedInstanceState(Bundle savedInstanceState);
 
-    /**
-     * 校验权限
-     */
     protected abstract void permissionRequestIntent();
 
-    /**
-     * 校验权限
-     */
     protected abstract void permissionRequestResult();
 
-    /**
-     * 其他操作
-     */
     protected abstract void endOperation();
 
-
-    /**
-     * 页面跳转
-     *
-     * @param cls 目标页面.class
-     */
     protected void startActivity(Class<?> cls) {
         startActivity(cls, null);
     }
 
-    /**
-     * 页面跳转
-     *
-     * @param act action
-     */
     protected void startActivity(String act) {
         startActivity(act, null);
     }
 
-    /**
-     * 页面跳转
-     *
-     * @param cls     目标页面.class
-     * @param mBundle 携带数据对象
-     */
     protected void startActivity(Class<?> cls, Bundle mBundle) {
         Intent intent = new Intent();
         intent.setClass(this, cls);
@@ -182,12 +152,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
-    /**
-     * 页面跳转
-     *
-     * @param act     action
-     * @param mBundle 携带数据对象
-     */
     protected void startActivity(String act, Bundle mBundle) {
         Intent intent = new Intent();
         intent.setAction(act);

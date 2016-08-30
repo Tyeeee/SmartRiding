@@ -1,10 +1,15 @@
 package com.yjt.app.ui.base;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -22,9 +27,13 @@ import com.amap.api.services.geocoder.GeocodeResult;
 import com.amap.api.services.geocoder.GeocodeSearch;
 import com.amap.api.services.geocoder.RegeocodeResult;
 import com.autonavi.tbt.TrafficFacilityInfo;
+import com.yjt.app.R;
+import com.yjt.app.utils.InputUtil;
 import com.yjt.app.utils.LogUtil;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.HashMap;
 
 public abstract class BaseFragment extends Fragment {
 
@@ -135,7 +144,6 @@ public abstract class BaseFragment extends Fragment {
                 + " onHiddenChanged() invoked!!--" + hidden);
     }
 
-
     /**
      * 加载控件id
      */
@@ -164,5 +172,123 @@ public abstract class BaseFragment extends Fragment {
     public abstract boolean onBackPressed();
 
     protected abstract void endOperation();
+
+    protected boolean hasExtraValue(String extraKey) {
+        return getArguments() != null && getArguments().containsKey(extraKey);
+    }
+
+    protected void startActivity(Context context, Class<?> cls) {
+        startActivity(context, cls, null);
+    }
+
+    protected void startActivity(String act) {
+        startActivity(act, null);
+    }
+
+    protected void startActivity(String act, Bundle mBundle) {
+        Intent intent = new Intent();
+        intent.setAction(act);
+        if (mBundle != null) {
+            intent.putExtras(mBundle);
+        }
+        getActivity().startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.slide_right_in,
+                                                R.anim.slide_left_out);
+    }
+
+    protected void startActivity(Context context, Class<?> cls, Bundle mBundle) {
+        Intent intent = new Intent();
+        intent.setClass(context, cls);
+        if (mBundle != null) {
+            intent.putExtras(mBundle);
+        }
+        getActivity().startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.slide_right_in,
+                                                R.anim.slide_left_out);
+    }
+
+    protected void startActivityForResult(Class<?> cls, int requestCode) {
+        startActivityForResult(cls, requestCode, null);
+    }
+
+    protected void startActivityForResult(String act, int requestCode) {
+        startActivityForResult(act, requestCode, null);
+    }
+
+    protected void startActivityForResult(String act, int requestCode,
+                                          Bundle mBundle) {
+        startActivityForResult(act, null, null, requestCode, mBundle);
+    }
+
+    protected void startActivityForResult(String act, Uri data, int requestCode) {
+        startActivityForResult(act, data, null, requestCode, null);
+    }
+
+    protected void startActivityForResult(String act, String type,
+                                          int requestCode, Bundle mBundle) {
+        startActivityForResult(act, null, type, requestCode, mBundle);
+    }
+
+    protected void startActivityForResultWithParcelable(String act, HashMap<String, Parcelable> map,
+                                                        int requestCode) {
+        startActivityForResultWithParcelable(act, null, null, map, requestCode);
+    }
+
+    protected void startActivityForResultWithParcelable(String act, Uri data, String type, HashMap<String, Parcelable> map,
+                                                        int requestCode) {
+        Intent intent = new Intent();
+        intent.setAction(act);
+        if (map != null) {
+            for (String key : map.keySet()) {
+                intent.putExtra(key, map.get(key));
+            }
+        }
+        intent.setDataAndType(data, type);
+        startActivityForResult(intent, requestCode);
+        getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+    }
+
+    protected void startActivityForResultWithSerializable(String act, HashMap<String, Serializable> map,
+                                                          int requestCode) {
+        startActivityForResultWithSerializable(act, null, null, map, requestCode);
+        getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+    }
+
+    protected void startActivityForResultWithSerializable(String act, Uri data, String type, HashMap<String, Serializable> map,
+                                                          int requestCode) {
+        Intent intent = new Intent();
+        intent.setAction(act);
+        if (map != null) {
+            for (String key : map.keySet()) {
+                intent.putExtra(key, map.get(key));
+            }
+        }
+        intent.setDataAndType(data, type);
+        startActivityForResult(intent, requestCode);
+        getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+    }
+
+    protected void startActivityForResult(String act, Uri data, String type,
+                                          int requestCode, Bundle mBundle) {
+        Intent intent = new Intent();
+        intent.setAction(act);
+        intent.setDataAndType(data, type);
+        if (mBundle != null) {
+            intent.putExtras(mBundle);
+        }
+        startActivityForResult(intent, requestCode);
+        getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+    }
+
+    protected void startActivityForResult(Class<?> cls, int requestCode,
+                                          Bundle mBundle) {
+        Intent intent = new Intent();
+        intent.setClass(getActivity(), cls);
+        if (mBundle != null) {
+            intent.putExtras(mBundle);
+        }
+        startActivityForResult(intent, requestCode);
+        getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+    }
 
 }

@@ -1,4 +1,4 @@
-package com.yjt.app;
+package com.yjt.app.ui.activity;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.IntentFilter;
@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.model.Menu;
 import com.yjt.app.receiver.BluetoothReceiver;
@@ -150,11 +151,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             ToastUtil.getInstance().showToast(this, R.string.bluetooth_status5, Toast.LENGTH_SHORT);
         }
         mHelper = new FragmentHelper(getSupportFragmentManager(), R.id.flContent);
-        mHelper.addItem(new FragmentHelper.OperationInfo(this, Constant.ITEM_POSITION.HOME, HomeFragment.class));
-        mHelper.addItem(new FragmentHelper.OperationInfo(this, Constant.ITEM_POSITION.DEVICE, DeviceFragment.class));
-        mHelper.addItem(new FragmentHelper.OperationInfo(this, Constant.ITEM_POSITION.MESSAGE, MessageFragment.class));
-        mHelper.addItem(new FragmentHelper.OperationInfo(this, Constant.ITEM_POSITION.SETTING, SettingFragment.class));
-        mHelper.show(Constant.ITEM_POSITION.HOME, false);
+        mHelper.addItem(new FragmentHelper.OperationInfo(this, Constant.ItemPosition.HOME, HomeFragment.class));
+        mHelper.addItem(new FragmentHelper.OperationInfo(this, Constant.ItemPosition.DEVICE, DeviceFragment.class));
+        mHelper.addItem(new FragmentHelper.OperationInfo(this, Constant.ItemPosition.MESSAGE, MessageFragment.class));
+        mHelper.addItem(new FragmentHelper.OperationInfo(this, Constant.ItemPosition.SETTING, SettingFragment.class));
+        mHelper.show(Constant.ItemPosition.HOME, false, toolbar, R.string.home_page);
         mToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
         mLayoutManager = new LinearLayoutManager(this);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -203,24 +204,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void onItemClick(int position) {
         switch (position) {
-            case Constant.ITEM_POSITION.HOME:
-                mHelper.show(Constant.ITEM_POSITION.HOME, false);
+            case Constant.ItemPosition.HOME:
+                mHelper.show(Constant.ItemPosition.HOME, false, toolbar, R.string.home_page);
                 drawerLayout.closeDrawers();
                 break;
-            case Constant.ITEM_POSITION.DEVICE:
-                mHelper.show(Constant.ITEM_POSITION.DEVICE, false);
+            case Constant.ItemPosition.DEVICE:
+                mHelper.show(Constant.ItemPosition.DEVICE, false, toolbar, R.string.device_management);
                 drawerLayout.closeDrawers();
                 break;
-            case Constant.ITEM_POSITION.MESSAGE:
-                mHelper.show(Constant.ITEM_POSITION.MESSAGE, false);
+            case Constant.ItemPosition.MESSAGE:
+                mHelper.show(Constant.ItemPosition.MESSAGE, false, toolbar, R.string.message);
                 drawerLayout.closeDrawers();
                 break;
-            case Constant.ITEM_POSITION.SETTING:
-                mHelper.show(Constant.ITEM_POSITION.SETTING, false);
+            case Constant.ItemPosition.SETTING:
+                mHelper.show(Constant.ItemPosition.SETTING, false, toolbar, R.string.setting);
                 drawerLayout.closeDrawers();
                 break;
             default:
-                mHelper.show(Constant.ITEM_POSITION.HOME, false);
+                mHelper.show(Constant.ItemPosition.HOME, false, toolbar, R.string.home_page);
                 drawerLayout.closeDrawers();
                 break;
         }
@@ -258,7 +259,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void endOperation() {
-        
+
     }
 
     @Override

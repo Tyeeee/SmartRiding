@@ -149,22 +149,22 @@ public class SettingFragment extends BaseFragment implements FixedStickyViewAdap
     @Override
     public void onItemClick(int position) {
         switch (position) {
-            case Constant.ITEM_POSITION.SEARCH_DEVICE:
+            case Constant.ItemPosition.SEARCH_DEVICE:
                 SnackBarUtil.getInstance().showSnackBar(mRootView, "SEARCH_DEVICE", Snackbar.LENGTH_SHORT);
                 break;
-            case Constant.ITEM_POSITION.GENERAL_SETTING:
+            case Constant.ItemPosition.GENERAL_SETTING:
                 SnackBarUtil.getInstance().showSnackBar(mRootView, "GENERAL_SETTING", Snackbar.LENGTH_SHORT);
                 break;
-            case Constant.ITEM_POSITION.CHECK_UPDATE:
+            case Constant.ItemPosition.CHECK_UPDATE:
                 SnackBarUtil.getInstance().showSnackBar(mRootView, "CHECK_UPDATE", Snackbar.LENGTH_SHORT);
                 break;
-            case Constant.ITEM_POSITION.CLEAR_DATA:
+            case Constant.ItemPosition.CLEAR_DATA:
                 SnackBarUtil.getInstance().showSnackBar(mRootView, "CLEAR_DATA", Snackbar.LENGTH_SHORT);
                 break;
-            case Constant.ITEM_POSITION.BREAK_LINK:
+            case Constant.ItemPosition.BREAK_LINK:
                 SnackBarUtil.getInstance().showSnackBar(mRootView, "BREAK_LINK", Snackbar.LENGTH_SHORT);
                 break;
-            case Constant.ITEM_POSITION.ABOUT_DEVICE:
+            case Constant.ItemPosition.ABOUT_DEVICE:
                 SnackBarUtil.getInstance().showSnackBar(mRootView, "ABOUT_DEVICE", Snackbar.LENGTH_SHORT);
                 break;
         }

@@ -9,11 +9,6 @@ import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ScrollView;
 
-/**
- * 界面输入工具
- *
- * @author yjt
- */
 public class InputUtil {
 
     private static InputMethodManager imm;
@@ -39,20 +34,14 @@ public class InputUtil {
     }
 
 
-    /**
-     * 针对普通视图下键盘隐藏的操作
-     *
-     * @param event
-     * @param act
-     */
-    public void onTouchCommonView(MotionEvent event, Activity act) {
+    public void hideKeyBoard(MotionEvent event, Activity activity) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             if (imm == null)
-                imm = (InputMethodManager) act
+                imm = (InputMethodManager) activity
                         .getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (act.getCurrentFocus() != null) {
-                if (act.getCurrentFocus().getWindowToken() != null) {
-                    imm.hideSoftInputFromWindow(act.getCurrentFocus()
+            if (activity.getCurrentFocus() != null) {
+                if (activity.getCurrentFocus().getWindowToken() != null) {
+                    imm.hideSoftInputFromWindow(activity.getCurrentFocus()
                                                         .getWindowToken(),
                                                 InputMethodManager.HIDE_NOT_ALWAYS);
                 }
@@ -60,13 +49,7 @@ public class InputUtil {
         }
     }
 
-    /**
-     * 针对ScrollView为父视图的情况下的键盘隐藏操作
-     *
-     * @param context
-     * @param view
-     */
-    public void onTouchScrollView(final Context context, ScrollView view) {
+    public void hideKeyBoard(final Context context, ScrollView view) {
         view.setOnTouchListener(new OnTouchListener() {
 
             @SuppressLint("ClickableViewAccessibility")
@@ -98,11 +81,6 @@ public class InputUtil {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    /**
-     * 对点击事件进行频率控制
-     *
-     * @return
-     */
     public boolean isDoubleClick() {
         long timeS = System.currentTimeMillis();
         long timeE = timeS - mLastClickTime;
