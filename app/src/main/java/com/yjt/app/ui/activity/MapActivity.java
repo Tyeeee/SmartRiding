@@ -17,6 +17,7 @@ import com.amap.api.services.geocoder.GeocodeResult;
 import com.amap.api.services.geocoder.GeocodeSearch;
 import com.amap.api.services.geocoder.RegeocodeResult;
 import com.autonavi.tbt.TrafficFacilityInfo;
+import com.yjt.app.R;
 import com.yjt.app.ui.base.BaseActivity;
 import com.yjt.app.utils.LogUtil;
 
@@ -26,11 +27,15 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_map);
+        findViewById();
+        initialize(savedInstanceState);
+        setListener();
     }
 
     @Override
     protected void findViewById() {
-
+        
     }
 
     @Override

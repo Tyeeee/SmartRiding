@@ -1,5 +1,6 @@
 package com.yjt.app.utils;
 
+import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.view.View;
@@ -40,6 +41,14 @@ public class SnackBarUtil {
 
     public void showSnackBar(View view, CharSequence message, int length) {
         showSnackBar(view, message, length, null, null, Constant.SIZE_DEFAULT, Constant.COLOR_DEFAULT);
+    }
+
+    public void showSnackBar(View view, CharSequence message, int length, float textSize) {
+        showSnackBar(view, message, length, null, null, textSize, Constant.COLOR_DEFAULT);
+    }
+
+    public void showSnackBar(View view, CharSequence message, int length, int color) {
+        showSnackBar(view, message, length, null, null, Constant.SIZE_DEFAULT, color);
     }
 
     public void showSnackBar(View view, CharSequence message, int length, float textSize, int color) {

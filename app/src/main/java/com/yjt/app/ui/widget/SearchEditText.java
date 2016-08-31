@@ -1,6 +1,7 @@
 package com.yjt.app.ui.widget;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -43,7 +44,7 @@ public class SearchEditText extends RelativeLayout implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ivDelete:
-                SnackBarUtil.getInstance().showSnackBar(this, "tvSearch", Snackbar.LENGTH_SHORT);
+                SnackBarUtil.getInstance().showSnackBar(this, "tvSearch", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
             default:
                 break;

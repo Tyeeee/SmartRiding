@@ -1,6 +1,7 @@
 package com.yjt.app.ui.fragment;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -150,22 +151,22 @@ public class SettingFragment extends BaseFragment implements FixedStickyViewAdap
     public void onItemClick(int position) {
         switch (position) {
             case Constant.ItemPosition.SEARCH_DEVICE:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "SEARCH_DEVICE", Snackbar.LENGTH_SHORT);
+                SnackBarUtil.getInstance().showSnackBar(mRootView, "SEARCH_DEVICE", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
             case Constant.ItemPosition.GENERAL_SETTING:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "GENERAL_SETTING", Snackbar.LENGTH_SHORT);
+                SnackBarUtil.getInstance().showSnackBar(mRootView, "GENERAL_SETTING", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
             case Constant.ItemPosition.CHECK_UPDATE:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "CHECK_UPDATE", Snackbar.LENGTH_SHORT);
+                SnackBarUtil.getInstance().showSnackBar(mRootView, "CHECK_UPDATE", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
             case Constant.ItemPosition.CLEAR_DATA:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "CLEAR_DATA", Snackbar.LENGTH_SHORT);
+                SnackBarUtil.getInstance().showSnackBar(mRootView, "CLEAR_DATA", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
             case Constant.ItemPosition.BREAK_LINK:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "BREAK_LINK", Snackbar.LENGTH_SHORT);
+                SnackBarUtil.getInstance().showSnackBar(mRootView, "BREAK_LINK", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
             case Constant.ItemPosition.ABOUT_DEVICE:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "ABOUT_DEVICE", Snackbar.LENGTH_SHORT);
+                SnackBarUtil.getInstance().showSnackBar(mRootView, "ABOUT_DEVICE", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
         }
     }

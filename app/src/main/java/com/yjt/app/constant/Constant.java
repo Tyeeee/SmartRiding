@@ -109,6 +109,7 @@ public class Constant {
     public static class Map {
         public static final long LOCATION_MINIMUM_TIME_INTERVAL = 1000;
         public static final long LOCATION_TIME_OUT = 10000;
+        public static final long GEOCODE_SEARCH_SUCCESS = 1000;
     }
 
 }

@@ -3,6 +3,7 @@ package com.yjt.app.ui.activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -195,7 +196,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         InputUtil.getInstance().hideKeyBoard(this, view);
         switch (view.getId()) {
             case R.id.rlHeader:
-                SnackBarUtil.getInstance().showSnackBar(view, getResources().getString(R.string.app_name), Snackbar.LENGTH_SHORT);
+                SnackBarUtil.getInstance().showSnackBar(view, getResources().getString(R.string.app_name), Snackbar.LENGTH_SHORT, Color.WHITE);
                 drawerLayout.closeDrawers();
                 break;
             default:

@@ -3,18 +3,21 @@
  */
 package com.yjt.app.utils;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.text.Html;
 import android.text.Spanned;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.amap.api.maps.model.LatLng;
+import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.route.BusPath;
 import com.amap.api.services.route.BusStep;
 import com.amap.api.services.route.RouteBusLineItem;
 import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
+import com.yjt.app.constant.Regex;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -269,4 +272,404 @@ public class MapUtil {
         return busLineName.replaceAll("\\(.*?\\)", "");
     }
 
+    public void showMapException(Activity activity, final int resultCode) {
+        switch (resultCode) {
+            case AMapException.CODE_AMAP_SIGNATURE_ERROR:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_SIGNATURE_ERROR, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_INVALID_USER_KEY:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_INVALID_USER_KEY, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_SERVICE_NOT_AVAILBALE:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_SERVICE_NOT_AVAILBALE, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_DAILY_QUERY_OVER_LIMIT:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_DAILY_QUERY_OVER_LIMIT, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_ACCESS_TOO_FREQUENT:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_ACCESS_TOO_FREQUENT, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_INVALID_USER_IP:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_INVALID_USER_IP, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_INVALID_USER_DOMAIN:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_INVALID_USER_DOMAIN, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_INVALID_USER_SCODE:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_INVALID_USER_SCODE, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_USERKEY_PLAT_NOMATCH:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_USERKEY_PLAT_NOMATCH, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_IP_QUERY_OVER_LIMIT:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_IP_QUERY_OVER_LIMIT, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_NOT_SUPPORT_HTTPS:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_NOT_SUPPORT_HTTPS, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_INSUFFICIENT_PRIVILEGES:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_INSUFFICIENT_PRIVILEGES, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_USER_KEY_RECYCLED:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_USER_KEY_RECYCLED, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_ENGINE_RESPONSE_ERROR:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_ENGINE_RESPONSE_ERROR, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_ENGINE_RESPONSE_DATA_ERROR:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_ENGINE_RESPONSE_DATA_ERROR, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_ENGINE_CONNECT_TIMEOUT:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_ENGINE_CONNECT_TIMEOUT, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_ENGINE_RETURN_TIMEOUT:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_ENGINE_RETURN_TIMEOUT, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_SERVICE_INVALID_PARAMS:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_SERVICE_INVALID_PARAMS, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_SERVICE_MISSING_REQUIRED_PARAMS:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_SERVICE_MISSING_REQUIRED_PARAMS, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_SERVICE_ILLEGAL_REQUEST:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_SERVICE_ILLEGAL_REQUEST, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_SERVICE_UNKNOWN_ERROR:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_SERVICE_UNKNOWN_ERROR, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_CLIENT_ERRORCODE_MISSSING:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_ERRORCODE_MISSSING, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_CLIENT_ERROR_PROTOCOL:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_ERROR_PROTOCOL, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_CLIENT_SOCKET_TIMEOUT_EXCEPTION:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_SOCKET_TIMEOUT_EXCEPTION, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_CLIENT_URL_EXCEPTION:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_URL_EXCEPTION, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_CLIENT_UNKNOWHOST_EXCEPTION:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_UNKNOWHOST_EXCEPTION, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_CLIENT_NETWORK_EXCEPTION:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_NETWORK_EXCEPTION, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_CLIENT_UNKNOWN_ERROR:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_UNKNOWN_ERROR, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_CLIENT_INVALID_PARAMETER:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_INVALID_PARAMETER, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_CLIENT_IO_EXCEPTION:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_IO_EXCEPTION, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_CLIENT_NULLPOINT_EXCEPTION:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_NULLPOINT_EXCEPTION, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_SERVICE_TABLEID_NOT_EXIST:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_SERVICE_TABLEID_NOT_EXIST, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_ID_NOT_EXIST:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_ID_NOT_EXIST, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_SERVICE_MAINTENANCE:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_SERVICE_MAINTENANCE, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_ENGINE_TABLEID_NOT_EXIST:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_ENGINE_TABLEID_NOT_EXIST, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_NEARBY_INVALID_USERID:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_NEARBY_INVALID_USERID, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_NEARBY_KEY_NOT_BIND:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_NEARBY_KEY_NOT_BIND, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_CLIENT_UPLOADAUTO_STARTED_ERROR:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_UPLOADAUTO_STARTED_ERROR, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_CLIENT_USERID_ILLEGAL:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_USERID_ILLEGAL, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_CLIENT_NEARBY_NULL_RESULT:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_NEARBY_NULL_RESULT, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_CLIENT_UPLOAD_TOO_FREQUENT:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_UPLOAD_TOO_FREQUENT, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_CLIENT_UPLOAD_LOCATION_ERROR:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_UPLOAD_LOCATION_ERROR, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_ROUTE_OUT_OF_SERVICE:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_ROUTE_OUT_OF_SERVICE, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_ROUTE_NO_ROADS_NEARBY:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_ROUTE_NO_ROADS_NEARBY, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_ROUTE_FAIL:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_ROUTE_FAIL, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_OVER_DIRECTION_RANGE:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_OVER_DIRECTION_RANGE, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_SHARE_LICENSE_IS_EXPIRED:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_SHARE_LICENSE_IS_EXPIRED, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            case AMapException.CODE_AMAP_SHARE_FAILURE:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_SHARE_FAILURE, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+            default:
+                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), activity.getString(R.string.search_failed)
+                        + Regex.LEFT_PARENTHESIS.getRegext()
+                        + resultCode
+                        + Regex.RIGHT_PARENTHESIS.getRegext(), activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, null, null);
+                break;
+        }
+    }
 }

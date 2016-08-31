@@ -24,9 +24,14 @@
     <string name="end_point">请输入终点</string>
     <string name="my_location">我的位置</string>
     <string name="my_collection">我的收藏</string>
-    <string name="location_prompt">正在定位,请稍后...</string>
+    <string name="location_prompt">正在初始化数据,请稍后…</string>
     <string name="location_success">定位成功</string>
     <string name="location_failed">定位失败</string>
+    <string name="search_success">搜索询功</string>
+    <string name="search_failed">搜索失败</string>
+    <string name="search_none">没有搜索到相关数据</string>
+    <string name="search_prompt">输入条件有误</string>
+    <string name="error_prompt">错误提示</string>
 
     <string name="app_name">智慧骑行</string>
     <string name="bluetooth_name">蓝牙设备名称:</string>
