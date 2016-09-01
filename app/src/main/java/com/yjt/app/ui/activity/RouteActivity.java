@@ -20,7 +20,6 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.services.core.LatLonPoint;
-import com.amap.api.services.geocoder.GeocodeAddress;
 import com.amap.api.services.geocoder.GeocodeQuery;
 import com.amap.api.services.geocoder.GeocodeResult;
 import com.amap.api.services.geocoder.GeocodeSearch;
@@ -113,7 +112,7 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
     protected void initialize(Bundle savedInstanceState) {
         mHandler = new RouteHandler(this);
 
-        if (IntentDataUtil.getInstance().hasExtraValue(this, Temp.POINT_TYPE.getContent())) {
+        if (IntentDataUtil.getInstance().hasIntentExtraValue(this, Temp.POINT_TYPE.getContent())) {
             mPointType = IntentDataUtil.getInstance().getIntData(this, Temp.POINT_TYPE.getContent());
             switch (mPointType) {
                 case Constant.PointType.START:
@@ -138,7 +137,7 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
         mOption.setInterval(Constant.Map.LOCATION_MINIMUM_TIME_INTERVAL);
         mClient.setLocationOption(mOption);
         mClient.startLocation();
-        mDialog = ViewUtil.getInstance().showProgressDialog(this, null, getString(R.string.location_prompt), null);
+        mDialog = ViewUtil.getInstance().showProgressDialog(this, null, getString(R.string.location_prompt), null, false);
 
         mSearch = new GeocodeSearch(this);
     }
@@ -197,7 +196,8 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
 
                 break;
             case R.id.tvEnter:
-                if (!TextUtils.isEmpty(etSearch.getText()) && TextUtils.equals(etSearch.getText(), getString(R.string.my_location))) {
+                if (!TextUtils.isEmpty(etSearch.getText())
+                        && TextUtils.equals(etSearch.getText(), getString(R.string.my_location))) {
                     if (mLocation != null) {
                         Intent intent = new Intent();
                         intent.putExtra(Temp.POINT_TYPE.getContent(), mPointType);
@@ -209,10 +209,12 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
                     } else {
                         SnackBarUtil.getInstance().showSnackBar(view, getString(R.string.search_failed), Snackbar.LENGTH_SHORT, Color.WHITE);
                     }
+                } else if (TextUtils.isEmpty(mCityCode)) {
+                    SnackBarUtil.getInstance().showSnackBar(view, getString(R.string.location_prompt2), Snackbar.LENGTH_SHORT, Color.WHITE);
                 } else if (!TextUtils.isEmpty(etSearch.getText())
                         && !TextUtils.equals(etSearch.getText(), getString(R.string.start_point))
-                        && !TextUtils.equals(etSearch.getText(), getString(R.string.end_point))
-                        && !TextUtils.isEmpty(mCityCode)) {
+                        && !TextUtils.equals(etSearch.getText(), getString(R.string.end_point))) {
+                    mDialog = ViewUtil.getInstance().showProgressDialog(this, null, getString(R.string.location_prompt), null, false);
                     mSearch.getFromLocationNameAsyn(new GeocodeQuery(etSearch.getText().toString(), mCityCode));
                 } else {
                     switch (mPointType) {
@@ -239,7 +241,7 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
                     setResult(Constant.Common.RESULT_CODE, intent);
                     onFinish("LOCATION_SUCCESS");
                 } else {
-                    SnackBarUtil.getInstance().showSnackBar(view, getString(R.string.location_failed), Snackbar.LENGTH_SHORT, Color.WHITE);
+                    SnackBarUtil.getInstance().showSnackBar(view, getString(R.string.location_prompt1), Snackbar.LENGTH_SHORT, Color.WHITE);
                 }
                 break;
             case R.id.tvCollection:
@@ -308,6 +310,7 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onGeocodeSearched(GeocodeResult geocodeResult, int resultCode) {
+        ViewUtil.getInstance().hideDialog(mDialog, this);
         if (resultCode == Constant.Map.GEOCODE_SEARCH_SUCCESS) {
             if (geocodeResult != null
                     && geocodeResult.getGeocodeAddressList() != null

@@ -142,10 +142,6 @@ public abstract class BaseFragment extends Fragment {
 
     protected abstract void endOperation();
 
-    protected boolean hasExtraValue(String extraKey) {
-        return getArguments() != null && getArguments().containsKey(extraKey);
-    }
-
     protected void startActivity(Context context, Class<?> cls) {
         startActivity(context, cls, null);
     }

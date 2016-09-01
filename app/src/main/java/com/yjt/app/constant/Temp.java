@@ -8,7 +8,13 @@ public enum Temp {
     PASS_POINT("pass_point"),
     END_POINT("end_point"),
     LOCATION_LONGITUDE("location_longitude"),
-    LOCATION_LATITUDE("location_latitude");
+    LOCATION_LATITUDE("location_latitude"),
+    START_LOCATION_LONGITUDE("start_location_longitude"),
+    START_LOCATION_LATITUDE("start_location_latitude"),
+    PASS_LOCATION_LONGITUDE("pass_location_longitude"),
+    PASS_LOCATION_LATITUDE("pass_location_latitude"),
+    END_LOCATION_LONGITUDE("end_location_longitude"),
+    END_LOCATION_LATITUDE("end_location_latitude");
 
     private String mContent;
 

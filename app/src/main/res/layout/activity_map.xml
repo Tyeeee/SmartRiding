@@ -7,11 +7,11 @@
     android:orientation="vertical"
     tools:context="com.yjt.app.ui.activity.MainActivity">
 
-    <com.yjt.app.ui.widget.SearchTextView
-        android:id="@+id/stvSearch"
+    <com.amap.api.maps.MapView
+        android:id="@+id/mvMap"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|center_vertical"/>
+        android:layout_height="match_parent"
+        android:layout_gravity="center"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabNavigation"

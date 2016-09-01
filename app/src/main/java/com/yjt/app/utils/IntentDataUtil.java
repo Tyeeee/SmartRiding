@@ -24,8 +24,12 @@ public class IntentDataUtil {
         }
     }
 
-    public boolean hasExtraValue(Activity activity, String extraKey) {
+    public boolean hasIntentExtraValue(Activity activity, String extraKey) {
         return activity.getIntent() != null && activity.getIntent().hasExtra(extraKey);
+    }
+
+    public boolean hasBundleExtraValue(Activity activity, String extraKey) {
+        return activity.getIntent().getExtras() != null && activity.getIntent().hasExtra(extraKey);
     }
 
     public String hasExtraObject(Activity activity, String extraKey) {
@@ -38,6 +42,13 @@ public class IntentDataUtil {
     public int getIntData(Activity activity, String key) {
         if (activity.getIntent() != null) {
             return activity.getIntent().getExtras().getInt(key);
+        }
+        return 0;
+    }
+
+    public double getDoubleData(Activity activity, String key) {
+        if (activity.getIntent() != null) {
+            return activity.getIntent().getExtras().getDouble(key);
         }
         return 0;
     }

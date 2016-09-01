@@ -348,13 +348,13 @@ public class ViewUtil {
     }
 
     public ProgressDialog showProgressDialog(Activity activity, String title,
-                                             String message, DialogInterface.OnCancelListener cancelListener) {
+                                             String message, DialogInterface.OnCancelListener cancelListener, boolean cancelable) {
         if (activity != null && !activity.isFinishing()) {
             lockScreenOrientation(activity);
             Dialog dialog = ProgressDialog.show(activity, title, message, true,
                                                 true, cancelListener);
             dialog.setCanceledOnTouchOutside(false);
-            // dialog.setCancelable(false);
+            dialog.setCancelable(cancelable);
             return (ProgressDialog) dialog;
         } else {
             return null;
