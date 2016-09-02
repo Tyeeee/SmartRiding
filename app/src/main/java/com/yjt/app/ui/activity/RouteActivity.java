@@ -41,51 +41,24 @@ import java.lang.ref.WeakReference;
 public class RouteActivity extends BaseActivity implements View.OnClickListener, TextWatcher, AMapLocationListener, GeocodeSearch.OnGeocodeSearchListener {
 
     private ImageView ivBack;
-    private EditText etSearch;
+    private EditText  etSearch;
     private ImageView ivDelete;
     private ImageView ivVoice;
-    private TextView tvEnter;
+    private TextView  tvEnter;
 
     private TextView tvLocation;
     private TextView tvCollection;
 
-    private AMapLocationClient mClient;
+    private AMapLocationClient       mClient;
     private AMapLocationClientOption mOption;
 
-    private int mPointType;
-    private AMapLocation mLocation;
+    private int           mPointType;
+    private AMapLocation  mLocation;
     private GeocodeSearch mSearch;
-    private String mCityCode;
+    private String        mCityCode;
 
-    private RouteHandler mHandler;
     private ProgressDialog mDialog;
 
-    protected static class RouteHandler extends Handler {
-
-        private WeakReference<RouteActivity> mActivitys;
-
-        public RouteHandler(RouteActivity activity) {
-            mActivitys = new WeakReference<>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            RouteActivity activity = mActivitys.get();
-            if (activity != null) {
-                switch (msg.what) {
-                    case Constant.Message.LOCATION_SUCCESS:
-
-                        break;
-                    case Constant.Message.LOCATION_FAILED:
-
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,8 +83,6 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        mHandler = new RouteHandler(this);
-
         if (IntentDataUtil.getInstance().hasIntentExtraValue(this, Temp.POINT_TYPE.getContent())) {
             mPointType = IntentDataUtil.getInstance().getIntData(this, Temp.POINT_TYPE.getContent());
             switch (mPointType) {
@@ -277,7 +248,6 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void onLocationChanged(AMapLocation location) {
         if (location != null) {
-//            mHandler.sendMessage(MessageUtil.getMessage(Constant.Message.LOCATION_SUCCESS, location));
             ViewUtil.getInstance().hideDialog(mDialog, this);
             this.mLocation = location;
             LogUtil.print("--->定位类型: " + location.getLocationType());
@@ -296,7 +266,6 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
             mClient.stopLocation();
             mCityCode = location.getCityCode();
         } else {
-//            mHandler.sendMessage(MessageUtil.getMessage(Constant.Message.LOCATION_FAILED, location));
             setResult(Constant.Common.RESULT_CODE);
             onFinish("LOCATION_FAILED");
         }
@@ -316,7 +285,7 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
                     && geocodeResult.getGeocodeAddressList() != null
                     && geocodeResult.getGeocodeAddressList().size() > 0) {
                 LatLonPoint coordinate = geocodeResult.getGeocodeAddressList().get(0).getLatLonPoint();
-                Intent intent = new Intent();
+                Intent      intent     = new Intent();
                 intent.putExtra(Temp.POINT_TYPE.getContent(), mPointType);
                 intent.putExtra(Temp.POINT_CONTENT.getContent(), etSearch.getText().toString());
                 intent.putExtra(Temp.LOCATION_LATITUDE.getContent(), coordinate.getLatitude());
