@@ -29,7 +29,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/dp_5"
-            android:text="asdfasdfasdf"
             android:textColor="@color/blue_2c6de0"
             android:textSize="@dimen/sp_18"/>
 
@@ -38,11 +37,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/dp_5"
-            android:text="asdfasdfasdf"
             android:textColor="@color/gray_808080"
             android:textSize="@dimen/sp_15"/>
 
     </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvRouteDetail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dp_15"
+        android:fadeScrollbars="@null"
+        android:scrollbars="none"/>
 
 
 </LinearLayout>

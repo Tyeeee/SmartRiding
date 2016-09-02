@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
+
+    <View
+        android:id="@+id/vline"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:layout_marginLeft="@dimen/dp_50"
+        android:layout_marginStart="@dimen/dp_50"
+        android:background="@color/gray_e0e0e0"/>
+
+    <RelativeLayout
+        android:id="@+id/rlRouteDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_44"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginStart="@dimen/dp_10">
+
+        <ImageView
+            android:id="@+id/ivDirection"
+            android:layout_width="@dimen/dp_22"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/icon_dir_start"/>
+
+        <ImageView
+            android:id="@+id/ivDirectionUp"
+            android:layout_width="@dimen/dp_2"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/ivDirection"
+            android:layout_centerHorizontal="true"
+            android:background="@color/gray_b6b6b6"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/ivDirectionDown"
+            android:layout_width="@dimen/dp_2"
+            android:layout_height="match_parent"
+            android:layout_below="@id/ivDirection"
+            android:layout_centerHorizontal="true"
+            android:background="@color/gray_b6b6b6"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/tvRouteDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/dp_50"
+        android:layout_marginStart="@dimen/dp_50"
+        android:text="@string/start_off"
+        android:textColor="@color/gray_3c3f41"
+        android:textSize="@dimen/sp_14"/>
+
+
+</RelativeLayout>

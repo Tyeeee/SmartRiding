@@ -9,9 +9,6 @@ import android.widget.EditText;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.LatLonPoint;
-import com.amap.api.services.route.BusPath;
-import com.amap.api.services.route.BusStep;
-import com.amap.api.services.route.RouteBusLineItem;
 import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Regex;
@@ -69,7 +66,7 @@ public class MapUtil {
     }
 
     public String makeHtmlSpace(int number) {
-        final String space = "&nbsp;";
+        final String  space  = "&nbsp;";
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < number; i++) {
             result.append(space);
@@ -85,9 +82,9 @@ public class MapUtil {
         }
 
         if (lenMeter > 1000) {
-            float dis = (float) lenMeter / 1000;
+            float         dis  = (float) lenMeter / 1000;
             DecimalFormat fnum = new DecimalFormat("##0.0");
-            String dstr = fnum.format(dis);
+            String        dstr = fnum.format(dis);
             return dstr + Constant.Kilometer;
         }
 
@@ -138,14 +135,14 @@ public class MapUtil {
      * long类型时间格式化
      */
     public String convertToTime(long time) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = new Date(time);
+        SimpleDateFormat df   = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date             date = new Date(time);
         return df.format(date);
     }
 
     public String getFriendlyTime(int second) {
         if (second > 3600) {
-            int hour = second / 3600;
+            int hour    = second / 3600;
             int miniate = (second % 3600) / 60;
             return hour + "小时" + miniate + "分钟";
         }
@@ -156,117 +153,61 @@ public class MapUtil {
         return second + "秒";
     }
 
-    //路径规划方向指示和图片对应
     public int getDriveActionID(String actionName) {
-        if (actionName == null || actionName.equals("")) {
-            return R.mipmap.dir3;
+        switch (actionName) {
+            case Constant.Map.MOVE_STATUS1:
+                return R.mipmap.dir1;
+            case Constant.Map.MOVE_STATUS2:
+                return R.mipmap.dir2;
+            case Constant.Map.MOVE_STATUS3:
+                return R.mipmap.dir3;
+            case Constant.Map.MOVE_STATUS4:
+                return R.mipmap.dir4;
+            case Constant.Map.MOVE_STATUS5:
+            case Constant.Map.MOVE_STATUS6:
+                return R.mipmap.dir5;
+            case Constant.Map.MOVE_STATUS7:
+            case Constant.Map.MOVE_STATUS8:
+                return R.mipmap.dir6;
+            case Constant.Map.MOVE_STATUS9:
+            case Constant.Map.MOVE_STATUS10:
+                return R.mipmap.dir7;
+            case Constant.Map.MOVE_STATUS11:
+                return R.mipmap.dir8;
+            default:
+                return R.mipmap.dir3;
         }
-        if ("左转".equals(actionName)) {
-            return R.mipmap.dir2;
-        }
-        if ("右转".equals(actionName)) {
-            return R.mipmap.dir1;
-        }
-        if ("向左前方行驶".equals(actionName) || "靠左".equals(actionName)) {
-            return R.mipmap.dir6;
-        }
-        if ("向右前方行驶".equals(actionName) || "靠右".equals(actionName)) {
-            return R.mipmap.dir5;
-        }
-        if ("向左后方行驶".equals(actionName) || "左转调头".equals(actionName)) {
-            return R.mipmap.dir7;
-        }
-        if ("向右后方行驶".equals(actionName)) {
-            return R.mipmap.dir8;
-        }
-        if ("直行".equals(actionName)) {
-            return R.mipmap.dir3;
-        }
-        if ("减速行驶".equals(actionName)) {
-            return R.mipmap.dir4;
-        }
-        return R.mipmap.dir3;
     }
 
     public int getWalkActionID(String actionName) {
-        if (actionName == null || actionName.equals("")) {
-            return R.mipmap.dir13;
+        switch (actionName) {
+            case Constant.Map.MOVE_STATUS1:
+                return R.mipmap.dir1;
+            case Constant.Map.MOVE_STATUS2:
+                return R.mipmap.dir2;
+            case Constant.Map.MOVE_STATUS3:
+                return R.mipmap.dir3;
+            case Constant.Map.MOVE_STATUS4:
+                return R.mipmap.dir4;
+            case Constant.Map.MOVE_STATUS5_1:
+            case Constant.Map.MOVE_STATUS6:
+                return R.mipmap.dir5;
+            case Constant.Map.MOVE_STATUS7_1:
+            case Constant.Map.MOVE_STATUS8:
+                return R.mipmap.dir6;
+            case Constant.Map.MOVE_STATUS9_1:
+                return R.mipmap.dir7;
+            case Constant.Map.MOVE_STATUS11_1:
+                return R.mipmap.dir8;
+            case Constant.Map.MOVE_STATUS12:
+                return R.mipmap.dir9;
+            case Constant.Map.MOVE_STATUS13:
+                return R.mipmap.dir10;
+            case Constant.Map.MOVE_STATUS14:
+                return R.mipmap.dir11;
+            default:
+                return R.mipmap.dir3;
         }
-        if ("左转".equals(actionName)) {
-            return R.mipmap.dir2;
-        }
-        if ("右转".equals(actionName)) {
-            return R.mipmap.dir1;
-        }
-        if ("向左前方".equals(actionName) || "靠左".equals(actionName)) {
-            return R.mipmap.dir6;
-        }
-        if ("向右前方".equals(actionName) || "靠右".equals(actionName)) {
-            return R.mipmap.dir5;
-        }
-        if ("向左后方".equals(actionName)) {
-            return R.mipmap.dir7;
-        }
-        if ("向右后方".equals(actionName)) {
-            return R.mipmap.dir8;
-        }
-        if ("直行".equals(actionName)) {
-            return R.mipmap.dir3;
-        }
-        if ("通过人行横道".equals(actionName)) {
-            return R.mipmap.dir9;
-        }
-        if ("通过过街天桥".equals(actionName)) {
-            return R.mipmap.dir11;
-        }
-        if ("通过地下通道".equals(actionName)) {
-            return R.mipmap.dir10;
-        }
-
-        return R.mipmap.dir13;
-    }
-
-    public String getBusPathTitle(BusPath busPath) {
-        if (busPath == null) {
-            return String.valueOf("");
-        }
-        List<BusStep> busSetps = busPath.getSteps();
-        if (busSetps == null) {
-            return String.valueOf("");
-        }
-        StringBuffer sb = new StringBuffer();
-        for (BusStep busStep : busSetps) {
-            if (busStep.getBusLines().size() > 0) {
-                RouteBusLineItem busline = busStep.getBusLines().get(0);
-                if (busline == null) {
-                    continue;
-                }
-                String buslineName = getSimpleBusLineName(busline.getBusLineName());
-                sb.append(buslineName);
-                sb.append(" > ");
-            }
-        }
-        return sb.substring(0, sb.length() - 3);
-    }
-
-    public String getBusPathDes(BusPath busPath) {
-        if (busPath == null) {
-            return String.valueOf("");
-        }
-        long second = busPath.getDuration();
-        String time = getFriendlyTime((int) second);
-        float subDistance = busPath.getDistance();
-        String subDis = getFriendlyLength((int) subDistance);
-        float walkDistance = busPath.getWalkDistance();
-        String walkDis = getFriendlyLength((int) walkDistance);
-        return String.valueOf(time + " | " + subDis + " | 步行" + walkDis);
-    }
-
-    public static String getSimpleBusLineName(String busLineName) {
-        if (busLineName == null) {
-            return String.valueOf("");
-        }
-        return busLineName.replaceAll("\\(.*?\\)", "");
     }
 
     public void showMapException(Activity activity, final int resultCode) {

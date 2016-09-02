@@ -114,6 +114,24 @@ public class Constant {
         public static final String ROAD_CRAWL = "缓行";
         public static final String ROAD_JAM = "拥堵";
         public static final String ROAD_SERIOUS_JAM = "严重拥堵";
+        public static final String MOVE_STATUS1 = "右转";
+        public static final String MOVE_STATUS2 = "左转";
+        public static final String MOVE_STATUS3 = "直行";
+        public static final String MOVE_STATUS4 = "减速行驶";
+        public static final String MOVE_STATUS5 = "向右前方行驶";
+        public static final String MOVE_STATUS5_1 = "向右前方";
+        public static final String MOVE_STATUS6 = "靠右";
+        public static final String MOVE_STATUS7 = "向左前方行驶";
+        public static final String MOVE_STATUS7_1 = "向左前方";
+        public static final String MOVE_STATUS8 = "靠左";
+        public static final String MOVE_STATUS9 = "向左后方行驶";
+        public static final String MOVE_STATUS9_1 = "向左后方";
+        public static final String MOVE_STATUS10 = "左转调头";
+        public static final String MOVE_STATUS11 = "向右后方行驶";
+        public static final String MOVE_STATUS11_1 = "向右后方";
+        public static final String MOVE_STATUS12 = "通过人行横道";
+        public static final String MOVE_STATUS13 = "通过地下通道";
+        public static final String MOVE_STATUS14 = "通过过街天桥";
     }
 
 }
