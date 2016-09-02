@@ -2,6 +2,7 @@ package com.yjt.app.utils;
 
 
 import android.app.Activity;
+import android.os.Parcelable;
 
 public class IntentDataUtil {
 
@@ -32,13 +33,6 @@ public class IntentDataUtil {
         return activity.getIntent().getExtras() != null && activity.getIntent().hasExtra(extraKey);
     }
 
-    public String hasExtraObject(Activity activity, String extraKey) {
-        if (activity.getIntent() != null) {
-            return activity.getIntent().getExtras().getString(extraKey);
-        }
-        return null;
-    }
-
     public int getIntData(Activity activity, String key) {
         if (activity.getIntent() != null) {
             return activity.getIntent().getExtras().getInt(key);
@@ -50,6 +44,13 @@ public class IntentDataUtil {
         if (activity.getIntent() != null) {
             return activity.getIntent().getExtras().getDouble(key);
         }
-        return 0;
+        return 0.0;
+    }
+
+    public Parcelable getParcelableData(Activity activity, String key) {
+        if (activity.getIntent() != null) {
+            return activity.getIntent().getExtras().getParcelable(key);
+        }
+        return null;
     }
 }

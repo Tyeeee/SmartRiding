@@ -12,28 +12,13 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.overlay.WalkRouteOverlay;
-import com.amap.api.navi.AMapNaviListener;
-import com.amap.api.navi.AMapNaviViewListener;
-import com.amap.api.navi.model.AMapLaneInfo;
-import com.amap.api.navi.model.AMapNaviCross;
-import com.amap.api.navi.model.AMapNaviInfo;
-import com.amap.api.navi.model.AMapNaviLocation;
-import com.amap.api.navi.model.AMapNaviTrafficFacilityInfo;
-import com.amap.api.navi.model.AimLessModeCongestionInfo;
-import com.amap.api.navi.model.AimLessModeStat;
-import com.amap.api.navi.model.NaviInfo;
 import com.amap.api.services.core.LatLonPoint;
-import com.amap.api.services.geocoder.GeocodeResult;
-import com.amap.api.services.geocoder.GeocodeSearch;
-import com.amap.api.services.geocoder.RegeocodeResult;
 import com.amap.api.services.route.BusRouteResult;
 import com.amap.api.services.route.DrivePath;
 import com.amap.api.services.route.DriveRouteResult;
 import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
-import com.autonavi.tbt.NaviStaticInfo;
-import com.autonavi.tbt.TrafficFacilityInfo;
 import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Temp;
@@ -51,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MapActivity extends BaseActivity implements View.OnClickListener, AMapNaviListener, AMapNaviViewListener, GeocodeSearch.OnGeocodeSearchListener, AMap.OnMapClickListener, AMap.OnMarkerClickListener, AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter, RouteSearch.OnRouteSearchListener, AMap.OnMapLoadedListener {
+public class MapActivity extends BaseActivity implements View.OnClickListener, AMap.OnMapClickListener, AMap.OnMarkerClickListener, AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter, RouteSearch.OnRouteSearchListener, AMap.OnMapLoadedListener {
 
     private MapView mvMap;
     private FloatingActionMenu fabMenu;
@@ -64,6 +49,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
 
     private AMap mAmap;
     private RouteSearch mSearch;
+    private DriveRouteResult mResult;
 
     private ProgressDialog mDialog;
 
@@ -200,210 +186,18 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fabDetail:
-                SnackBarUtil.getInstance().showSnackBar(view, "fabDetail", Snackbar.LENGTH_SHORT);
+                Bundle bundle1 = new Bundle();
+                bundle1.putParcelable(Temp.ROUTE_INFO.getContent(), mResult);
+                startActivity(RouteDetailActivity.class, bundle1);
                 break;
             case R.id.fabNavigation:
-                SnackBarUtil.getInstance().showSnackBar(view, "fabNavigation", Snackbar.LENGTH_SHORT);
+                Bundle bundle2 = new Bundle();
+                bundle2.putParcelable(Temp.ROUTE_INFO.getContent(), mResult);
+                startActivity(NavigationActivity.class, bundle2);
                 break;
         }
     }
 
-    @Override
-    public void onInitNaviFailure() {
-        LogUtil.print("---->onInitNaviFailure");
-    }
-
-    @Override
-    public void onInitNaviSuccess() {
-        LogUtil.print("---->onInitNaviSuccess");
-    }
-
-    @Override
-    public void onStartNavi(int i) {
-        LogUtil.print("---->onStartNavi");
-    }
-
-    @Override
-    public void onTrafficStatusUpdate() {
-        LogUtil.print("---->onTrafficStatusUpdate");
-    }
-
-    @Override
-    public void onLocationChange(AMapNaviLocation aMapNaviLocation) {
-        LogUtil.print("---->onLocationChange");
-    }
-
-    @Override
-    public void onGetNavigationText(int i, String s) {
-        LogUtil.print("---->onGetNavigationText");
-    }
-
-    @Override
-    public void onEndEmulatorNavi() {
-        LogUtil.print("---->onEndEmulatorNavi");
-    }
-
-    @Override
-    public void onArriveDestination() {
-        LogUtil.print("---->onArriveDestination");
-    }
-
-    @Override
-    public void onArriveDestination(NaviStaticInfo naviStaticInfo) {
-        LogUtil.print("---->onArriveDestination");
-    }
-
-    @Override
-    public void onCalculateRouteSuccess() {
-        LogUtil.print("---->onCalculateRouteSuccess");
-    }
-
-    @Override
-    public void onCalculateRouteFailure(int i) {
-        LogUtil.print("---->onCalculateRouteFailure");
-    }
-
-    @Override
-    public void onReCalculateRouteForYaw() {
-        LogUtil.print("---->onReCalculateRouteForYaw");
-    }
-
-    @Override
-    public void onReCalculateRouteForTrafficJam() {
-        LogUtil.print("---->onReCalculateRouteForTrafficJam");
-    }
-
-    @Override
-    public void onArrivedWayPoint(int i) {
-        LogUtil.print("---->onArrivedWayPoint");
-    }
-
-    @Override
-    public void onGpsOpenStatus(boolean b) {
-        LogUtil.print("---->onGpsOpenStatus");
-    }
-
-    @Override
-    public void onNaviInfoUpdated(AMapNaviInfo aMapNaviInfo) {
-        LogUtil.print("---->onNaviInfoUpdated");
-    }
-
-    @Override
-    public void onNaviInfoUpdate(NaviInfo naviInfo) {
-        LogUtil.print("---->onNaviInfoUpdate");
-    }
-
-    @Override
-    public void OnUpdateTrafficFacility(AMapNaviTrafficFacilityInfo aMapNaviTrafficFacilityInfo) {
-        LogUtil.print("---->OnUpdateTrafficFacility");
-    }
-
-    @Override
-    public void OnUpdateTrafficFacility(TrafficFacilityInfo trafficFacilityInfo) {
-        LogUtil.print("---->OnUpdateTrafficFacility");
-    }
-
-    @Override
-    public void showCross(AMapNaviCross aMapNaviCross) {
-        LogUtil.print("---->showCross");
-    }
-
-    @Override
-    public void hideCross() {
-        LogUtil.print("---->hideCross");
-    }
-
-    @Override
-    public void showLaneInfo(AMapLaneInfo[] aMapLaneInfos, byte[] bytes, byte[] bytes1) {
-        LogUtil.print("---->showLaneInfo");
-    }
-
-    @Override
-    public void hideLaneInfo() {
-        LogUtil.print("---->hideLaneInfo");
-    }
-
-    @Override
-    public void onCalculateMultipleRoutesSuccess(int[] routeIds) {
-        LogUtil.print("---->onCalculateMultipleRoutesSuccess");
-    }
-
-    @Override
-    public void notifyParallelRoad(int i) {
-        LogUtil.print("---->notifyParallelRoad");
-    }
-
-    @Override
-    public void OnUpdateTrafficFacility(AMapNaviTrafficFacilityInfo[] aMapNaviTrafficFacilityInfos) {
-        LogUtil.print("---->OnUpdateTrafficFacility");
-    }
-
-    @Override
-    public void updateAimlessModeStatistics(AimLessModeStat aimLessModeStat) {
-        LogUtil.print("---->updateAimlessModeStatistics");
-    }
-
-    @Override
-    public void updateAimlessModeCongestionInfo(AimLessModeCongestionInfo aimLessModeCongestionInfo) {
-        LogUtil.print("---->updateAimlessModeCongestionInfo");
-    }
-
-    @Override
-    public void onNaviSetting() {
-        LogUtil.print("---->onNaviSetting");
-    }
-
-    @Override
-    public void onNaviCancel() {
-        LogUtil.print("---->onNaviCancel");
-    }
-
-    @Override
-    public boolean onNaviBackClick() {
-        LogUtil.print("---->onNaviBackClick");
-        return false;
-    }
-
-    @Override
-    public void onNaviMapMode(int i) {
-        LogUtil.print("---->onNaviMapMode");
-    }
-
-    @Override
-    public void onNaviTurnClick() {
-        LogUtil.print("---->onNaviTurnClick");
-    }
-
-    @Override
-    public void onNextRoadClick() {
-        LogUtil.print("---->onNextRoadClick");
-    }
-
-    @Override
-    public void onScanViewButtonClick() {
-        LogUtil.print("---->onScanViewButtonClick");
-    }
-
-    @Override
-    public void onLockMap(boolean b) {
-        LogUtil.print("---->onLockMap");
-    }
-
-    @Override
-    public void onNaviViewLoaded() {
-        LogUtil.print("---->onNaviViewLoaded");
-    }
-
-
-    @Override
-    public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
-        LogUtil.print("---->onRegeocodeSearched");
-    }
-
-    @Override
-    public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
-        LogUtil.print("---->onGeocodeSearched");
-    }
 
     @Override
     public void onMapLoaded() {
@@ -447,6 +241,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
     @Override
     public void onDriveRouteSearched(DriveRouteResult driveRouteResult, int resultCode) {
         LogUtil.print("---->onDriveRouteSearched");
+        this.mResult = driveRouteResult;
         ViewUtil.getInstance().hideDialog(mDialog, this);
         mAmap.clear();
         if (resultCode == Constant.Map.GEOCODE_SEARCH_SUCCESS) {

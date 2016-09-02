@@ -14,7 +14,8 @@ public enum Temp {
     PASS_LOCATION_LONGITUDE("pass_location_longitude"),
     PASS_LOCATION_LATITUDE("pass_location_latitude"),
     END_LOCATION_LONGITUDE("end_location_longitude"),
-    END_LOCATION_LATITUDE("end_location_latitude");
+    END_LOCATION_LATITUDE("end_location_latitude"),
+    ROUTE_INFO("route_info");
 
     private String mContent;
 

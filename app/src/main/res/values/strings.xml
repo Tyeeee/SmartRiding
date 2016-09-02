@@ -30,10 +30,10 @@
     <string name="location_prompt3">经纬度获取失败</string>
     <string name="search_success">搜索询功</string>
     <string name="search_failed">搜索失败</string>
-    <string name="search_none">没有搜索到相关数据</string>
     <string name="search_prompt">输入条件有误</string>
     <string name="route_prompt1">起点/终点异常</string>
     <string name="route_prompt2">没有搜索到相关数据</string>
+    <string name="route_prompt3">路线数据异常</string>
     <string name="error_prompt">错误提示</string>
 
     <string name="app_name">智慧骑行</string>

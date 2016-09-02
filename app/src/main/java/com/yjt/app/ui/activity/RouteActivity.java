@@ -324,7 +324,7 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
                 setResult(Constant.Common.RESULT_CODE, intent);
                 onFinish("tvEnter");
             } else {
-                SnackBarUtil.getInstance().showSnackBar(tvEnter, getString(R.string.search_none), Snackbar.LENGTH_SHORT, Color.WHITE);
+                SnackBarUtil.getInstance().showSnackBar(tvEnter, getString(R.string.route_prompt2), Snackbar.LENGTH_SHORT, Color.WHITE);
                 setResult(Constant.Common.RESULT_CODE);
                 onFinish("LOCATION_FAILED");
             }
