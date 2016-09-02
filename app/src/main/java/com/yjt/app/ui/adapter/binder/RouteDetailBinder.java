@@ -5,15 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.amap.api.services.route.DriveStep;
 import com.yjt.app.R;
-import com.yjt.app.constant.Constant;
-import com.yjt.app.model.Menu;
 import com.yjt.app.model.RouteDetail;
 import com.yjt.app.ui.adapter.holder.RouteDetailHolder;
 import com.yjt.app.ui.base.BaseViewBinder;
-import com.yjt.app.utils.DensityUtil;
-import com.yjt.app.utils.MapUtil;
 import com.yjt.app.utils.ViewUtil;
 
 public class RouteDetailBinder extends BaseViewBinder {
