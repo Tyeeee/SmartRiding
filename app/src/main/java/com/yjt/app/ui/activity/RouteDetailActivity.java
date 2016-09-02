@@ -42,7 +42,7 @@ public class RouteDetailActivity extends BaseActivity {
         if (IntentDataUtil.getInstance().hasIntentExtraValue(this, Temp.ROUTE_INFO.getContent())) {
             mResult = (DriveRouteResult) IntentDataUtil.getInstance().getParcelableData(this, Temp.ROUTE_INFO.getContent());
             DrivePath path = mResult.getPaths().get(0);
-            tvDistance.setText(MapUtil.getInstance().getFriendlyTime((int) path.getDuration()) + Regex.LEFT_PARENTHESIS.getRegext() + MapUtil.getInstance().getFriendlyTime((int) path.getDistance()) + Regex.RIGHT_PARENTHESIS.getRegext());
+            tvDistance.setText(MapUtil.getInstance().getFriendlyTime((int) path.getDuration()) + Regex.LEFT_PARENTHESIS.getRegext() + MapUtil.getInstance().getFriendlyLength((int) path.getDistance()) + Regex.RIGHT_PARENTHESIS.getRegext());
             tvCost.setText("乘出租车约:" + mResult.getTaxiCost() + "元");
         } else {
             ToastUtil.getInstance().showToast(this, getString(R.string.route_prompt3), Toast.LENGTH_SHORT);

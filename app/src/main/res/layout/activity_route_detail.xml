@@ -31,7 +31,7 @@
             android:padding="@dimen/dp_5"
             android:text="asdfasdfasdf"
             android:textColor="@color/blue_2c6de0"
-            android:textSize="@dimen/sp_15"/>
+            android:textSize="@dimen/sp_18"/>
 
         <TextView
             android:id="@+id/tvCost"
@@ -40,7 +40,7 @@
             android:padding="@dimen/dp_5"
             android:text="asdfasdfasdf"
             android:textColor="@color/gray_808080"
-            android:textSize="@dimen/sp_10"/>
+            android:textSize="@dimen/sp_15"/>
 
     </LinearLayout>
 
