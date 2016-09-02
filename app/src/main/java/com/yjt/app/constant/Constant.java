@@ -110,6 +110,10 @@ public class Constant {
         public static final long LOCATION_MINIMUM_TIME_INTERVAL = 1000;
         public static final long LOCATION_TIME_OUT = 10000;
         public static final long GEOCODE_SEARCH_SUCCESS = 1000;
+        public static final String ROAD_UNIMPEDED = "畅通";
+        public static final String ROAD_CRAWL = "缓行";
+        public static final String ROAD_JAM = "拥堵";
+        public static final String ROAD_SERIOUS_JAM = "严重拥堵";
     }
 
 }

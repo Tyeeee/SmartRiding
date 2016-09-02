@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical"
@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"/>
 
-    <android.support.design.widget.FloatingActionButton
+    <!--<android.support.design.widget.FloatingActionButton
         android:id="@+id/fabNavigation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,6 +22,18 @@
         android:backgroundTint="@color/purple_3F51B5"
         android:src="@mipmap/dir1"
         app:borderWidth="@dimen/dp_0"
-        tools:targetApi="lollipop"/>
+        tools:targetApi="lollipop"/>-->
+
+    <com.yjt.app.ui.widget.fab.FloatingActionMenu
+        android:id="@+id/fabMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="@dimen/dp_15"
+        fab:fab_addButtonColorNormal="@android:color/white"
+        fab:fab_addButtonColorPressed="@color/gray_979797"
+        fab:fab_addButtonPlusIconColor="@color/gray_808080"
+        fab:fab_addButtonSize="mini"
+        fab:fab_expandDirection="left"/>
 
 </FrameLayout>

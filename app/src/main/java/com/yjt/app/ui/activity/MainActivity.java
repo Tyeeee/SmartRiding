@@ -271,8 +271,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         if (BluetoothUtil.getInstance().isBluetoothSupported() && BluetoothUtil.getInstance().isBluetoothEnabled()) {
             BluetoothUtil.getInstance().turnOffBluetooth();
             unregisterReceiver(mReceiver);
-        } else {
-            ToastUtil.getInstance().showToast(this, R.string.bluetooth_status5, Toast.LENGTH_SHORT);
         }
     }
 

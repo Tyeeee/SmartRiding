@@ -2,7 +2,6 @@ package com.yjt.app.ui.activity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
@@ -39,7 +38,9 @@ import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Temp;
 import com.yjt.app.ui.base.BaseActivity;
-import com.yjt.app.ui.widget.DriveRouteColorfulOverLay;
+import com.yjt.app.ui.widget.CustomOverlay;
+import com.yjt.app.ui.widget.fab.FloatingActionButton;
+import com.yjt.app.ui.widget.fab.FloatingActionMenu;
 import com.yjt.app.utils.IntentDataUtil;
 import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.MapUtil;
@@ -53,6 +54,8 @@ import java.util.List;
 public class MapActivity extends BaseActivity implements View.OnClickListener, AMapNaviListener, AMapNaviViewListener, GeocodeSearch.OnGeocodeSearchListener, AMap.OnMapClickListener, AMap.OnMarkerClickListener, AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter, RouteSearch.OnRouteSearchListener, AMap.OnMapLoadedListener {
 
     private MapView mvMap;
+    private FloatingActionMenu fabMenu;
+    private FloatingActionButton fabDetail;
     private FloatingActionButton fabNavigation;
 
     private LatLonPoint mStartPoint;
@@ -99,7 +102,19 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
     @Override
     protected void findViewById() {
         mvMap = ViewUtil.getInstance().findView(this, R.id.mvMap);
-        fabNavigation = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.fabNavigation, this);
+        fabMenu = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.fabMenu, this);
+        fabDetail = new FloatingActionButton(this);
+        fabDetail.setId(R.id.fabDetail);
+        fabDetail.setSize(FloatingActionButton.SIZE_MINI);
+        fabDetail.setColorNormalResId(android.R.color.white);
+        fabDetail.setColorPressedResId(R.color.gray_979797);
+        fabDetail.setIcon(R.mipmap.icon_start);
+        fabNavigation = new FloatingActionButton(this);
+        fabNavigation.setId(R.id.fabNavigation);
+        fabNavigation.setSize(FloatingActionButton.SIZE_MINI);
+        fabNavigation.setColorNormalResId(android.R.color.white);
+        fabNavigation.setColorPressedResId(R.color.gray_979797);
+        fabNavigation.setIcon(R.mipmap.icon_end);
     }
 
     @Override
@@ -107,18 +122,18 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
         mvMap.onCreate(savedInstanceState);
         mDialog = ViewUtil.getInstance().showProgressDialog(this, null, getString(R.string.location_prompt), null, false);
         if (IntentDataUtil.getInstance().hasBundleExtraValue(this, Temp.START_LOCATION_LONGITUDE.getContent()) && IntentDataUtil.getInstance().hasBundleExtraValue(this, Temp.START_LOCATION_LATITUDE.getContent())) {
-            LogUtil.print("--->显示 StartLongitude:" + IntentDataUtil.getInstance().getDoubleData(this, Temp.START_LOCATION_LONGITUDE.getContent()));
-            LogUtil.print("--->显示 StartLatitude:" + IntentDataUtil.getInstance().getDoubleData(this, Temp.START_LOCATION_LATITUDE.getContent()));
+            LogUtil.print("---->显示 StartLongitude:" + IntentDataUtil.getInstance().getDoubleData(this, Temp.START_LOCATION_LONGITUDE.getContent()));
+            LogUtil.print("---->显示 StartLatitude:" + IntentDataUtil.getInstance().getDoubleData(this, Temp.START_LOCATION_LATITUDE.getContent()));
             mStartPoint = new LatLonPoint(IntentDataUtil.getInstance().getDoubleData(this, Temp.START_LOCATION_LATITUDE.getContent()), IntentDataUtil.getInstance().getDoubleData(this, Temp.START_LOCATION_LONGITUDE.getContent()));
         }
         if (IntentDataUtil.getInstance().hasBundleExtraValue(this, Temp.PASS_LOCATION_LONGITUDE.getContent()) && IntentDataUtil.getInstance().hasBundleExtraValue(this, Temp.PASS_LOCATION_LATITUDE.getContent())) {
-            LogUtil.print("--->显示 PassLongitude:" + IntentDataUtil.getInstance().getDoubleData(this, Temp.PASS_LOCATION_LONGITUDE.getContent()));
-            LogUtil.print("--->显示 PassLatitude:" + IntentDataUtil.getInstance().getDoubleData(this, Temp.PASS_LOCATION_LATITUDE.getContent()));
+            LogUtil.print("---->显示 PassLongitude:" + IntentDataUtil.getInstance().getDoubleData(this, Temp.PASS_LOCATION_LONGITUDE.getContent()));
+            LogUtil.print("---->显示 PassLatitude:" + IntentDataUtil.getInstance().getDoubleData(this, Temp.PASS_LOCATION_LATITUDE.getContent()));
             mPassPoint = new LatLonPoint(IntentDataUtil.getInstance().getDoubleData(this, Temp.PASS_LOCATION_LATITUDE.getContent()), IntentDataUtil.getInstance().getDoubleData(this, Temp.PASS_LOCATION_LONGITUDE.getContent()));
         }
         if (IntentDataUtil.getInstance().hasBundleExtraValue(this, Temp.END_LOCATION_LONGITUDE.getContent()) && IntentDataUtil.getInstance().hasBundleExtraValue(this, Temp.END_LOCATION_LATITUDE.getContent())) {
-            LogUtil.print("--->显示 EndLongitude:" + IntentDataUtil.getInstance().getDoubleData(this, Temp.END_LOCATION_LONGITUDE.getContent()));
-            LogUtil.print("--->显示 EndLatitude:" + IntentDataUtil.getInstance().getDoubleData(this, Temp.END_LOCATION_LATITUDE.getContent()));
+            LogUtil.print("---->显示 EndLongitude:" + IntentDataUtil.getInstance().getDoubleData(this, Temp.END_LOCATION_LONGITUDE.getContent()));
+            LogUtil.print("---->显示 EndLatitude:" + IntentDataUtil.getInstance().getDoubleData(this, Temp.END_LOCATION_LATITUDE.getContent()));
             mEndPoint = new LatLonPoint(IntentDataUtil.getInstance().getDoubleData(this, Temp.END_LOCATION_LATITUDE.getContent()), IntentDataUtil.getInstance().getDoubleData(this, Temp.END_LOCATION_LONGITUDE.getContent()));
         }
 
@@ -146,6 +161,8 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
 
     @Override
     protected void setListener() {
+        fabDetail.setOnClickListener(this);
+        fabNavigation.setOnClickListener(this);
         mAmap.setOnMapLoadedListener(this);
         mAmap.setOnMapClickListener(this);
         mAmap.setOnMarkerClickListener(this);
@@ -182,6 +199,9 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.fabDetail:
+                SnackBarUtil.getInstance().showSnackBar(view, "fabDetail", Snackbar.LENGTH_SHORT);
+                break;
             case R.id.fabNavigation:
                 SnackBarUtil.getInstance().showSnackBar(view, "fabNavigation", Snackbar.LENGTH_SHORT);
                 break;
@@ -190,252 +210,255 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
 
     @Override
     public void onInitNaviFailure() {
-        LogUtil.print("------onInitNaviFailure");
+        LogUtil.print("---->onInitNaviFailure");
     }
 
     @Override
     public void onInitNaviSuccess() {
-        LogUtil.print("------onInitNaviSuccess");
+        LogUtil.print("---->onInitNaviSuccess");
     }
 
     @Override
     public void onStartNavi(int i) {
-        LogUtil.print("------onStartNavi");
+        LogUtil.print("---->onStartNavi");
     }
 
     @Override
     public void onTrafficStatusUpdate() {
-        LogUtil.print("------onTrafficStatusUpdate");
+        LogUtil.print("---->onTrafficStatusUpdate");
     }
 
     @Override
     public void onLocationChange(AMapNaviLocation aMapNaviLocation) {
-        LogUtil.print("------onLocationChange");
+        LogUtil.print("---->onLocationChange");
     }
 
     @Override
     public void onGetNavigationText(int i, String s) {
-        LogUtil.print("------onGetNavigationText");
+        LogUtil.print("---->onGetNavigationText");
     }
 
     @Override
     public void onEndEmulatorNavi() {
-        LogUtil.print("------onEndEmulatorNavi");
+        LogUtil.print("---->onEndEmulatorNavi");
     }
 
     @Override
     public void onArriveDestination() {
-        LogUtil.print("------onArriveDestination");
+        LogUtil.print("---->onArriveDestination");
     }
 
     @Override
     public void onArriveDestination(NaviStaticInfo naviStaticInfo) {
-        LogUtil.print("------onArriveDestination");
+        LogUtil.print("---->onArriveDestination");
     }
 
     @Override
     public void onCalculateRouteSuccess() {
-        LogUtil.print("------onCalculateRouteSuccess");
+        LogUtil.print("---->onCalculateRouteSuccess");
     }
 
     @Override
     public void onCalculateRouteFailure(int i) {
-        LogUtil.print("------onCalculateRouteFailure");
+        LogUtil.print("---->onCalculateRouteFailure");
     }
 
     @Override
     public void onReCalculateRouteForYaw() {
-        LogUtil.print("------onReCalculateRouteForYaw");
+        LogUtil.print("---->onReCalculateRouteForYaw");
     }
 
     @Override
     public void onReCalculateRouteForTrafficJam() {
-        LogUtil.print("------onReCalculateRouteForTrafficJam");
+        LogUtil.print("---->onReCalculateRouteForTrafficJam");
     }
 
     @Override
     public void onArrivedWayPoint(int i) {
-        LogUtil.print("------onArrivedWayPoint");
+        LogUtil.print("---->onArrivedWayPoint");
     }
 
     @Override
     public void onGpsOpenStatus(boolean b) {
-        LogUtil.print("------onGpsOpenStatus");
+        LogUtil.print("---->onGpsOpenStatus");
     }
 
     @Override
     public void onNaviInfoUpdated(AMapNaviInfo aMapNaviInfo) {
-        LogUtil.print("------onNaviInfoUpdated");
+        LogUtil.print("---->onNaviInfoUpdated");
     }
 
     @Override
     public void onNaviInfoUpdate(NaviInfo naviInfo) {
-        LogUtil.print("------onNaviInfoUpdate");
+        LogUtil.print("---->onNaviInfoUpdate");
     }
 
     @Override
     public void OnUpdateTrafficFacility(AMapNaviTrafficFacilityInfo aMapNaviTrafficFacilityInfo) {
-        LogUtil.print("------OnUpdateTrafficFacility");
+        LogUtil.print("---->OnUpdateTrafficFacility");
     }
 
     @Override
     public void OnUpdateTrafficFacility(TrafficFacilityInfo trafficFacilityInfo) {
-        LogUtil.print("------OnUpdateTrafficFacility");
+        LogUtil.print("---->OnUpdateTrafficFacility");
     }
 
     @Override
     public void showCross(AMapNaviCross aMapNaviCross) {
-        LogUtil.print("------showCross");
+        LogUtil.print("---->showCross");
     }
 
     @Override
     public void hideCross() {
-        LogUtil.print("------hideCross");
+        LogUtil.print("---->hideCross");
     }
 
     @Override
     public void showLaneInfo(AMapLaneInfo[] aMapLaneInfos, byte[] bytes, byte[] bytes1) {
-        LogUtil.print("------showLaneInfo");
+        LogUtil.print("---->showLaneInfo");
     }
 
     @Override
     public void hideLaneInfo() {
-        LogUtil.print("------hideLaneInfo");
+        LogUtil.print("---->hideLaneInfo");
     }
 
     @Override
     public void onCalculateMultipleRoutesSuccess(int[] routeIds) {
-        LogUtil.print("------onCalculateMultipleRoutesSuccess");
+        LogUtil.print("---->onCalculateMultipleRoutesSuccess");
     }
 
     @Override
     public void notifyParallelRoad(int i) {
-        LogUtil.print("------notifyParallelRoad");
+        LogUtil.print("---->notifyParallelRoad");
     }
 
     @Override
     public void OnUpdateTrafficFacility(AMapNaviTrafficFacilityInfo[] aMapNaviTrafficFacilityInfos) {
-        LogUtil.print("------OnUpdateTrafficFacility");
+        LogUtil.print("---->OnUpdateTrafficFacility");
     }
 
     @Override
     public void updateAimlessModeStatistics(AimLessModeStat aimLessModeStat) {
-        LogUtil.print("------updateAimlessModeStatistics");
+        LogUtil.print("---->updateAimlessModeStatistics");
     }
 
     @Override
     public void updateAimlessModeCongestionInfo(AimLessModeCongestionInfo aimLessModeCongestionInfo) {
-        LogUtil.print("------updateAimlessModeCongestionInfo");
+        LogUtil.print("---->updateAimlessModeCongestionInfo");
     }
 
     @Override
     public void onNaviSetting() {
-        LogUtil.print("------onNaviSetting");
+        LogUtil.print("---->onNaviSetting");
     }
 
     @Override
     public void onNaviCancel() {
-        LogUtil.print("------onNaviCancel");
+        LogUtil.print("---->onNaviCancel");
     }
 
     @Override
     public boolean onNaviBackClick() {
-        LogUtil.print("------onNaviBackClick");
+        LogUtil.print("---->onNaviBackClick");
         return false;
     }
 
     @Override
     public void onNaviMapMode(int i) {
-        LogUtil.print("------onNaviMapMode");
+        LogUtil.print("---->onNaviMapMode");
     }
 
     @Override
     public void onNaviTurnClick() {
-        LogUtil.print("------onNaviTurnClick");
+        LogUtil.print("---->onNaviTurnClick");
     }
 
     @Override
     public void onNextRoadClick() {
-        LogUtil.print("------onNextRoadClick");
+        LogUtil.print("---->onNextRoadClick");
     }
 
     @Override
     public void onScanViewButtonClick() {
-        LogUtil.print("------onScanViewButtonClick");
+        LogUtil.print("---->onScanViewButtonClick");
     }
 
     @Override
     public void onLockMap(boolean b) {
-        LogUtil.print("------onLockMap");
+        LogUtil.print("---->onLockMap");
     }
 
     @Override
     public void onNaviViewLoaded() {
-        LogUtil.print("------onNaviViewLoaded");
+        LogUtil.print("---->onNaviViewLoaded");
     }
 
 
     @Override
     public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
-        LogUtil.print("------onRegeocodeSearched");
+        LogUtil.print("---->onRegeocodeSearched");
     }
 
     @Override
     public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
-        LogUtil.print("------onGeocodeSearched");
+        LogUtil.print("---->onGeocodeSearched");
     }
 
     @Override
     public void onMapLoaded() {
-        LogUtil.print("------onMapLoaded");
+        LogUtil.print("---->onMapLoaded");
         mAmap.showBuildings(true);
     }
 
     @Override
     public void onMapClick(LatLng latLng) {
-        LogUtil.print("------onMapClick");
+        LogUtil.print("---->onMapClick");
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        LogUtil.print("------onMarkerClick");
+        LogUtil.print("---->onMarkerClick");
         return false;
     }
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        LogUtil.print("------onInfoWindowClick");
+        LogUtil.print("---->onInfoWindowClick");
     }
 
     @Override
     public View getInfoWindow(Marker marker) {
-        LogUtil.print("------getInfoWindow");
+        LogUtil.print("---->getInfoWindow");
         return null;
     }
 
     @Override
     public View getInfoContents(Marker marker) {
-        LogUtil.print("------getInfoContents");
+        LogUtil.print("---->getInfoContents");
         return null;
     }
 
     @Override
     public void onBusRouteSearched(BusRouteResult busRouteResult, int resultCode) {
-        LogUtil.print("------onBusRouteSearched");
+        LogUtil.print("---->onBusRouteSearched");
     }
 
     @Override
     public void onDriveRouteSearched(DriveRouteResult driveRouteResult, int resultCode) {
-        LogUtil.print("------onDriveRouteSearched");
+        LogUtil.print("---->onDriveRouteSearched");
         ViewUtil.getInstance().hideDialog(mDialog, this);
         mAmap.clear();
         if (resultCode == Constant.Map.GEOCODE_SEARCH_SUCCESS) {
             if (driveRouteResult != null && driveRouteResult.getPaths() != null && driveRouteResult.getPaths().size() > 0) {
                 DrivePath path = driveRouteResult.getPaths().get(0);
-                DriveRouteColorfulOverLay overLay = new DriveRouteColorfulOverLay(mAmap, path, driveRouteResult.getStartPos(), driveRouteResult.getTargetPos(), null);
-                overLay.setIsColorfulline(true);//是否用颜色展示交通拥堵情况，默认true
-                overLay.removeFromMap();
-                overLay.addToMap();
+                CustomOverlay overLay = new CustomOverlay(mAmap, path, driveRouteResult.getStartPos(), driveRouteResult.getTargetPos(), null);
+                overLay.setRouteWidth(getResources().getDimension(R.dimen.dp_10));
+                overLay.setColor(true);
+                overLay.setNodeIconVisible(true);
+                overLay.setPassMarkerVisible(true);
+                overLay.removeMarkerAndLine();
+                overLay.addRouteToMap();
                 overLay.zoomToSpan();
             } else {
                 SnackBarUtil.getInstance().showSnackBar(mvMap, getString(R.string.route_prompt2), Snackbar.LENGTH_SHORT);
@@ -443,11 +466,14 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
         } else {
             MapUtil.getInstance().showMapException(this, resultCode);
         }
+
+        fabMenu.addButton(fabDetail);
+        fabMenu.addButton(fabNavigation);
     }
 
     @Override
     public void onWalkRouteSearched(WalkRouteResult walkRouteResult, int resultCode) {
-        LogUtil.print("------onWalkRouteSearched");
+        LogUtil.print("---->onWalkRouteSearched");
         ViewUtil.getInstance().hideDialog(mDialog, this);
         mAmap.clear();
         if (resultCode == Constant.Map.GEOCODE_SEARCH_SUCCESS) {
