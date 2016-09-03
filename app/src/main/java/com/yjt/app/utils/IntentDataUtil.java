@@ -47,6 +47,13 @@ public class IntentDataUtil {
         return 0.0;
     }
 
+    public String getStringData(Activity activity, String key) {
+        if (activity.getIntent() != null) {
+            return activity.getIntent().getExtras().getString(key);
+        }
+        return null;
+    }
+
     public Parcelable getParcelableData(Activity activity, String key) {
         if (activity.getIntent() != null) {
             return activity.getIntent().getExtras().getParcelable(key);

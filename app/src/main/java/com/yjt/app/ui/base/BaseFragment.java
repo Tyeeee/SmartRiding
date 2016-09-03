@@ -130,6 +130,8 @@ public abstract class BaseFragment extends Fragment {
 
     protected abstract void findViewById();
 
+    protected abstract void setViewListener();
+
     protected abstract void initialize(Bundle savedInstanceState);
 
     protected abstract void setListener();

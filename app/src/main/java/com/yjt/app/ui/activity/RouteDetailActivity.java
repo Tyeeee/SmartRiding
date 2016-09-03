@@ -16,7 +16,7 @@ import com.yjt.app.R;
 import com.yjt.app.constant.Regex;
 import com.yjt.app.constant.Temp;
 import com.yjt.app.model.RouteDetail;
-import com.yjt.app.ui.adapter.FixedStickyViewAdapter;
+import com.yjt.app.ui.sticky.FixedStickyViewAdapter;
 import com.yjt.app.ui.adapter.RouteDetailAdapter;
 import com.yjt.app.ui.adapter.binder.RouteDetailBinder;
 import com.yjt.app.ui.base.BaseActivity;
@@ -68,6 +68,7 @@ public class RouteDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_detail);
         findViewById();
+        setViewListener();
         initialize(savedInstanceState);
         setListener();
     }
@@ -77,6 +78,11 @@ public class RouteDetailActivity extends BaseActivity {
         tvDistance = ViewUtil.getInstance().findView(this, R.id.tvDistance);
         tvCost = ViewUtil.getInstance().findView(this, R.id.tvCost);
         rvRouteDetail = ViewUtil.getInstance().findView(this, R.id.rvRouteDetail);
+    }
+
+    @Override
+    protected void setViewListener() {
+
     }
 
     @Override

@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.model.Menu;
-import com.yjt.app.ui.adapter.FixedStickyViewAdapter;
+import com.yjt.app.ui.sticky.FixedStickyViewAdapter;
 import com.yjt.app.ui.adapter.MenuAdapter;
 import com.yjt.app.ui.adapter.binder.MenuBinder;
 import com.yjt.app.ui.base.BaseFragment;
@@ -68,6 +68,7 @@ public class SettingFragment extends BaseFragment implements FixedStickyViewAdap
         super.onCreateView(inflater, container, savedInstanceState);
         mRootView = inflater.inflate(R.layout.fragment_setting, container, false);
         findViewById();
+        setViewListener();
         initialize(savedInstanceState);
         setListener();
         return mRootView;
@@ -77,6 +78,11 @@ public class SettingFragment extends BaseFragment implements FixedStickyViewAdap
     protected void findViewById() {
         civDevice = ViewUtil.getInstance().findView(mRootView, R.id.civDevice);
         rvMenu = ViewUtil.getInstance().findView(mRootView, R.id.rvMenu);
+    }
+
+    @Override
+    protected void setViewListener() {
+        
     }
 
     @Override

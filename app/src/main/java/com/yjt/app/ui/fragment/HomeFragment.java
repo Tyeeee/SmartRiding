@@ -57,8 +57,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         super.onCreateView(inflater, container, savedInstanceState);
         mRootView = inflater.inflate(R.layout.fragment_home, container, false);
         findViewById();
-        setListener();
+        setViewListener();
         initialize(savedInstanceState);
+        setListener();
         return mRootView;
     }
 
@@ -82,16 +83,19 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             case R.id.stvStartPoint:
                 Bundle bundle1 = new Bundle();
                 bundle1.putInt(Temp.POINT_TYPE.getContent(), Constant.PointType.START);
+                bundle1.putString(Temp.POINT_CONTENT.getContent(), stvStartPoint.getText());
                 startActivityForResult(RouteActivity.class, Constant.RequestCode.POINT, bundle1);
                 break;
             case R.id.stvPassPoint:
                 Bundle bundle2 = new Bundle();
                 bundle2.putInt(Temp.POINT_TYPE.getContent(), Constant.PointType.PASS);
+                bundle2.putString(Temp.POINT_CONTENT.getContent(), stvPassPoint.getText());
                 startActivityForResult(RouteActivity.class, Constant.RequestCode.POINT, bundle2);
                 break;
             case R.id.stvEndPoint:
                 Bundle bundle3 = new Bundle();
                 bundle3.putInt(Temp.POINT_TYPE.getContent(), Constant.PointType.END);
+                bundle3.putString(Temp.POINT_CONTENT.getContent(), stvEndPoint.getText());
                 startActivityForResult(RouteActivity.class, Constant.RequestCode.POINT, bundle3);
                 break;
             case R.id.ivVoice:
@@ -166,12 +170,17 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     @Override
-    protected void setListener() {
+    protected void setViewListener() {
 
     }
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected void setListener() {
 
     }
 

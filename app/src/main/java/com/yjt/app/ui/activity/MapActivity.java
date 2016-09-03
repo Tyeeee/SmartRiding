@@ -38,8 +38,8 @@ import java.util.List;
 
 public class MapActivity extends BaseActivity implements View.OnClickListener, AMap.OnMapClickListener, AMap.OnMarkerClickListener, AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter, RouteSearch.OnRouteSearchListener, AMap.OnMapLoadedListener {
 
-    private MapView mvMap;
-    private FloatingActionMenu fabMenu;
+    private MapView              mvMap;
+    private FloatingActionMenu   fabMenu;
     private FloatingActionButton fabDetail;
     private FloatingActionButton fabNavigation;
 
@@ -47,8 +47,8 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
     private LatLonPoint mPassPoint;
     private LatLonPoint mEndPoint;
 
-    private AMap mAmap;
-    private RouteSearch mSearch;
+    private AMap             mAmap;
+    private RouteSearch      mSearch;
     private DriveRouteResult mResult;
 
     private ProgressDialog mDialog;
@@ -58,7 +58,9 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         findViewById();
+        setViewListener();
         initialize(savedInstanceState);
+        setListener();
     }
 
     @Override
@@ -104,6 +106,12 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
     }
 
     @Override
+    protected void setViewListener() {
+        fabDetail.setOnClickListener(this);
+        fabNavigation.setOnClickListener(this);
+    }
+
+    @Override
     protected void initialize(Bundle savedInstanceState) {
         mvMap.onCreate(savedInstanceState);
         mDialog = ViewUtil.getInstance().showProgressDialog(this, null, getString(R.string.location_prompt), null, false);
@@ -128,7 +136,6 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
             mAmap.getUiSettings().setZoomControlsEnabled(false);
         }
         mSearch = new RouteSearch(this);
-        setListener();
         if (mStartPoint != null && mEndPoint != null) {
             List<LatLonPoint> points = new ArrayList<>();
             mAmap.addMarker(new MarkerOptions().position(MapUtil.getInstance().convertToLatLng(mStartPoint)).icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_start)));
@@ -147,8 +154,6 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
 
     @Override
     protected void setListener() {
-        fabDetail.setOnClickListener(this);
-        fabNavigation.setOnClickListener(this);
         mAmap.setOnMapLoadedListener(this);
         mAmap.setOnMapClickListener(this);
         mAmap.setOnMarkerClickListener(this);
@@ -246,7 +251,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
         mAmap.clear();
         if (resultCode == Constant.Map.GEOCODE_SEARCH_SUCCESS) {
             if (driveRouteResult != null && driveRouteResult.getPaths() != null && driveRouteResult.getPaths().size() > 0) {
-                DrivePath path = driveRouteResult.getPaths().get(0);
+                DrivePath     path    = driveRouteResult.getPaths().get(0);
                 CustomOverlay overLay = new CustomOverlay(mAmap, path, driveRouteResult.getStartPos(), driveRouteResult.getTargetPos(), null);
                 overLay.setRouteWidth(getResources().getDimension(R.dimen.dp_10));
                 overLay.setColor(true);
@@ -273,7 +278,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
         mAmap.clear();
         if (resultCode == Constant.Map.GEOCODE_SEARCH_SUCCESS) {
             if (walkRouteResult != null && walkRouteResult.getPaths() != null && walkRouteResult.getPaths().size() > 0) {
-                WalkPath path = walkRouteResult.getPaths().get(0);
+                WalkPath         path    = walkRouteResult.getPaths().get(0);
                 WalkRouteOverlay overlay = new WalkRouteOverlay(this, mAmap, path, walkRouteResult.getStartPos(), walkRouteResult.getTargetPos());
                 overlay.removeFromMap();
                 overlay.addToMap();

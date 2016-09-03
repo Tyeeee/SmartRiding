@@ -1,4 +1,4 @@
-package com.yjt.app.ui.adapter;
+package com.yjt.app.ui.sticky;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,8 +9,6 @@ import android.widget.TextView;
 import com.yjt.app.R;
 import com.yjt.app.ui.base.BaseHolder;
 import com.yjt.app.ui.base.BaseViewBinder;
-import com.yjt.app.ui.sticky.OnGroupListener;
-import com.yjt.app.ui.sticky.StickyRecyclerHeadersAdapter;
 import com.yjt.app.utils.ViewUtil;
 
 

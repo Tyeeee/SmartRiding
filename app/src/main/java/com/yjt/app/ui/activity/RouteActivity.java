@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -24,11 +26,19 @@ import com.amap.api.services.geocoder.GeocodeQuery;
 import com.amap.api.services.geocoder.GeocodeResult;
 import com.amap.api.services.geocoder.GeocodeSearch;
 import com.amap.api.services.geocoder.RegeocodeResult;
+import com.amap.api.services.help.Inputtips;
+import com.amap.api.services.help.InputtipsQuery;
+import com.amap.api.services.help.Tip;
+import com.amap.api.services.route.DrivePath;
 import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
-import com.yjt.app.constant.Regex;
 import com.yjt.app.constant.Temp;
+import com.yjt.app.model.RecommendPosition;
+import com.yjt.app.ui.adapter.RecommendPositionAdapter;
+import com.yjt.app.ui.adapter.binder.RecommendPositionBinder;
 import com.yjt.app.ui.base.BaseActivity;
+import com.yjt.app.ui.sticky.FixedStickyViewAdapter;
+import com.yjt.app.ui.widget.LinearLayoutDividerItemDecoration;
 import com.yjt.app.utils.InputUtil;
 import com.yjt.app.utils.IntentDataUtil;
 import com.yjt.app.utils.LogUtil;
@@ -37,8 +47,10 @@ import com.yjt.app.utils.SnackBarUtil;
 import com.yjt.app.utils.ViewUtil;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
-public class RouteActivity extends BaseActivity implements View.OnClickListener, TextWatcher, AMapLocationListener, GeocodeSearch.OnGeocodeSearchListener {
+public class RouteActivity extends BaseActivity implements View.OnClickListener, TextWatcher, AMapLocationListener, GeocodeSearch.OnGeocodeSearchListener, Inputtips.InputtipsListener, FixedStickyViewAdapter.OnItemClickListener {
 
     private ImageView ivBack;
     private EditText  etSearch;
@@ -48,6 +60,8 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
 
     private TextView tvLocation;
     private TextView tvCollection;
+
+    private RecyclerView rvRecommendPosition;
 
     private AMapLocationClient       mClient;
     private AMapLocationClientOption mOption;
@@ -59,6 +73,34 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
 
     private ProgressDialog mDialog;
 
+    private LinearLayoutManager    mLayoutManager;
+    private FixedStickyViewAdapter mAdapter;
+    private DrivePath              mPath;
+    private RouteHandler           mHandler;
+
+    private Inputtips mTips;
+
+    private static class RouteHandler extends Handler {
+
+        private WeakReference<RouteActivity> mActivitys;
+
+        public RouteHandler(RouteActivity Activity) {
+            mActivitys = new WeakReference<>(Activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            RouteActivity Activity = mActivitys.get();
+            if (Activity != null) {
+                switch (msg.what) {
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +108,7 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
         setContentView(R.layout.activity_route);
         setTheme(android.R.style.Theme_Material_Light_NoActionBar);
         findViewById();
+        setViewListener();
         initialize(savedInstanceState);
         setListener();
     }
@@ -79,22 +122,25 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
         tvEnter = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.tvEnter, this);
         tvLocation = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.tvLocation, this);
         tvCollection = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.tvCollection, this);
+        rvRecommendPosition = ViewUtil.getInstance().findView(this, R.id.rvRecommendPosition);
+    }
+
+    @Override
+    protected void setViewListener() {
+        etSearch.addTextChangedListener(this);
     }
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
         if (IntentDataUtil.getInstance().hasIntentExtraValue(this, Temp.POINT_TYPE.getContent())) {
             mPointType = IntentDataUtil.getInstance().getIntData(this, Temp.POINT_TYPE.getContent());
-            switch (mPointType) {
-                case Constant.PointType.START:
-                    etSearch.setText(Regex.NONE.getRegext());
-                    break;
-                case Constant.PointType.PASS:
-                    etSearch.setText(Regex.NONE.getRegext());
-                    break;
-                case Constant.PointType.END:
-                    etSearch.setText(Regex.NONE.getRegext());
-                    break;
+        }
+        if (IntentDataUtil.getInstance().hasIntentExtraValue(this, Temp.POINT_CONTENT.getContent())) {
+            String content = IntentDataUtil.getInstance().getStringData(this, Temp.POINT_CONTENT.getContent());
+            if (TextUtils.isEmpty(content)) {
+                etSearch.setText(getString(R.string.my_location));
+            } else {
+                etSearch.setText(content);
             }
         }
 
@@ -111,13 +157,23 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
         mDialog = ViewUtil.getInstance().showProgressDialog(this, null, getString(R.string.location_prompt), null, false);
 
         mSearch = new GeocodeSearch(this);
+
+        mTips = new Inputtips(this, this);
+
+        mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        rvRecommendPosition.setHasFixedSize(true);
+        rvRecommendPosition.setLayoutManager(mLayoutManager);
+        rvRecommendPosition.addItemDecoration(new LinearLayoutDividerItemDecoration(getResources().getColor(android.R.color.black), 1, LinearLayoutManager.VERTICAL));
+        mAdapter = new RecommendPositionAdapter(this, new RecommendPositionBinder(this, rvRecommendPosition), false);
     }
 
     @Override
     protected void setListener() {
-        etSearch.addTextChangedListener(this);
         mClient.setLocationListener(this);
         mSearch.setOnGeocodeSearchListener(this);
+        mAdapter.setOnItemClickListener(this);
+        mTips.setInputtipsListener(this);
     }
 
     @Override
@@ -202,7 +258,6 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
                 }
                 break;
             case R.id.tvLocation:
-//                mClient.startLocation();
                 if (mLocation != null) {
                     Intent intent = new Intent();
                     intent.putExtra(Temp.POINT_TYPE.getContent(), mPointType);
@@ -216,11 +271,21 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
                 }
                 break;
             case R.id.tvCollection:
+                SnackBarUtil.getInstance().showSnackBar(view, "tvCollection", Snackbar.LENGTH_SHORT);
                 //TODO 服务器返回收藏列表
                 break;
             default:
                 break;
         }
+    }
+
+
+    @Override
+    public void onItemClick(int pos) {
+        RecommendPosition position = (RecommendPosition) mAdapter.getItem(pos);
+        mDialog = ViewUtil.getInstance().showProgressDialog(this, null, getString(R.string.location_prompt), null, false);
+        etSearch.setText(position.getAddress());
+        mSearch.getFromLocationNameAsyn(new GeocodeQuery(position.getAddress(), mCityCode));
     }
 
     @Override
@@ -239,6 +304,11 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
             ViewUtil.getInstance().setViewGone(ivVoice);
             ViewUtil.getInstance().setViewVisible(tvEnter);
         }
+
+        if (mTips != null) {
+            mTips.setQuery(new InputtipsQuery(etSearch.getText().toString(), mCityCode));
+            mTips.requestInputtipsAsyn();
+        }
     }
 
     @Override
@@ -248,6 +318,7 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onLocationChanged(AMapLocation location) {
+        LogUtil.print("---->onLocationChanged");
         if (location != null) {
             ViewUtil.getInstance().hideDialog(mDialog, this);
             this.mLocation = location;
@@ -263,7 +334,6 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
             LogUtil.print("---->区:" + location.getDistrict());
             LogUtil.print("---->区域码:" + location.getAdCode());
             LogUtil.print("---->地址:" + location.getAddress());
-            etSearch.setText(getString(R.string.my_location));
             mClient.stopLocation();
             mCityCode = location.getCityCode();
         } else {
@@ -275,11 +345,12 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int resultCode) {
-
+        LogUtil.print("---->onRegeocodeSearched");
     }
 
     @Override
     public void onGeocodeSearched(GeocodeResult geocodeResult, int resultCode) {
+        LogUtil.print("---->onGeocodeSearched");
         ViewUtil.getInstance().hideDialog(mDialog, this);
         if (resultCode == Constant.Map.GEOCODE_SEARCH_SUCCESS) {
             if (geocodeResult != null
@@ -300,6 +371,26 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
             }
         } else {
             MapUtil.getInstance().showMapException(this, resultCode);
+        }
+    }
+
+
+    @Override
+    public void onGetInputtips(List<Tip> tips, int resultCode) {
+        LogUtil.print("---->onGetInputtips");
+        LogUtil.print("---->resultCode:" + resultCode);
+        if (resultCode == Constant.Map.GEOCODE_SEARCH_SUCCESS && tips != null) {
+            List<RecommendPosition> positions = new ArrayList<>();
+            for (Tip tip : tips) {
+                LogUtil.print("---->city:" + tip.getAdcode());
+                LogUtil.print("---->Address:" + tip.getAddress());
+                RecommendPosition position = new RecommendPosition();
+                position.setAddress(tip.getAddress());
+                position.setCity(tip.getAdcode());
+                positions.add(position);
+            }
+            mAdapter.setData(positions);
+            rvRecommendPosition.setAdapter(mAdapter);
         }
     }
 }

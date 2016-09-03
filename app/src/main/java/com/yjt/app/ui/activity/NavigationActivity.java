@@ -45,6 +45,11 @@ public class NavigationActivity extends BaseActivity implements AMapNaviListener
     }
 
     @Override
+    protected void setViewListener() {
+
+    }
+
+    @Override
     protected void initialize(Bundle savedInstanceState) {
         if (IntentDataUtil.getInstance().hasIntentExtraValue(this, Temp.ROUTE_INFO.getContent())) {
             mResult = (DriveRouteResult) IntentDataUtil.getInstance().getParcelableData(this, Temp.ROUTE_INFO.getContent());

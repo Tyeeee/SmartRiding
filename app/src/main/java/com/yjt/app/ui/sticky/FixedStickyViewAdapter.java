@@ -1,4 +1,4 @@
-package com.yjt.app.ui.adapter;
+package com.yjt.app.ui.sticky;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;

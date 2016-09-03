@@ -151,4 +151,12 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_0.5"
         android:background="@color/gray_999999"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvRecommendPosition"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dp_10"
+        android:fadeScrollbars="@null"
+        android:scrollbars="none"/>
 </LinearLayout>

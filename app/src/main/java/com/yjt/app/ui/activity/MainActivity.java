@@ -22,11 +22,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yjt.app.R;
-import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.model.Menu;
 import com.yjt.app.receiver.BluetoothReceiver;
-import com.yjt.app.ui.adapter.FixedStickyViewAdapter;
+import com.yjt.app.ui.sticky.FixedStickyViewAdapter;
 import com.yjt.app.ui.adapter.MenuAdapter;
 import com.yjt.app.ui.adapter.binder.MenuBinder;
 import com.yjt.app.ui.base.BaseActivity;
@@ -98,6 +97,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViewById();
+        setViewListener();
         initialize(savedInstanceState);
         setListener();
     }
@@ -137,6 +137,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         civHead = ViewUtil.getInstance().findView(this, R.id.civHead);
         tvAccountName = ViewUtil.getInstance().findView(this, R.id.tvAccountName);
         tvTelphoneNumber = ViewUtil.getInstance().findView(this, R.id.tvTelphoneNumber);
+    }
+
+    @Override
+    protected void setViewListener() {
+        drawerLayout.addDrawerListener(mToggle);
     }
 
     @Override
@@ -191,7 +196,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void setListener() {
-        drawerLayout.addDrawerListener(mToggle);
         mAdapter.setOnItemClickListener(this);
     }
 

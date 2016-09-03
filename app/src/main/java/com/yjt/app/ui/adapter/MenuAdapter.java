@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import com.yjt.app.model.Menu;
 import com.yjt.app.ui.adapter.holder.MenuHolder;
 import com.yjt.app.ui.base.BaseViewBinder;
+import com.yjt.app.ui.sticky.FixedStickyHeaderAdapter;
 
 public class MenuAdapter extends FixedStickyHeaderAdapter<Menu, MenuHolder> {
 

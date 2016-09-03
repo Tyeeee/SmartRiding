@@ -22,14 +22,20 @@ public class MessageFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         mRootView = inflater.inflate(R.layout.fragment_message, container, false);
         findViewById();
-        setListener();
+        setViewListener();
         initialize(savedInstanceState);
+        setListener();
         return mRootView;
     }
 
     @Override
     protected void findViewById() {
 
+    }
+
+    @Override
+    protected void setViewListener() {
+        
     }
 
     @Override
