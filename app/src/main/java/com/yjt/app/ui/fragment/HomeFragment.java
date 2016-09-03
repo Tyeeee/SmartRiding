@@ -36,6 +36,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private TextView       tvSearch;
 
     private String mTempString;
+    private double mTempLongitude;
+    private double mTempLatitude;
     private int    mPointType;
 
     private double mStartLatitude;
@@ -69,6 +71,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     mTempString = stvStartPoint.getText();
                     stvStartPoint.setText(stvEndPoint.getText());
                     stvEndPoint.setText(mTempString);
+                    mTempLongitude = mStartLongitude;
+                    mStartLongitude = mEndLongitude;
+                    mEndLongitude = mTempLongitude;
+                    mTempLatitude = mStartLatitude;
+                    mStartLatitude = mEndLatitude;
+                    mEndLatitude = mTempLatitude;
                 }
                 break;
             case R.id.stvStartPoint:

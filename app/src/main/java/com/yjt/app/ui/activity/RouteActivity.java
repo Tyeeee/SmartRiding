@@ -232,6 +232,7 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         if (TextUtils.isEmpty(etSearch.getText())) {
             ViewUtil.getInstance().setViewGone(tvEnter);
+            ViewUtil.getInstance().setViewGone(ivDelete);
             ViewUtil.getInstance().setViewVisible(ivVoice);
         } else {
             ViewUtil.getInstance().setViewVisible(ivDelete);
