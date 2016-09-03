@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yjt.app.R;
+import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.model.Menu;
 import com.yjt.app.receiver.BluetoothReceiver;
@@ -35,9 +36,11 @@ import com.yjt.app.ui.fragment.MessageFragment;
 import com.yjt.app.ui.fragment.SettingFragment;
 import com.yjt.app.ui.widget.CircleImageView;
 import com.yjt.app.ui.widget.LinearLayoutDividerItemDecoration;
+import com.yjt.app.utils.ApplicationUtil;
 import com.yjt.app.utils.BluetoothUtil;
 import com.yjt.app.utils.FragmentHelper;
 import com.yjt.app.utils.InputUtil;
+import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.SnackBarUtil;
 import com.yjt.app.utils.ToastUtil;
 import com.yjt.app.utils.ViewUtil;
@@ -49,24 +52,24 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener, FixedStickyViewAdapter.OnItemClickListener {
 
-    private Toolbar toolbar;
-    private DrawerLayout drawerLayout;
+    private Toolbar               toolbar;
+    private DrawerLayout          drawerLayout;
     private ActionBarDrawerToggle mToggle;
 
-    private RelativeLayout rlHeader;
+    private RelativeLayout  rlHeader;
     private CircleImageView civHead;
-    private TextView tvAccountName;
-    private TextView tvTelphoneNumber;
+    private TextView        tvAccountName;
+    private TextView        tvTelphoneNumber;
 
-    private RecyclerView rvMenu;
-    private LinearLayoutManager mLayoutManager;
+    private RecyclerView           rvMenu;
+    private LinearLayoutManager    mLayoutManager;
     private FixedStickyViewAdapter mAdapter;
 
     private FragmentHelper mHelper;
 
     private BluetoothReceiver mReceiver;
 
-    private Handler mFragmentHandler;
+    private Handler     mFragmentHandler;
     private MainHandler mHandler;
 
     protected static class MainHandler extends Handler {
@@ -138,6 +141,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
+        LogUtil.print("---->" + ApplicationUtil.getInstance().getSha1());
         mHandler = new MainHandler(this);
         mReceiver = new BluetoothReceiver();
         if (BluetoothUtil.getInstance().isBluetoothSupported() && !BluetoothUtil.getInstance().isBluetoothEnabled()) {
@@ -163,7 +167,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             @Override
             public void run() {
                 List<Menu> menus = new ArrayList<>();
-                Menu menu1 = new Menu();
+                Menu       menu1 = new Menu();
                 menu1.setIcon(R.mipmap.dir1);
                 menu1.setTitle(getResources().getString(R.string.home_page));
                 menus.add(menu1);

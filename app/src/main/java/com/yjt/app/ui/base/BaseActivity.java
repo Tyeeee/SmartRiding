@@ -114,8 +114,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void onFinish(String message) {
         super.finish();
-        LogUtil.print("onFinish is called: " + message);
         overridePendingTransition(R.anim.slide_left_in, R.anim.slide_right_out);
+        LogUtil.print("onFinish is called: " + message);
     }
 
     protected abstract void findViewById();

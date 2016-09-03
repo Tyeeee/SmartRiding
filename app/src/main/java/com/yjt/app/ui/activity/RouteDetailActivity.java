@@ -106,6 +106,7 @@ public class RouteDetailActivity extends BaseActivity {
                             detail.setLineVisible(View.GONE);
                             detail.setDirectionUpVisible(View.GONE);
                             detail.setDirectionDownVisible(View.VISIBLE);
+                            detail.setRoutDetail(getString(R.string.start_off));
                             details.add(detail);
                         } else if (i < size) {
                             DriveStep   step   = steps.get(i);
@@ -122,12 +123,14 @@ public class RouteDetailActivity extends BaseActivity {
                             detail.setLineVisible(View.VISIBLE);
                             detail.setDirectionUpVisible(View.VISIBLE);
                             detail.setDirectionDownVisible(View.GONE);
+                            detail.setRoutDetail(getString(R.string.arrival));
                             details.add(detail);
                         }
                     }
-                    mAdapter.setData(mPath.getSteps());
+                    mAdapter.setData(details);
                 }
             });
+            rvRouteDetail.setAdapter(mAdapter);
         } else {
             ToastUtil.getInstance().showToast(this, getString(R.string.route_prompt3), Toast.LENGTH_SHORT);
         }
