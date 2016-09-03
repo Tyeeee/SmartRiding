@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -12,8 +13,9 @@ import com.yjt.app.utils.ViewUtil;
 
 public class SearchTextView extends RelativeLayout {
 
-    private TextView tvPoint;
-    private View vLine;
+    private ImageView ivPoint;
+    private TextView  tvPoint;
+    private View      vLine;
 
     public SearchTextView(Context context) {
         super(context);
@@ -31,8 +33,13 @@ public class SearchTextView extends RelativeLayout {
 
     public void findViewById() {
         LayoutInflater.from(getContext()).inflate(R.layout.textview_search, this);
+        ivPoint = ViewUtil.getInstance().findView(this, R.id.ivPoint);
         tvPoint = ViewUtil.getInstance().findView(this, R.id.tvPoint);
         vLine = ViewUtil.getInstance().findView(this, R.id.vLine);
+    }
+
+    public void setPointIcon(int resId) {
+        ivPoint.setImageResource(resId);
     }
 
     public void setHint(int resId) {

@@ -28,15 +28,15 @@ import com.yjt.app.utils.ViewUtil;
 
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
-    private ImageView ivExchange;
+    private ImageView      ivExchange;
     private SearchTextView stvStartPoint;
     private SearchTextView stvPassPoint;
     private SearchTextView stvEndPoint;
-    private ImageView ivVoice;
-    private TextView tvSearch;
+    private ImageView      ivVoice;
+    private TextView       tvSearch;
 
     private String mTempString;
-    private int mPointType;
+    private int    mPointType;
 
     private double mStartLatitude;
     private double mStartLongitude;
@@ -143,10 +143,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         stvStartPoint = ViewUtil.getInstance().findViewAttachOnclick(mRootView, R.id.stvStartPoint, this);
         stvPassPoint = ViewUtil.getInstance().findViewAttachOnclick(mRootView, R.id.stvPassPoint, this);
         stvEndPoint = ViewUtil.getInstance().findViewAttachOnclick(mRootView, R.id.stvEndPoint, this);
+        stvStartPoint.setPointIcon(R.mipmap.icon_point_red);
         stvStartPoint.setHint(R.string.start_point);
         stvStartPoint.setLineVisible(View.VISIBLE);
+        stvPassPoint.setPointIcon(R.mipmap.icon_point_orange);
         stvPassPoint.setHint(R.string.pass_point);
         stvStartPoint.setLineVisible(View.VISIBLE);
+        stvEndPoint.setPointIcon(R.mipmap.icon_point_green);
         stvEndPoint.setHint(R.string.end_point);
         stvEndPoint.setLineVisible(View.GONE);
 
