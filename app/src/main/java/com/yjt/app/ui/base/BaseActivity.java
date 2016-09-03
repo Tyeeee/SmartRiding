@@ -165,7 +165,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void showExitDialog() {
-        ViewUtil.getInstance().showAlertDialog(this, getString(R.string.prompt_title), getString(R.string.exit_prompt_content), getString(R.string.enter), getString(R.string.cancel), new DialogInterface.OnClickListener() {
+        ViewUtil.getInstance().showAlertDialog(this, getString(R.string.prompt_title), getString(R.string.exit_application_prompt_content), getString(R.string.enter), getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();

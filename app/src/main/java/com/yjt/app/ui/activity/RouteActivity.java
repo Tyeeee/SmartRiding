@@ -218,6 +218,8 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
                 break;
             case R.id.ivDelete:
                 etSearch.setText(null);
+                mAdapter.clear();
+                rvRecommendPosition.setAdapter(mAdapter);
                 break;
             case R.id.ivVoice:
 
@@ -382,12 +384,14 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
         if (resultCode == Constant.Map.GEOCODE_SEARCH_SUCCESS && tips != null) {
             List<RecommendPosition> positions = new ArrayList<>();
             for (Tip tip : tips) {
-                LogUtil.print("---->city:" + tip.getAdcode());
-                LogUtil.print("---->Address:" + tip.getAddress());
-                RecommendPosition position = new RecommendPosition();
-                position.setAddress(tip.getAddress());
-                position.setCity(tip.getAdcode());
-                positions.add(position);
+                if (!TextUtils.isEmpty(tip.getAddress())) {
+                    LogUtil.print("---->city:" + tip.getAdcode());
+                    LogUtil.print("---->Address:" + tip.getAddress());
+                    RecommendPosition position = new RecommendPosition();
+                    position.setAddress(tip.getAddress());
+                    position.setCity(tip.getAdcode());
+                    positions.add(position);
+                }
             }
             mAdapter.setData(positions);
             rvRecommendPosition.setAdapter(mAdapter);

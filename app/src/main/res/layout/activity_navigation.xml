@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<com.amap.api.navi.AMapNaviView
+    android:id="@+id/nvMap"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.yjt.app.ui.activity.NavigationActivity">
+    tools:context="com.yjt.app.ui.activity.NavigationActivity"/>
 
-    <com.amap.api.navi.AMapNaviView
-        android:id="@+id/nvMap"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <com.amap.api.navi.view.ZoomInIntersectionView
-        android:id="@+id/ivZoomView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|center_horizontal"/>
-</FrameLayout>

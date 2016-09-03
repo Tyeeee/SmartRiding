@@ -27,6 +27,8 @@ import com.yjt.app.utils.ToastUtil;
 import com.yjt.app.utils.ViewUtil;
 
 import java.lang.ref.WeakReference;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,7 +94,7 @@ public class RouteDetailActivity extends BaseActivity {
             mResult = (DriveRouteResult) IntentDataUtil.getInstance().getParcelableData(this, Temp.ROUTE_INFO.getContent());
             mPath = mResult.getPaths().get(0);
             tvDistance.setText(MapUtil.getInstance().getFriendlyTime((int) mPath.getDuration()) + Regex.LEFT_PARENTHESIS.getRegext() + MapUtil.getInstance().getFriendlyLength((int) mPath.getDistance()) + Regex.RIGHT_PARENTHESIS.getRegext());
-            tvCost.setText("乘出租车约:" + mResult.getTaxiCost() + "元");
+            tvCost.setText("乘出租车约:" + new BigDecimal(mResult.getTaxiCost()).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue() + "元");
             mLayoutManager = new LinearLayoutManager(this);
             mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             rvRouteDetail.setHasFixedSize(true);

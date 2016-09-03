@@ -58,7 +58,16 @@ public class Constant {
     }
 
     public static class Map {
+        public static final String TTS_ROLE                       = "xiaoyan";
+        public static final String TTS_SPEED                      = "50";
+        public static final String TTS_VOLUME                     = "50";
+        public static final String TTS_PITCH                      = "50";
+        public static final String STREAM_TYPE                    = "50";
+        public static final String KEY_REQUEST_FOCUS              = "true";
+        public static final String AUDIO_FORMAT                   = "wav";
+        public static final String TTS_AUDIO_PATH                 = "/msc/tts.wav";
         public static final int    SIMULATED_NAVIGATION_SPEED     = 100;
+        public static final int    STEP_DISTANCE                  = 20;
         public static final String Kilometer                      = "\u516c\u91cc";// "公里";
         public static final String Meter                          = "\u7c73";// "米";
         public static final long   LOCATION_MINIMUM_TIME_INTERVAL = 1000;
@@ -86,12 +95,7 @@ public class Constant {
         public static final String MOVE_STATUS12                  = "通过人行横道";
         public static final String MOVE_STATUS13                  = "通过地下通道";
         public static final String MOVE_STATUS14                  = "通过过街天桥";
-        public static final String MOVE_STATUS15                  = "路径计算就绪";
-        public static final String MOVE_STATUS16                  = "到达目的地";
-        public static final String MOVE_STATUS17                  = "导航结束";
-        public static final String MOVE_STATUS18                  = "路径计算失败，请检查网络或输入参数";
-        public static final String MOVE_STATUS19                  = "前方路线拥堵，路线重新规划";
-        public static final String MOVE_STATUS20                  = "您已偏航";
+        public static final String MOVE_STATUS15                  = "拍照";
     }
 
 }

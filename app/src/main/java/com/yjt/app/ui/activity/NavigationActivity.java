@@ -1,8 +1,12 @@
 package com.yjt.app.ui.activity;
 
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.view.View;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import com.amap.api.navi.AMapNavi;
 import com.amap.api.navi.AMapNaviListener;
@@ -19,29 +23,33 @@ import com.amap.api.navi.model.AMapNaviTrafficFacilityInfo;
 import com.amap.api.navi.model.AimLessModeCongestionInfo;
 import com.amap.api.navi.model.AimLessModeStat;
 import com.amap.api.navi.model.NaviInfo;
-import com.amap.api.navi.view.ZoomInIntersectionView;
-import com.amap.api.services.route.DriveRouteResult;
+import com.amap.api.navi.model.NaviLatLng;
+import com.amap.api.services.route.RouteResult;
 import com.autonavi.tbt.NaviStaticInfo;
 import com.autonavi.tbt.TrafficFacilityInfo;
 import com.yjt.app.R;
 import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Temp;
-import com.yjt.app.ui.base.BaseActivity;
 import com.yjt.app.utils.IntentDataUtil;
 import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.MapUtil;
 import com.yjt.app.utils.SnackBarUtil;
 import com.yjt.app.utils.TTSUtil;
+import com.yjt.app.utils.ToastUtil;
 import com.yjt.app.utils.ViewUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class NavigationActivity extends BaseActivity implements AMapNaviListener, AMapNaviViewListener {
 
-    private AMapNaviView           nvMap;
-    private ZoomInIntersectionView ivZoomView;
+public class NavigationActivity extends Activity implements AMapNaviListener, AMapNaviViewListener {
 
-    private DriveRouteResult mResult;
+    private AMapNaviView nvMap;
+    private RouteResult  mResult;
+    private List<NaviLatLng> mStartLatLngs = new ArrayList<>();
+    private List<NaviLatLng> mPassLatLngs  = new ArrayList<>();
+    private List<NaviLatLng> mEndLatLngs   = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +65,7 @@ public class NavigationActivity extends BaseActivity implements AMapNaviListener
     protected void onResume() {
         super.onResume();
         nvMap.onResume();
-//        setMapOptions();
+        setMapOptions();
     }
 
     @Override
@@ -83,75 +91,67 @@ public class NavigationActivity extends BaseActivity implements AMapNaviListener
     }
 
     @Override
-    protected void findViewById() {
-        nvMap = ViewUtil.getInstance().findView(this, R.id.nvMap);
-        ivZoomView = ViewUtil.getInstance().findView(this, R.id.ivZoomView);
+    public void onBackPressed() {
+//        super.onBackPressed();
+        ViewUtil.getInstance().showAlertDialog(this, getString(R.string.prompt_title), getString(R.string.exit_navigation_prompt_content), getString(R.string.enter), getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                finish();
+            }
+        }, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }, null);
     }
 
-    @Override
+    protected void findViewById() {
+        nvMap = ViewUtil.getInstance().findView(this, R.id.nvMap);
+    }
+
     protected void setViewListener() {
         nvMap.setAMapNaviViewListener(this);
     }
 
-    @Override
     protected void initialize(Bundle savedInstanceState) {
         nvMap.onCreate(savedInstanceState);
         setMapOptions();
         if (IntentDataUtil.getInstance().hasIntentExtraValue(this, Temp.ROUTE_INFO.getContent())) {
-            mResult = (DriveRouteResult) IntentDataUtil.getInstance().getParcelableData(this, Temp.ROUTE_INFO.getContent());
+            mResult = (RouteResult) IntentDataUtil.getInstance().getParcelableData(this, Temp.ROUTE_INFO.getContent());
+            mStartLatLngs.add(MapUtil.getInstance().parseCoordinate(mResult.getStartPos().toString()));
+            mEndLatLngs.add(MapUtil.getInstance().parseCoordinate(mResult.getTargetPos().toString()));
         } else {
             SnackBarUtil.getInstance().showSnackBar(nvMap, getString(R.string.route_prompt3), Snackbar.LENGTH_SHORT);
         }
         AMapNavi.getInstance(BaseApplication.getInstance()).setEmulatorNaviSpeed(Constant.Map.SIMULATED_NAVIGATION_SPEED);
-
         TTSUtil.getInstance().initialize();
-        TTSUtil.getInstance().startSpeaking();
     }
 
-    @Override
     protected void setListener() {
         AMapNavi.getInstance(BaseApplication.getInstance()).addAMapNaviListener(this);
         AMapNavi.getInstance(BaseApplication.getInstance()).addAMapNaviListener(TTSUtil.getInstance());
     }
 
-    @Override
-    protected void getSavedInstanceState(Bundle savedInstanceState) {
-
-    }
-
-    @Override
-    protected void setSavedInstanceState(Bundle savedInstanceState) {
-
-    }
-
-    @Override
-    protected void permissionRequestIntent() {
-
-    }
-
-    @Override
-    protected void permissionRequestResult() {
-
-    }
-
-    @Override
-    protected void endOperation() {
-
-    }
-
     private void setMapOptions() {
         if (nvMap != null) {
             AMapNaviViewOptions options = nvMap.getViewOptions();
-            options.setSettingMenuEnabled(true);//设置导航setting可用
-            options.setNaviNight(false);// 设置导航是否为黑夜模式
-            options.setReCalculateRouteForYaw(true);// 设置导偏航是否重算
-            options.setReCalculateRouteForTrafficJam(false);// 设置交通拥挤是否重算
-            options.setTrafficInfoUpdateEnabled(true);// 设置是否更新路况
-            options.setCameraInfoUpdateEnabled(false);// 设置摄像头播报
-            options.setScreenAlwaysBright(true);// 设置屏幕常亮情况
-            options.setLayoutVisible(false);//设置布局完全不可见
-//            options.setNaviViewTopic(mThemeStle);// 设置导航界面主题样式
-            nvMap.setLazyZoomInIntersectionView(ivZoomView);
+            options.setSettingMenuEnabled(false);
+            options.setNaviNight(false);
+            options.setReCalculateRouteForYaw(true);
+            options.setTrafficLine(true);
+            options.setReCalculateRouteForTrafficJam(false);
+            options.setLeaderLineEnabled(Color.CYAN);
+            options.setTrafficInfoUpdateEnabled(false);
+            options.setCameraInfoUpdateEnabled(false);
+            options.setMonitorCameraEnabled(false);
+            options.setScreenAlwaysBright(true);
+            options.setAutoDrawRoute(true);
+            options.setCrossDisplayEnabled(true);
+            options.setCrossDisplayShow(true);
+            options.setAutoChangeZoom(true);
+            options.setLayoutVisible(true);
             nvMap.setViewOptions(options);
         }
     }
@@ -164,7 +164,13 @@ public class NavigationActivity extends BaseActivity implements AMapNaviListener
     @Override
     public void onInitNaviSuccess() {
         LogUtil.print("---->onInitNaviSuccess");
-        AMapNavi.getInstance(BaseApplication.getInstance()).calculateWalkRoute(MapUtil.getInstance().parseCoordinate(mResult.getStartPos().toString()), MapUtil.getInstance().parseCoordinate(mResult.getTargetPos().toString()));
+//        AMapNavi.getInstance(BaseApplication.getInstance()).calculateWalkRoute(MapUtil.getInstance().parseCoordinate(mResult.getStartPos().toString()), MapUtil.getInstance().parseCoordinate(mResult.getTargetPos().toString()));
+        int strategy = 0;
+        try {
+            strategy = AMapNavi.getInstance(BaseApplication.getInstance()).strategyConvert(true, true, true, false, false);
+        } catch (Exception e) {
+        }
+        AMapNavi.getInstance(BaseApplication.getInstance()).calculateDriveRoute(mStartLatLngs, mEndLatLngs, mPassLatLngs, strategy);
     }
 
     @Override
@@ -183,7 +189,7 @@ public class NavigationActivity extends BaseActivity implements AMapNaviListener
     }
 
     @Override
-    public void onGetNavigationText(int i, String s) {
+    public void onGetNavigationText(int i, String result) {
         LogUtil.print("---->onGetNavigationText");
     }
 
@@ -231,9 +237,9 @@ public class NavigationActivity extends BaseActivity implements AMapNaviListener
     @Override
     public void onGpsOpenStatus(boolean b) {
         LogUtil.print("---->onGpsOpenStatus");
-        if (!b) {
-            SnackBarUtil.getInstance().showSnackBar(nvMap, getString(R.string.gps_prompt), Snackbar.LENGTH_SHORT);
-        }
+//        if (!b) {
+//            SnackBarUtil.getInstance().showSnackBar(nvMap, getString(R.string.gps_prompt), Snackbar.LENGTH_SHORT);
+//        }
     }
 
     @Override
@@ -249,12 +255,16 @@ public class NavigationActivity extends BaseActivity implements AMapNaviListener
             case IconType.LEFT_BACK:
             case IconType.LEFT_FRONT:
             case IconType.LEFT_TURN_AROUND:
-                SnackBarUtil.getInstance().showSnackBar(nvMap, "左转弯", Snackbar.LENGTH_SHORT);
+                if (naviInfo.getCurStepRetainDistance() < Constant.Map.STEP_DISTANCE) {
+                    ToastUtil.getInstance().showToast(this, "左转弯", Toast.LENGTH_SHORT);
+                }
                 break;
             case IconType.RIGHT:
             case IconType.RIGHT_BACK:
             case IconType.RIGHT_FRONT:
-                SnackBarUtil.getInstance().showSnackBar(nvMap, "右转弯", Snackbar.LENGTH_SHORT);
+                if (naviInfo.getCurStepRetainDistance() < Constant.Map.STEP_DISTANCE) {
+                    ToastUtil.getInstance().showToast(this, "右转弯", Toast.LENGTH_SHORT);
+                }
                 break;
         }
 
@@ -273,15 +283,11 @@ public class NavigationActivity extends BaseActivity implements AMapNaviListener
     @Override
     public void showCross(AMapNaviCross aMapNaviCross) {
         LogUtil.print("---->showCross");
-        ivZoomView.setIntersectionBitMap(aMapNaviCross);
-        ivZoomView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideCross() {
         LogUtil.print("---->hideCross");
-        ivZoomView.recycleResource();
-        ivZoomView.setVisibility(View.GONE);
     }
 
     @Override

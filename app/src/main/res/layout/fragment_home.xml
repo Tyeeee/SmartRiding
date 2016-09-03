@@ -46,7 +46,8 @@
             <com.yjt.app.ui.widget.SearchTextView
                 android:id="@+id/stvPassPoint"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
 
             <com.yjt.app.ui.widget.SearchTextView
                 android:id="@+id/stvEndPoint"

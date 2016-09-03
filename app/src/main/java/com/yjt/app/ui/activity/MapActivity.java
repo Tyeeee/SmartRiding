@@ -16,6 +16,7 @@ import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.route.BusRouteResult;
 import com.amap.api.services.route.DrivePath;
 import com.amap.api.services.route.DriveRouteResult;
+import com.amap.api.services.route.RouteResult;
 import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
@@ -47,9 +48,9 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
     private LatLonPoint mPassPoint;
     private LatLonPoint mEndPoint;
 
-    private AMap             mAmap;
-    private RouteSearch      mSearch;
-    private DriveRouteResult mResult;
+    private AMap        mAmap;
+    private RouteSearch mSearch;
+    private RouteResult mResult;
 
     private ProgressDialog mDialog;
 
@@ -274,6 +275,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
     @Override
     public void onWalkRouteSearched(WalkRouteResult walkRouteResult, int resultCode) {
         LogUtil.print("---->onWalkRouteSearched");
+        this.mResult = walkRouteResult;
         ViewUtil.getInstance().hideDialog(mDialog, this);
         mAmap.clear();
         if (resultCode == Constant.Map.GEOCODE_SEARCH_SUCCESS) {
@@ -281,6 +283,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
                 WalkPath         path    = walkRouteResult.getPaths().get(0);
                 WalkRouteOverlay overlay = new WalkRouteOverlay(this, mAmap, path, walkRouteResult.getStartPos(), walkRouteResult.getTargetPos());
                 overlay.removeFromMap();
+                overlay.setNodeIconVisibility(false);
                 overlay.addToMap();
                 overlay.zoomToSpan();
             } else {
@@ -289,5 +292,8 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
         } else {
             MapUtil.getInstance().showMapException(this, resultCode);
         }
+
+        fabMenu.addButton(fabDetail);
+        fabMenu.addButton(fabNavigation);
     }
 }
