@@ -3,9 +3,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/purple_3F51B5</item>
-        <item name="colorPrimaryDark">@color/purple_303F9F</item>
-        <item name="colorAccent">@color/pink_FF4081</item>
+        <item name="colorPrimary">@color/gray_2b2b2b</item>
+        <item name="colorPrimaryDark">@android:color/transparent</item>
+        <item name="colorAccent">@color/gray_999999</item>
     </style>
 
     <style name="Theme.Translucent.Navigation" parent="Theme.AppCompat.Light.DarkActionBar">

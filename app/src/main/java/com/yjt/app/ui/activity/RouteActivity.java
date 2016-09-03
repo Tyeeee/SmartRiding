@@ -261,7 +261,7 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
                 if (mLocation != null) {
                     Intent intent = new Intent();
                     intent.putExtra(Temp.POINT_TYPE.getContent(), mPointType);
-                    intent.putExtra(Temp.POINT_CONTENT.getContent(), etSearch.getText().toString());
+                    intent.putExtra(Temp.POINT_CONTENT.getContent(), getString(R.string.my_location));
                     intent.putExtra(Temp.LOCATION_LATITUDE.getContent(), mLocation.getLatitude());
                     intent.putExtra(Temp.LOCATION_LONGITUDE.getContent(), mLocation.getLongitude());
                     setResult(Constant.Common.RESULT_CODE, intent);

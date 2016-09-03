@@ -3,7 +3,6 @@ package com.yjt.app.ui.activity;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.View;
-import android.widget.Toast;
 
 import com.amap.api.navi.AMapNavi;
 import com.amap.api.navi.AMapNaviListener;
@@ -11,6 +10,7 @@ import com.amap.api.navi.AMapNaviView;
 import com.amap.api.navi.AMapNaviViewListener;
 import com.amap.api.navi.AMapNaviViewOptions;
 import com.amap.api.navi.enums.IconType;
+import com.amap.api.navi.enums.NaviType;
 import com.amap.api.navi.model.AMapLaneInfo;
 import com.amap.api.navi.model.AMapNaviCross;
 import com.amap.api.navi.model.AMapNaviInfo;
@@ -33,7 +33,6 @@ import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.MapUtil;
 import com.yjt.app.utils.SnackBarUtil;
 import com.yjt.app.utils.TTSUtil;
-import com.yjt.app.utils.ToastUtil;
 import com.yjt.app.utils.ViewUtil;
 
 
@@ -59,6 +58,12 @@ public class NavigationActivity extends BaseActivity implements AMapNaviListener
         super.onResume();
         nvMap.onResume();
 //        setMapOptions();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        nvMap.onSaveInstanceState(outState);
     }
 
     @Override
@@ -95,7 +100,7 @@ public class NavigationActivity extends BaseActivity implements AMapNaviListener
         if (IntentDataUtil.getInstance().hasIntentExtraValue(this, Temp.ROUTE_INFO.getContent())) {
             mResult = (DriveRouteResult) IntentDataUtil.getInstance().getParcelableData(this, Temp.ROUTE_INFO.getContent());
         } else {
-            ToastUtil.getInstance().showToast(this, getString(R.string.route_prompt3), Toast.LENGTH_SHORT);
+            SnackBarUtil.getInstance().showSnackBar(nvMap, getString(R.string.route_prompt3), Snackbar.LENGTH_SHORT);
         }
         AMapNavi.getInstance(BaseApplication.getInstance()).setEmulatorNaviSpeed(Constant.Map.SIMULATED_NAVIGATION_SPEED);
 
@@ -200,7 +205,7 @@ public class NavigationActivity extends BaseActivity implements AMapNaviListener
     @Override
     public void onCalculateRouteSuccess() {
         LogUtil.print("---->onCalculateRouteSuccess");
-        AMapNavi.getInstance(BaseApplication.getInstance()).startNavi(AMapNavi.EmulatorNaviMode);
+        AMapNavi.getInstance(BaseApplication.getInstance()).startNavi(NaviType.EMULATOR);
     }
 
     @Override
@@ -244,12 +249,12 @@ public class NavigationActivity extends BaseActivity implements AMapNaviListener
             case IconType.LEFT_BACK:
             case IconType.LEFT_FRONT:
             case IconType.LEFT_TURN_AROUND:
-                ToastUtil.getInstance().showToast(this, "左转弯", Toast.LENGTH_SHORT);
+                SnackBarUtil.getInstance().showSnackBar(nvMap, "左转弯", Snackbar.LENGTH_SHORT);
                 break;
             case IconType.RIGHT:
             case IconType.RIGHT_BACK:
             case IconType.RIGHT_FRONT:
-                ToastUtil.getInstance().showToast(this, "右转弯", Toast.LENGTH_SHORT);
+                SnackBarUtil.getInstance().showSnackBar(nvMap, "右转弯", Snackbar.LENGTH_SHORT);
                 break;
         }
 
