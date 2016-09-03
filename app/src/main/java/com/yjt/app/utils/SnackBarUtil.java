@@ -40,15 +40,15 @@ public class SnackBarUtil {
     }
 
     public void showSnackBar(View view, CharSequence message, int length) {
-        showSnackBar(view, message, length, null, null, Constant.SIZE_DEFAULT, Constant.COLOR_DEFAULT);
+        showSnackBar(view, message, length, null, null, Constant.View.SIZE_DEFAULT, Constant.View.COLOR_DEFAULT);
     }
 
     public void showSnackBar(View view, CharSequence message, int length, float textSize) {
-        showSnackBar(view, message, length, null, null, textSize, Constant.COLOR_DEFAULT);
+        showSnackBar(view, message, length, null, null, textSize, Constant.View.COLOR_DEFAULT);
     }
 
     public void showSnackBar(View view, CharSequence message, int length, int color) {
-        showSnackBar(view, message, length, null, null, Constant.SIZE_DEFAULT, color);
+        showSnackBar(view, message, length, null, null, Constant.View.SIZE_DEFAULT, color);
     }
 
     public void showSnackBar(View view, CharSequence message, int length, float textSize, int color) {
@@ -81,10 +81,10 @@ public class SnackBarUtil {
             }
         }
 
-        if (textSize != Constant.SIZE_DEFAULT) {
+        if (textSize != Constant.View.SIZE_DEFAULT) {
             ((TextView) mSnackbar.getView().findViewById(R.id.snackbar_text)).setTextSize(textSize);
         }
-        if (color != Constant.COLOR_DEFAULT) {
+        if (color != Constant.View.COLOR_DEFAULT) {
             ((TextView) mSnackbar.getView().findViewById(R.id.snackbar_text)).setTextColor(color);
         }
         mSnackbar.show();

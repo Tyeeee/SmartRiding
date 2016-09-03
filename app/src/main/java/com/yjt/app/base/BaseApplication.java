@@ -21,11 +21,6 @@ import com.yjt.app.utils.ToastUtil;
 import com.yjt.app.utils.VersionUtil;
 import com.yjt.app.utils.ViewUtil;
 
-/**
- * 全局变量
- *
- * @author yjt
- */
 public class BaseApplication extends MultiDexApplication {
 
     private static BaseApplication mApplication;

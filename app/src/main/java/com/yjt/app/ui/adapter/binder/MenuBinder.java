@@ -15,7 +15,7 @@ import com.yjt.app.utils.ViewUtil;
 public class MenuBinder extends BaseViewBinder {
 
     private RecyclerView mView;
-    private Context mContext;
+    private Context      mContext;
 
     public MenuBinder(Context context, RecyclerView parent) {
         this.mContext = context;
@@ -25,8 +25,8 @@ public class MenuBinder extends BaseViewBinder {
     @Override
     public void bind(RecyclerView.ViewHolder viewHolder, Object o, int position) {
         MenuHolder holder = (MenuHolder) viewHolder;
-        Menu menu = (Menu) o;
-        ViewUtil.getInstance().setText(holder.tvMenu, menu.getTitle(), menu.getIcon(), DensityUtil.getInstance().dp2px(24), DensityUtil.getInstance().dp2px(24), Constant.DRAWABLE_LEFT, true);
+        Menu       menu   = (Menu) o;
+        ViewUtil.getInstance().setText(holder.tvMenu, menu.getTitle(), menu.getIcon(), DensityUtil.getInstance().dp2px(24), DensityUtil.getInstance().dp2px(24), Constant.View.DRAWABLE_LEFT, true);
     }
 
     @Override

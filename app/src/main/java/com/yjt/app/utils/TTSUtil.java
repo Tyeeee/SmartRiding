@@ -21,6 +21,7 @@ import com.iflytek.cloud.speech.SpeechUser;
 import com.iflytek.cloud.speech.SynthesizerListener;
 import com.yjt.app.R;
 import com.yjt.app.base.BaseApplication;
+import com.yjt.app.constant.Constant;
 
 public class TTSUtil implements SynthesizerListener, AMapNaviListener {
 
@@ -65,7 +66,7 @@ public class TTSUtil implements SynthesizerListener, AMapNaviListener {
 
     public void initialize() {
         SpeechUser.getUser().login(BaseApplication.getInstance(), null, null,
-                                   "appid=" + BaseApplication.getInstance().getString(R.string.app_id), mListener);
+                                   Constant.IFLY_APP_ID, mListener);
         mSpeechSynthesizer = SpeechSynthesizer.createSynthesizer(BaseApplication.getInstance());
         initializeSpeechSynthesizer();
     }
@@ -135,12 +136,12 @@ public class TTSUtil implements SynthesizerListener, AMapNaviListener {
 
     @Override
     public void onArriveDestination() {
-        play("到达目的地");
+        play(Constant.Map.MOVE_STATUS16);
     }
 
     @Override
     public void onArriveDestination(NaviStaticInfo naviStaticInfo) {
-        play("到达目的地");
+        play(Constant.Map.MOVE_STATUS16);
     }
 
     @Override
@@ -150,18 +151,17 @@ public class TTSUtil implements SynthesizerListener, AMapNaviListener {
 
     @Override
     public void onCalculateRouteFailure(int arg0) {
-        play("路径计算失败，请检查网络或输入参数");
+        play(Constant.Map.MOVE_STATUS18);
     }
 
     @Override
     public void onCalculateRouteSuccess() {
-        String calculateResult = "路径计算就绪";
-        play(calculateResult);
+        play(Constant.Map.MOVE_STATUS15);
     }
 
     @Override
     public void onEndEmulatorNavi() {
-        play("导航结束");
+        play(Constant.Map.MOVE_STATUS17);
 
     }
 
@@ -190,12 +190,12 @@ public class TTSUtil implements SynthesizerListener, AMapNaviListener {
 
     @Override
     public void onReCalculateRouteForTrafficJam() {
-        play("前方路线拥堵，路线重新规划");
+        play(Constant.Map.MOVE_STATUS19);
     }
 
     @Override
     public void onReCalculateRouteForYaw() {
-        play("您已偏航");
+        play(Constant.Map.MOVE_STATUS20);
     }
 
     @Override

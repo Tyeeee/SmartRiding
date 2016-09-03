@@ -67,7 +67,6 @@
     <string name="network_disconnect">请检查网络连接</string>
     <string name="network_type">您现在的网络类型是：</string>
 
-    <string name="app_id">输入您讯飞的appid</string>
     <string name="tts_role_default">xiaoyan</string>
     <string name="tts_speed_key">tts_speed</string>
     <string name="tts_volume_key">tts_volume</string>

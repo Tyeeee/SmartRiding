@@ -1,10 +1,16 @@
 package com.yjt.app.ui.activity;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.view.View;
 import android.widget.Toast;
 
+import com.amap.api.navi.AMapNavi;
 import com.amap.api.navi.AMapNaviListener;
+import com.amap.api.navi.AMapNaviView;
 import com.amap.api.navi.AMapNaviViewListener;
+import com.amap.api.navi.AMapNaviViewOptions;
+import com.amap.api.navi.enums.IconType;
 import com.amap.api.navi.model.AMapLaneInfo;
 import com.amap.api.navi.model.AMapNaviCross;
 import com.amap.api.navi.model.AMapNaviInfo;
@@ -13,54 +19,94 @@ import com.amap.api.navi.model.AMapNaviTrafficFacilityInfo;
 import com.amap.api.navi.model.AimLessModeCongestionInfo;
 import com.amap.api.navi.model.AimLessModeStat;
 import com.amap.api.navi.model.NaviInfo;
-import com.amap.api.services.geocoder.GeocodeResult;
-import com.amap.api.services.geocoder.GeocodeSearch;
-import com.amap.api.services.geocoder.RegeocodeResult;
+import com.amap.api.navi.view.ZoomInIntersectionView;
 import com.amap.api.services.route.DriveRouteResult;
 import com.autonavi.tbt.NaviStaticInfo;
 import com.autonavi.tbt.TrafficFacilityInfo;
 import com.yjt.app.R;
+import com.yjt.app.base.BaseApplication;
+import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Temp;
 import com.yjt.app.ui.base.BaseActivity;
 import com.yjt.app.utils.IntentDataUtil;
 import com.yjt.app.utils.LogUtil;
+import com.yjt.app.utils.MapUtil;
+import com.yjt.app.utils.SnackBarUtil;
+import com.yjt.app.utils.TTSUtil;
 import com.yjt.app.utils.ToastUtil;
+import com.yjt.app.utils.ViewUtil;
 
 
-public class NavigationActivity extends BaseActivity implements AMapNaviListener, AMapNaviViewListener, GeocodeSearch.OnGeocodeSearchListener {
+public class NavigationActivity extends BaseActivity implements AMapNaviListener, AMapNaviViewListener {
+
+    private AMapNaviView           nvMap;
+    private ZoomInIntersectionView ivZoomView;
 
     private DriveRouteResult mResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_navigation);
         findViewById();
         initialize(savedInstanceState);
+        setViewListener();
         setListener();
     }
 
     @Override
-    protected void findViewById() {
+    protected void onResume() {
+        super.onResume();
+        nvMap.onResume();
+//        setMapOptions();
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        nvMap.onPause();
+        TTSUtil.getInstance().stopSpeaking();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        nvMap.onDestroy();
+        AMapNavi.getInstance(BaseApplication.getInstance()).stopNavi();
+        AMapNavi.getInstance(BaseApplication.getInstance()).destroy();
+        TTSUtil.getInstance().stopSpeaking();
+    }
+
+    @Override
+    protected void findViewById() {
+        nvMap = ViewUtil.getInstance().findView(this, R.id.nvMap);
+        ivZoomView = ViewUtil.getInstance().findView(this, R.id.ivZoomView);
     }
 
     @Override
     protected void setViewListener() {
-
+        nvMap.setAMapNaviViewListener(this);
     }
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
+        nvMap.onCreate(savedInstanceState);
+        setMapOptions();
         if (IntentDataUtil.getInstance().hasIntentExtraValue(this, Temp.ROUTE_INFO.getContent())) {
             mResult = (DriveRouteResult) IntentDataUtil.getInstance().getParcelableData(this, Temp.ROUTE_INFO.getContent());
         } else {
             ToastUtil.getInstance().showToast(this, getString(R.string.route_prompt3), Toast.LENGTH_SHORT);
         }
+        AMapNavi.getInstance(BaseApplication.getInstance()).setEmulatorNaviSpeed(Constant.Map.SIMULATED_NAVIGATION_SPEED);
+
+        TTSUtil.getInstance().initialize();
+        TTSUtil.getInstance().startSpeaking();
     }
 
     @Override
     protected void setListener() {
-
+        AMapNavi.getInstance(BaseApplication.getInstance()).addAMapNaviListener(this);
+        AMapNavi.getInstance(BaseApplication.getInstance()).addAMapNaviListener(TTSUtil.getInstance());
     }
 
     @Override
@@ -88,6 +134,23 @@ public class NavigationActivity extends BaseActivity implements AMapNaviListener
 
     }
 
+    private void setMapOptions() {
+        if (nvMap != null) {
+            AMapNaviViewOptions options = nvMap.getViewOptions();
+            options.setSettingMenuEnabled(true);//设置导航setting可用
+            options.setNaviNight(false);// 设置导航是否为黑夜模式
+            options.setReCalculateRouteForYaw(true);// 设置导偏航是否重算
+            options.setReCalculateRouteForTrafficJam(false);// 设置交通拥挤是否重算
+            options.setTrafficInfoUpdateEnabled(true);// 设置是否更新路况
+            options.setCameraInfoUpdateEnabled(false);// 设置摄像头播报
+            options.setScreenAlwaysBright(true);// 设置屏幕常亮情况
+            options.setLayoutVisible(false);//设置布局完全不可见
+//            options.setNaviViewTopic(mThemeStle);// 设置导航界面主题样式
+            nvMap.setLazyZoomInIntersectionView(ivZoomView);
+            nvMap.setViewOptions(options);
+        }
+    }
+
     @Override
     public void onInitNaviFailure() {
         LogUtil.print("---->onInitNaviFailure");
@@ -96,6 +159,7 @@ public class NavigationActivity extends BaseActivity implements AMapNaviListener
     @Override
     public void onInitNaviSuccess() {
         LogUtil.print("---->onInitNaviSuccess");
+        AMapNavi.getInstance(BaseApplication.getInstance()).calculateWalkRoute(MapUtil.getInstance().parseCoordinate(mResult.getStartPos().toString()), MapUtil.getInstance().parseCoordinate(mResult.getTargetPos().toString()));
     }
 
     @Override
@@ -136,6 +200,7 @@ public class NavigationActivity extends BaseActivity implements AMapNaviListener
     @Override
     public void onCalculateRouteSuccess() {
         LogUtil.print("---->onCalculateRouteSuccess");
+        AMapNavi.getInstance(BaseApplication.getInstance()).startNavi(AMapNavi.EmulatorNaviMode);
     }
 
     @Override
@@ -161,6 +226,9 @@ public class NavigationActivity extends BaseActivity implements AMapNaviListener
     @Override
     public void onGpsOpenStatus(boolean b) {
         LogUtil.print("---->onGpsOpenStatus");
+        if (!b) {
+            SnackBarUtil.getInstance().showSnackBar(nvMap, getString(R.string.gps_prompt), Snackbar.LENGTH_SHORT);
+        }
     }
 
     @Override
@@ -171,6 +239,20 @@ public class NavigationActivity extends BaseActivity implements AMapNaviListener
     @Override
     public void onNaviInfoUpdate(NaviInfo naviInfo) {
         LogUtil.print("---->onNaviInfoUpdate");
+        switch (naviInfo.getIconType()) {
+            case IconType.LEFT:
+            case IconType.LEFT_BACK:
+            case IconType.LEFT_FRONT:
+            case IconType.LEFT_TURN_AROUND:
+                ToastUtil.getInstance().showToast(this, "左转弯", Toast.LENGTH_SHORT);
+                break;
+            case IconType.RIGHT:
+            case IconType.RIGHT_BACK:
+            case IconType.RIGHT_FRONT:
+                ToastUtil.getInstance().showToast(this, "右转弯", Toast.LENGTH_SHORT);
+                break;
+        }
+
     }
 
     @Override
@@ -186,11 +268,15 @@ public class NavigationActivity extends BaseActivity implements AMapNaviListener
     @Override
     public void showCross(AMapNaviCross aMapNaviCross) {
         LogUtil.print("---->showCross");
+        ivZoomView.setIntersectionBitMap(aMapNaviCross);
+        ivZoomView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideCross() {
         LogUtil.print("---->hideCross");
+        ivZoomView.recycleResource();
+        ivZoomView.setVisibility(View.GONE);
     }
 
     @Override
@@ -274,14 +360,4 @@ public class NavigationActivity extends BaseActivity implements AMapNaviListener
         LogUtil.print("---->onNaviViewLoaded");
     }
 
-
-    @Override
-    public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
-        LogUtil.print("---->onRegeocodeSearched");
-    }
-
-    @Override
-    public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
-        LogUtil.print("---->onGeocodeSearched");
-    }
 }

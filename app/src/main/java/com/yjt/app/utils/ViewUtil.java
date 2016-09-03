@@ -23,11 +23,6 @@ import android.widget.TextView;
 import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Constant;
 
-/**
- * View处理
- *
- * @author yjt
- */
 public class ViewUtil {
 
     private static ViewUtil mViewUtil;
@@ -49,12 +44,6 @@ public class ViewUtil {
         }
     }
 
-    /**
-     * 设置View背景
-     *
-     * @param view
-     * @param background
-     */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void setViewBackground(View view, Drawable background) {
         if (VersionUtil.getInstance().isJellyBean()) {
@@ -69,49 +58,22 @@ public class ViewUtil {
         setViewBackground(view, drawable);
     }
 
-    /**
-     * 判断view是否显示
-     *
-     * @param view
-     *
-     * @return
-     */
     public boolean isVisible(View view) {
         return view.getVisibility() == View.VISIBLE;
     }
 
-    /**
-     * 设置View为Visible
-     *
-     * @param view
-     */
     public void setViewVisible(View view) {
         view.setVisibility(View.VISIBLE);
     }
 
-    /**
-     * 设置View为Gone
-     *
-     * @param view
-     */
     public void setViewGone(View view) {
         view.setVisibility(View.GONE);
     }
 
-    /**
-     * 设置View为Invisible
-     *
-     * @param view
-     */
     public void setViewInvisible(View view) {
         view.setVisibility(View.INVISIBLE);
     }
 
-    /***
-     * 释放ImageView图片资源
-     *
-     * @param imageView
-     */
     public void releaseImageDrawable(ImageView imageView) {
         if (imageView == null)
             return;
@@ -122,11 +84,6 @@ public class ViewUtil {
         setViewBackground(imageView, null);
     }
 
-    /**
-     * 释放view背景资源
-     *
-     * @param view
-     */
     public void releaseLayoutDrawable(View view) {
         if (view == null)
             return;
@@ -136,42 +93,15 @@ public class ViewUtil {
         setViewBackground(view, null);
     }
 
-    /**
-     * findViewById 省略强转过程
-     *
-     * @param activity
-     * @param resId
-     *
-     * @return
-     */
     public <V> V findView(Activity activity, @IdRes int resId) {
         return (V) activity.findViewById(resId);
     }
 
-    /**
-     * findViewById 省略强转过程
-     *
-     * @param resId
-     * @param rootView
-     * @param <V>具体的View类型
-     *
-     * @return
-     */
     public <V> V findView(View rootView, @IdRes int resId) {
         //noinspection unchecked
         return (V) rootView.findViewById(resId);
     }
 
-    /**
-     * findviewById 并添加点击事件
-     *
-     * @param activity
-     * @param resId
-     * @param onClickListener
-     * @param <V>具体的View类型
-     *
-     * @return
-     */
     public <V> V findViewAttachOnclick(Activity activity, @IdRes int resId, View.OnClickListener onClickListener) {
         View view = activity.findViewById(resId);
         view.setOnClickListener(onClickListener);
@@ -179,16 +109,6 @@ public class ViewUtil {
         return (V) view;
     }
 
-    /**
-     * findviewById 并添加点击事件
-     *
-     * @param rootView
-     * @param resId
-     * @param onClickListener
-     * @param <V>具体的View类型
-     *
-     * @return
-     */
     public <V> V findViewAttachOnclick(View rootView, @IdRes int resId, View.OnClickListener onClickListener) {
         //noinspection unchecked
         View view = rootView.findViewById(resId);
@@ -198,13 +118,6 @@ public class ViewUtil {
     }
 
 
-    /**
-     * RecyclerView 是否滚动到顶部
-     *
-     * @param recyclerView
-     *
-     * @return
-     */
     public boolean isScrollTop(RecyclerView recyclerView) {
         if (recyclerView != null && recyclerView.getChildCount() > 0) {
             if (recyclerView.getChildAt(0).getTop() < 0) {
@@ -214,13 +127,6 @@ public class ViewUtil {
         return true;
     }
 
-    /**
-     * ListView 是否滚动到顶部
-     *
-     * @param listView
-     *
-     * @return
-     */
     public boolean isScrollTop(ListView listView) {
         if (listView != null && listView.getChildCount() > 0) {
             if (listView.getChildAt(0).getTop() < 0) {
@@ -230,13 +136,6 @@ public class ViewUtil {
         return true;
     }
 
-    /**
-     * ExpandableListView 是否滚动到顶部
-     *
-     * @param listView
-     *
-     * @return
-     */
     public boolean isScrollTop(ExpandableListView listView) {
         if (listView != null && listView.getChildCount() > 0) {
             if (listView.getChildAt(0).getTop() < 0) {
@@ -246,13 +145,6 @@ public class ViewUtil {
         return true;
     }
 
-    /**
-     * ScrollView 是否滚动到顶部
-     *
-     * @param scrollView
-     *
-     * @return
-     */
     public boolean isScrollTop(ScrollView scrollView) {
         if (scrollView != null) {
             if (scrollView.getScrollY() > 0) {
@@ -262,12 +154,6 @@ public class ViewUtil {
         return true;
     }
 
-    /**
-     * 控制view的Visible与Gone
-     *
-     * @param view
-     * @param show
-     */
     public void toggleView(View view, boolean show) {
         if (show) {
             setViewVisible(view);
@@ -282,16 +168,16 @@ public class ViewUtil {
             Drawable drawable = BaseApplication.getInstance().getResources().getDrawable(imageId);
             drawable.setBounds(0, 0, width, height);
             switch (position) {
-                case Constant.DRAWABLE_TOP:
+                case Constant.View.DRAWABLE_TOP:
                     textView.setCompoundDrawables(null, drawable, null, null);
                     break;
-                case Constant.DRAWABLE_LEFT:
+                case Constant.View.DRAWABLE_LEFT:
                     textView.setCompoundDrawables(drawable, null, null, null);
                     break;
-                case Constant.DRAWABLE_RIGHT:
+                case Constant.View.DRAWABLE_RIGHT:
                     textView.setCompoundDrawables(null, null, drawable, null);
                     break;
-                case Constant.DRAWABLE_BOTTOM:
+                case Constant.View.DRAWABLE_BOTTOM:
                     textView.setCompoundDrawables(null, null, null, drawable);
                     break;
                 default:
@@ -386,49 +272,6 @@ public class ViewUtil {
     }
 
     public void unLockScreenOrientation(Activity activity) {
-        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
-
-    /**
-     * 设置 dragTopLayout 是否能拖动
-     *
-     * @param dragTopLayout
-     * @param recyclerView
-     */
-//    public void setTouchMode(DragTopLayout dragTopLayout, RecyclerView recyclerView) {
-//        dragTopLayout.setTouchMode(isScrollTop(recyclerView));
-//        DragTopLayout.PanelState state = dragTopLayout.getState();
-//        if (state == DragTopLayout.PanelState.EXPANDED) {
-//            if (!isScrollTop(recyclerView))
-//                dragTopLayout.setTouchMode(true);
-//        }
-//    }
-
-//    public void setTouchMode(DragTopLayout dragTopLayout, ListView listView) {
-//        dragTopLayout.setTouchMode(isScrollTop(listView));
-//        DragTopLayout.PanelState state = dragTopLayout.getState();
-//        if (state == DragTopLayout.PanelState.EXPANDED) {
-//            if (!isScrollTop(listView))
-//                dragTopLayout.setTouchMode(true);
-//        }
-//    }
-
-//    public void setTouchMode(DragTopLayout dragTopLayout, ExpandableListView listView) {
-//        dragTopLayout.setTouchMode(isScrollTop(listView));
-//        DragTopLayout.PanelState state = dragTopLayout.getState();
-//        if (state == DragTopLayout.PanelState.EXPANDED) {
-//            if (!isScrollTop(listView))
-//                dragTopLayout.setTouchMode(true);
-//        }
-//    }
-
-//    public void setTouchMode(DragTopLayout dragTopLayout, ScrollView scrollView) {
-//        dragTopLayout.setTouchMode(isScrollTop(scrollView));
-//        DragTopLayout.PanelState state = dragTopLayout.getState();
-//        if (state == DragTopLayout.PanelState.EXPANDED) {
-//            if (!isScrollTop(scrollView))
-//                dragTopLayout.setTouchMode(true);
-//        }
-//    }
-
 }

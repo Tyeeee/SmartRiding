@@ -7,6 +7,7 @@ import android.text.Spanned;
 import android.widget.EditText;
 
 import com.amap.api.maps.model.LatLng;
+import com.amap.api.navi.model.NaviLatLng;
 import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.LatLonPoint;
 import com.yjt.app.R;
@@ -78,19 +79,19 @@ public class MapUtil {
         if (lenMeter > 10000) // 10 km
         {
             int dis = lenMeter / 1000;
-            return dis + Constant.Kilometer;
+            return dis + Constant.Map.Kilometer;
         }
 
         if (lenMeter > 1000) {
             float         dis  = (float) lenMeter / 1000;
             DecimalFormat fnum = new DecimalFormat("##0.0");
             String        dstr = fnum.format(dis);
-            return dstr + Constant.Kilometer;
+            return dstr + Constant.Map.Kilometer;
         }
 
         if (lenMeter > 100) {
             int dis = lenMeter / 50 * 50;
-            return dis + Constant.Meter;
+            return dis + Constant.Map.Meter;
         }
 
         int dis = lenMeter / 10 * 10;
@@ -98,7 +99,7 @@ public class MapUtil {
             dis = 10;
         }
 
-        return dis + Constant.Meter;
+        return dis + Constant.Map.Meter;
     }
 
     public boolean IsEmptyOrNullString(String s) {
@@ -129,6 +130,14 @@ public class MapUtil {
             lineShapes.add(latLngTemp);
         }
         return lineShapes;
+    }
+
+    public NaviLatLng parseCoordinate(String text) {
+        try {
+            return new NaviLatLng(Double.parseDouble(text.split(",")[0]), Double.parseDouble(text.split(",")[1]));
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**
