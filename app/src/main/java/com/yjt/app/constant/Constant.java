@@ -96,6 +96,7 @@ public class Constant {
         public static final String MOVE_STATUS13                  = "通过地下通道";
         public static final String MOVE_STATUS14                  = "通过过街天桥";
         public static final String MOVE_STATUS15                  = "拍照";
+        public static final String MOVE_STATUS16                  = "车道";
     }
 
 }
