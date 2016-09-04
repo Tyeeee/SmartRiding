@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.view.Gravity;
 import android.widget.Toast;
 
 import com.amap.api.navi.AMapNavi;
@@ -142,7 +141,7 @@ public class NavigationActivity extends Activity implements AMapNaviListener, AM
             options.setReCalculateRouteForYaw(true);
             options.setTrafficLine(true);
             options.setReCalculateRouteForTrafficJam(false);
-            options.setLeaderLineEnabled(Color.CYAN);
+            options.setLeaderLineEnabled(Color.GRAY);
             options.setTrafficInfoUpdateEnabled(false);
             options.setCameraInfoUpdateEnabled(false);
             options.setMonitorCameraEnabled(false);
@@ -191,6 +190,12 @@ public class NavigationActivity extends Activity implements AMapNaviListener, AM
     @Override
     public void onGetNavigationText(int i, String result) {
         LogUtil.print("---->onGetNavigationText");
+        LogUtil.print("-----------------1:" + result);
+        if (!result.contains(Constant.Map.MOVE_STATUS15)
+                && !result.contains(Constant.Map.MOVE_STATUS16)
+                && !result.contains(Constant.Map.MOVE_STATUS17)) {
+            TTSUtil.getInstance().startSpeaking(result);
+        }
     }
 
     @Override

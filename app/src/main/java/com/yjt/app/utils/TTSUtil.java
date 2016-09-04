@@ -157,9 +157,7 @@ public class TTSUtil implements SynthesizerListener, AMapNaviListener, InitListe
     @Override
     public void onGetNavigationText(int arg0, String result) {
         LogUtil.print("-------->onGetNavigationText");
-        if (!result.contains(Constant.Map.MOVE_STATUS15) || !result.contains(Constant.Map.MOVE_STATUS16)) {
-            startSpeaking(result);
-        }
+
     }
 
     @Override
