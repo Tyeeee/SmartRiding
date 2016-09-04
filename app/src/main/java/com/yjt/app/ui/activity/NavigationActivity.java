@@ -237,9 +237,9 @@ public class NavigationActivity extends Activity implements AMapNaviListener, AM
     @Override
     public void onGpsOpenStatus(boolean b) {
         LogUtil.print("---->onGpsOpenStatus");
-//        if (!b) {
-//            SnackBarUtil.getInstance().showSnackBar(nvMap, getString(R.string.gps_prompt), Snackbar.LENGTH_SHORT);
-//        }
+        if (!b) {
+            SnackBarUtil.getInstance().showSnackBar(nvMap, getString(R.string.gps_prompt), Snackbar.LENGTH_SHORT);
+        }
     }
 
     @Override
