@@ -190,7 +190,6 @@ public class NavigationActivity extends Activity implements AMapNaviListener, AM
     @Override
     public void onGetNavigationText(int i, String result) {
         LogUtil.print("---->onGetNavigationText");
-        LogUtil.print("-----------------1:" + result);
         if (!result.contains(Constant.Map.MOVE_STATUS15)
                 && !result.contains(Constant.Map.MOVE_STATUS16)
                 && !result.contains(Constant.Map.MOVE_STATUS17)) {
