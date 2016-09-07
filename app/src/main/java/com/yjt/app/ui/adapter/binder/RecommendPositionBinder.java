@@ -13,7 +13,7 @@ import com.yjt.app.ui.base.BaseViewBinder;
 public class RecommendPositionBinder extends BaseViewBinder {
 
     private RecyclerView mView;
-    private Context      mContext;
+    private Context mContext;
 
     public RecommendPositionBinder(Context context, RecyclerView parent) {
         this.mContext = context;
@@ -22,8 +22,8 @@ public class RecommendPositionBinder extends BaseViewBinder {
 
     @Override
     public void bind(RecyclerView.ViewHolder viewHolder, Object o, int pos) {
-        RecommendPositionHolder holder   = (RecommendPositionHolder) viewHolder;
-        RecommendPosition       position = (RecommendPosition) o;
+        RecommendPositionHolder holder = (RecommendPositionHolder) viewHolder;
+        RecommendPosition position = (RecommendPosition) o;
         holder.tvPosition.setText(position.getAddress());
     }
 

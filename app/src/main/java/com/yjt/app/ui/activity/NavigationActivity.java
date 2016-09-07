@@ -45,10 +45,10 @@ import java.util.List;
 public class NavigationActivity extends Activity implements AMapNaviListener, AMapNaviViewListener {
 
     private AMapNaviView nvMap;
-    private RouteResult  mResult;
+    private RouteResult mResult;
     private List<NaviLatLng> mStartLatLngs = new ArrayList<>();
-    private List<NaviLatLng> mPassLatLngs  = new ArrayList<>();
-    private List<NaviLatLng> mEndLatLngs   = new ArrayList<>();
+    private List<NaviLatLng> mPassLatLngs = new ArrayList<>();
+    private List<NaviLatLng> mEndLatLngs = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,6 @@ public class NavigationActivity extends Activity implements AMapNaviListener, AM
         setContentView(R.layout.activity_navigation);
         findViewById();
         initialize(savedInstanceState);
-        setViewListener();
         setListener();
     }
 
@@ -77,7 +76,7 @@ public class NavigationActivity extends Activity implements AMapNaviListener, AM
     protected void onPause() {
         super.onPause();
         nvMap.onPause();
-        TTSUtil.getInstance().stopSpeaking();
+        TTSUtil.getInstance().stopPlaying();
     }
 
     @Override
@@ -86,37 +85,21 @@ public class NavigationActivity extends Activity implements AMapNaviListener, AM
         nvMap.onDestroy();
         AMapNavi.getInstance(BaseApplication.getInstance()).stopNavi();
         AMapNavi.getInstance(BaseApplication.getInstance()).destroy();
-        TTSUtil.getInstance().stopSpeaking();
+        TTSUtil.getInstance().destroy();
     }
 
     @Override
     public void onBackPressed() {
 //        super.onBackPressed();
-        ViewUtil.getInstance().showAlertDialog(this, getString(R.string.prompt_title), getString(R.string.exit_navigation_prompt_content), getString(R.string.enter), getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                finish();
-            }
-        }, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        }, null);
+        showNavigationExitDialog();
     }
 
     protected void findViewById() {
         nvMap = ViewUtil.getInstance().findView(this, R.id.nvMap);
     }
 
-    protected void setViewListener() {
-        nvMap.setAMapNaviViewListener(this);
-    }
-
     protected void initialize(Bundle savedInstanceState) {
         nvMap.onCreate(savedInstanceState);
-        setMapOptions();
         if (IntentDataUtil.getInstance().hasIntentExtraValue(this, Temp.ROUTE_INFO.getContent())) {
             mResult = (RouteResult) IntentDataUtil.getInstance().getParcelableData(this, Temp.ROUTE_INFO.getContent());
             mStartLatLngs.add(MapUtil.getInstance().parseCoordinate(mResult.getStartPos().toString()));
@@ -124,11 +107,13 @@ public class NavigationActivity extends Activity implements AMapNaviListener, AM
         } else {
             SnackBarUtil.getInstance().showSnackBar(nvMap, getString(R.string.route_prompt3), Snackbar.LENGTH_SHORT);
         }
+        setMapOptions();
+        TTSUtil.getInstance().initializeSpeechSynthesizer();
         AMapNavi.getInstance(BaseApplication.getInstance()).setEmulatorNaviSpeed(Constant.Map.SIMULATED_NAVIGATION_SPEED);
-        TTSUtil.getInstance().initialize();
     }
 
     protected void setListener() {
+        nvMap.setAMapNaviViewListener(this);
         AMapNavi.getInstance(BaseApplication.getInstance()).addAMapNaviListener(this);
         AMapNavi.getInstance(BaseApplication.getInstance()).addAMapNaviListener(TTSUtil.getInstance());
     }
@@ -153,6 +138,21 @@ public class NavigationActivity extends Activity implements AMapNaviListener, AM
             options.setLayoutVisible(true);
             nvMap.setViewOptions(options);
         }
+    }
+
+    private void showNavigationExitDialog() {
+        ViewUtil.getInstance().showAlertDialog(this, getString(R.string.prompt_title), getString(R.string.exit_navigation_prompt_content), getString(R.string.enter), getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                finish();
+            }
+        }, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }, null);
     }
 
     @Override
@@ -190,16 +190,12 @@ public class NavigationActivity extends Activity implements AMapNaviListener, AM
     @Override
     public void onGetNavigationText(int i, String result) {
         LogUtil.print("---->onGetNavigationText");
-        if (!result.contains(Constant.Map.MOVE_STATUS15)
-                && !result.contains(Constant.Map.MOVE_STATUS16)
-                && !result.contains(Constant.Map.MOVE_STATUS17)) {
-            TTSUtil.getInstance().startSpeaking(result);
-        }
     }
 
     @Override
     public void onEndEmulatorNavi() {
         LogUtil.print("---->onEndEmulatorNavi");
+        showNavigationExitDialog();
     }
 
     @Override

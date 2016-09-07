@@ -26,23 +26,23 @@ import java.util.List;
 
 public class CustomOverlay {
 
-    private AMap              mAMap;
-    private LatLng            mStartPoint;
-    private LatLng            mEndPoint;
-    private Marker            mStartMarker;
-    private Marker            mEndMarker;
-    private DrivePath         mDrivePath;
+    private AMap mAMap;
+    private LatLng mStartPoint;
+    private LatLng mEndPoint;
+    private Marker mStartMarker;
+    private Marker mEndMarker;
+    private DrivePath mDrivePath;
     private List<LatLonPoint> mPassPoints;
-    private List<Marker> mPassMarkers        = new ArrayList<Marker>();
-    private boolean      isPassMarkerVisible = true;
-    private List<TMC>       mTmcs;
+    private List<Marker> mPassMarkers = new ArrayList<Marker>();
+    private boolean isPassMarkerVisible = true;
+    private List<TMC> mTmcs;
     private PolylineOptions mOptions;
     private boolean isColor = true;
-    private float        mRouteWidth;
-    private boolean      isNodeIconVisible;
+    private float mRouteWidth;
+    private boolean isNodeIconVisible;
     private List<LatLng> mLatLngPaths;
-    private List<Marker>   mStationMarkers = new ArrayList<Marker>();
-    private List<Polyline> mPolyLines      = new ArrayList<Polyline>();
+    private List<Marker> mStationMarkers = new ArrayList<Marker>();
+    private List<Polyline> mPolyLines = new ArrayList<Polyline>();
 
     public CustomOverlay(AMap aMap, DrivePath path, LatLonPoint startPoint, LatLonPoint endPoint, List<LatLonPoint> passPoints) {
         this.mAMap = aMap;
@@ -177,12 +177,12 @@ public class CustomOverlay {
 
     private void updatePathColor() {
         if (mAMap != null && mLatLngPaths != null && mLatLngPaths.size() > 0 && mTmcs != null && mTmcs.size() > 0) {
-            int          j           = 0;
-            LatLng       startLatLng = mLatLngPaths.get(0);
-            LatLng       endLatLng   = null;
-            double       segment     = 0.0;
-            TMC          tmc         = null;
-            List<LatLng> temp        = new ArrayList<>();
+            int j = 0;
+            LatLng startLatLng = mLatLngPaths.get(0);
+            LatLng endLatLng = null;
+            double segment = 0.0;
+            TMC tmc = null;
+            List<LatLng> temp = new ArrayList<>();
             addPolyline(new PolylineOptions().add(mStartPoint, startLatLng).setDottedLine(true));
             addPolyline(new PolylineOptions().add(mLatLngPaths.get(mLatLngPaths.size() - 1), endLatLng).setDottedLine(true));
             for (int i = 0; i < mLatLngPaths.size() && j < mTmcs.size(); i++) {

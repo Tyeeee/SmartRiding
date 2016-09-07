@@ -37,6 +37,7 @@ import com.yjt.app.model.RecommendPosition;
 import com.yjt.app.ui.adapter.RecommendPositionAdapter;
 import com.yjt.app.ui.adapter.binder.RecommendPositionBinder;
 import com.yjt.app.ui.base.BaseActivity;
+import com.yjt.app.ui.listener.OnDictationListener;
 import com.yjt.app.ui.sticky.FixedStickyViewAdapter;
 import com.yjt.app.ui.widget.LinearLayoutDividerItemDecoration;
 import com.yjt.app.utils.InputUtil;
@@ -44,39 +45,40 @@ import com.yjt.app.utils.IntentDataUtil;
 import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.MapUtil;
 import com.yjt.app.utils.SnackBarUtil;
+import com.yjt.app.utils.TTSUtil;
 import com.yjt.app.utils.ViewUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RouteActivity extends BaseActivity implements View.OnClickListener, TextWatcher, AMapLocationListener, GeocodeSearch.OnGeocodeSearchListener, Inputtips.InputtipsListener, FixedStickyViewAdapter.OnItemClickListener {
+public class RouteActivity extends BaseActivity implements View.OnClickListener, TextWatcher, AMapLocationListener, GeocodeSearch.OnGeocodeSearchListener, Inputtips.InputtipsListener, FixedStickyViewAdapter.OnItemClickListener, OnDictationListener {
 
     private ImageView ivBack;
-    private EditText  etSearch;
+    private EditText etSearch;
     private ImageView ivDelete;
     private ImageView ivVoice;
-    private TextView  tvEnter;
+    private TextView tvEnter;
 
     private TextView tvLocation;
     private TextView tvCollection;
 
     private RecyclerView rvRecommendPosition;
 
-    private AMapLocationClient       mClient;
+    private AMapLocationClient mClient;
     private AMapLocationClientOption mOption;
 
-    private int           mPointType;
-    private AMapLocation  mLocation;
+    private int mPointType;
+    private AMapLocation mLocation;
     private GeocodeSearch mSearch;
-    private String        mCityCode;
+    private String mCityCode;
 
     private ProgressDialog mDialog;
 
-    private LinearLayoutManager    mLayoutManager;
+    private LinearLayoutManager mLayoutManager;
     private FixedStickyViewAdapter mAdapter;
-    private DrivePath              mPath;
-    private RouteHandler           mHandler;
+    private DrivePath mPath;
+    private RouteHandler mHandler;
 
     private Inputtips mTips;
 
@@ -143,7 +145,6 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
                 etSearch.setText(content);
             }
         }
-
         mClient = new AMapLocationClient(this);
         mOption = new AMapLocationClientOption();
         mOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
@@ -155,6 +156,8 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
         mClient.setLocationOption(mOption);
         mClient.startLocation();
         mDialog = ViewUtil.getInstance().showProgressDialog(this, null, getString(R.string.location_prompt), null, false);
+
+        TTSUtil.getInstance().initializeSpeechRecognizer();
 
         mSearch = new GeocodeSearch(this);
 
@@ -174,6 +177,7 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
         mSearch.setOnGeocodeSearchListener(this);
         mAdapter.setOnItemClickListener(this);
         mTips.setInputtipsListener(this);
+        TTSUtil.getInstance().setListener(this);
     }
 
     @Override
@@ -202,12 +206,20 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        TTSUtil.getInstance().stopListening();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         mClient.onDestroy();
         mClient = null;
         mOption = null;
+        TTSUtil.getInstance().destroy();
     }
+
 
     @Override
     public void onClick(View view) {
@@ -222,7 +234,7 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
                 rvRecommendPosition.setAdapter(mAdapter);
                 break;
             case R.id.ivVoice:
-
+                TTSUtil.getInstance().startListening(this);
                 break;
             case R.id.tvEnter:
                 if (!TextUtils.isEmpty(etSearch.getText())
@@ -359,7 +371,7 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
                     && geocodeResult.getGeocodeAddressList() != null
                     && geocodeResult.getGeocodeAddressList().size() > 0) {
                 LatLonPoint coordinate = geocodeResult.getGeocodeAddressList().get(0).getLatLonPoint();
-                Intent      intent     = new Intent();
+                Intent intent = new Intent();
                 intent.putExtra(Temp.POINT_TYPE.getContent(), mPointType);
                 intent.putExtra(Temp.POINT_CONTENT.getContent(), etSearch.getText().toString());
                 intent.putExtra(Temp.LOCATION_LATITUDE.getContent(), coordinate.getLatitude());
@@ -395,6 +407,15 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
             }
             mAdapter.setData(positions);
             rvRecommendPosition.setAdapter(mAdapter);
+        }
+    }
+
+    @Override
+    public void setOnDictationListener(String msg) {
+        LogUtil.print("---->setOnDictationListener");
+        if (!TextUtils.isEmpty(msg)) {
+            etSearch.setText(msg);
+            etSearch.setSelection(msg.length());
         }
     }
 }

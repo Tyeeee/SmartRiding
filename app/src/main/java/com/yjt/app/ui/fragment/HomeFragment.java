@@ -28,17 +28,17 @@ import com.yjt.app.utils.ViewUtil;
 
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
-    private ImageView      ivExchange;
+    private ImageView ivExchange;
     private SearchTextView stvStartPoint;
     private SearchTextView stvPassPoint;
     private SearchTextView stvEndPoint;
-    private ImageView      ivVoice;
-    private TextView       tvSearch;
+    private ImageView ivVoice;
+    private TextView tvSearch;
 
     private String mTempString;
     private double mTempLongitude;
     private double mTempLatitude;
-    private int    mPointType;
+    private int mPointType;
 
     private double mStartLatitude;
     private double mStartLongitude;
@@ -114,7 +114,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     SnackBarUtil.getInstance().showSnackBar(view, getString(R.string.end_point), Snackbar.LENGTH_SHORT, Color.WHITE);
                 } else if (TextUtils.equals(stvStartPoint.getText(), stvEndPoint.getText())
                         || TextUtils.equals(stvStartPoint.getText(), stvPassPoint.getText())
-                        || TextUtils.equals(stvPassPoint.getText(), stvEndPoint.getText())) {
+                        || TextUtils.equals(stvPassPoint.getText(), stvEndPoint.getText())
+                        || mStartLongitude == mEndLongitude
+                        || mStartLatitude == mEndLatitude) {
                     SnackBarUtil.getInstance().showSnackBar(view, getString(R.string.search_prompt), Snackbar.LENGTH_SHORT, Color.WHITE);
                 } else {
                     Bundle bundle = new Bundle();

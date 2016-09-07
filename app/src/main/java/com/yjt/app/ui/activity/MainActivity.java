@@ -51,24 +51,24 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener, FixedStickyViewAdapter.OnItemClickListener {
 
-    private Toolbar               toolbar;
-    private DrawerLayout          drawerLayout;
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle mToggle;
 
-    private RelativeLayout  rlHeader;
+    private RelativeLayout rlHeader;
     private CircleImageView civHead;
-    private TextView        tvAccountName;
-    private TextView        tvTelphoneNumber;
+    private TextView tvAccountName;
+    private TextView tvTelphoneNumber;
 
-    private RecyclerView           rvMenu;
-    private LinearLayoutManager    mLayoutManager;
+    private RecyclerView rvMenu;
+    private LinearLayoutManager mLayoutManager;
     private FixedStickyViewAdapter mAdapter;
 
     private FragmentHelper mHelper;
 
     private BluetoothReceiver mReceiver;
 
-    private Handler     mFragmentHandler;
+    private Handler mFragmentHandler;
     private MainHandler mHandler;
 
     protected static class MainHandler extends Handler {
@@ -141,7 +141,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void setViewListener() {
-        drawerLayout.addDrawerListener(mToggle);
+
     }
 
     @Override
@@ -172,7 +172,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             @Override
             public void run() {
                 List<Menu> menus = new ArrayList<>();
-                Menu       menu1 = new Menu();
+                Menu menu1 = new Menu();
                 menu1.setIcon(R.mipmap.dir1);
                 menu1.setTitle(getResources().getString(R.string.home_page));
                 menus.add(menu1);
@@ -196,6 +196,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void setListener() {
+        drawerLayout.addDrawerListener(mToggle);
         mAdapter.setOnItemClickListener(this);
     }
 
@@ -260,12 +261,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void permissionRequestIntent() {
-        
+
     }
 
     @Override
     protected void permissionRequestResult() {
-        
+
     }
 
     @Override

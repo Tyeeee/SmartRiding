@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
+import com.iflytek.cloud.SpeechUtility;
+import com.yjt.app.constant.Constant;
 import com.yjt.app.utils.ActivityUtil;
 import com.yjt.app.utils.AnimationUtil;
 import com.yjt.app.utils.BluetoothUtil;
@@ -38,6 +40,7 @@ public class BaseApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
 //        StrictModeUtil.getInstance().initialize();
+        SpeechUtility.createUtility(this, Constant.IFLY_APP_ID);
         super.onCreate();
         mApplication = this;
 //        CrashHandler.getInstance().initialize();

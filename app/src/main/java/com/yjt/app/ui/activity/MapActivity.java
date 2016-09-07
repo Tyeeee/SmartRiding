@@ -39,8 +39,8 @@ import java.util.List;
 
 public class MapActivity extends BaseActivity implements View.OnClickListener, AMap.OnMapClickListener, AMap.OnMarkerClickListener, AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter, RouteSearch.OnRouteSearchListener, AMap.OnMapLoadedListener {
 
-    private MapView              mvMap;
-    private FloatingActionMenu   fabMenu;
+    private MapView mvMap;
+    private FloatingActionMenu fabMenu;
     private FloatingActionButton fabDetail;
     private FloatingActionButton fabNavigation;
 
@@ -48,7 +48,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
     private LatLonPoint mPassPoint;
     private LatLonPoint mEndPoint;
 
-    private AMap        mAmap;
+    private AMap mAmap;
     private RouteSearch mSearch;
     private RouteResult mResult;
 
@@ -252,8 +252,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
         mAmap.clear();
         if (resultCode == Constant.Map.GEOCODE_SEARCH_SUCCESS) {
             if (driveRouteResult != null && driveRouteResult.getPaths() != null && driveRouteResult.getPaths().size() > 0) {
-                DrivePath     path    = driveRouteResult.getPaths().get(0);
-                CustomOverlay overLay = new CustomOverlay(mAmap, path, driveRouteResult.getStartPos(), driveRouteResult.getTargetPos(), null);
+                CustomOverlay overLay = new CustomOverlay(mAmap, driveRouteResult.getPaths().get(0), driveRouteResult.getStartPos(), driveRouteResult.getTargetPos(), null);
                 overLay.setRouteWidth(getResources().getDimension(R.dimen.dp_10));
                 overLay.setColor(true);
                 overLay.setNodeIconVisible(true);
@@ -280,8 +279,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
         mAmap.clear();
         if (resultCode == Constant.Map.GEOCODE_SEARCH_SUCCESS) {
             if (walkRouteResult != null && walkRouteResult.getPaths() != null && walkRouteResult.getPaths().size() > 0) {
-                WalkPath         path    = walkRouteResult.getPaths().get(0);
-                WalkRouteOverlay overlay = new WalkRouteOverlay(this, mAmap, path, walkRouteResult.getStartPos(), walkRouteResult.getTargetPos());
+                WalkRouteOverlay overlay = new WalkRouteOverlay(this, mAmap, walkRouteResult.getPaths().get(0), walkRouteResult.getStartPos(), walkRouteResult.getTargetPos());
                 overlay.removeFromMap();
                 overlay.setNodeIconVisibility(false);
                 overlay.addToMap();
