@@ -71,20 +71,20 @@ public class TTSUtil implements SynthesizerListener, AMapNaviListener, InitListe
         setSpeechRecognizerParameter();
     }
 
-    public void startPlaying(String content) {
+    public synchronized void startPlaying(String content) {
         if (mSpeechSynthesizer == null) {
             initializeSpeechSynthesizer();
         }
         mSpeechSynthesizer.startSpeaking(content, this);
     }
 
-    public void stopPlaying() {
+    public synchronized void stopPlaying() {
         if (mSpeechSynthesizer != null) {
             mSpeechSynthesizer.stopSpeaking();
         }
     }
 
-    public void startListening(Activity activity) {
+    public synchronized void startListening(Activity activity) {
         if (mSpeechRecognizer == null) {
             initializeSpeechRecognizer();
         }
@@ -97,7 +97,7 @@ public class TTSUtil implements SynthesizerListener, AMapNaviListener, InitListe
 
     }
 
-    public void stopListening() {
+    public synchronized void stopListening() {
         if (mSpeechRecognizer != null) {
             mSpeechRecognizer.stopListening();
         }
