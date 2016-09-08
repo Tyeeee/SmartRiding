@@ -2,10 +2,6 @@ package com.yjt.app.utils;
 
 import android.bluetooth.BluetoothAdapter;
 
-/**
- * Created by yjt on 2016/6/28.
- */
-
 public class BluetoothUtil {
 
     private static BluetoothUtil mBluetoothUtil;

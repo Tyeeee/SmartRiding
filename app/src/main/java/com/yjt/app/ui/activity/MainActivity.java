@@ -6,7 +6,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.PersistableBundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -102,11 +101,6 @@ public class MainActivity extends BaseActivity implements FixedStickyViewAdapter
     }
 
     @Override
-    public void onPostCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onPostCreate(savedInstanceState, persistentState);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mToggle.onOptionsItemSelected(item)) {
             return true;
@@ -141,11 +135,9 @@ public class MainActivity extends BaseActivity implements FixedStickyViewAdapter
         LogUtil.print("---->" + ApplicationUtil.getInstance().getSha1());
         mHandler = new MainHandler(this);
         mReceiver = new BluetoothReceiver();
+        registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
         if (BluetoothUtil.getInstance().isBluetoothSupported() && !BluetoothUtil.getInstance().isBluetoothEnabled()) {
-            registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
             BluetoothUtil.getInstance().turnOnBluetooth();
-        } else {
-            ToastUtil.getInstance().showToast(this, R.string.bluetooth_status5, Toast.LENGTH_SHORT);
         }
         mHandler = new MainHandler(this);
         civHead.setText(getString(R.string.head_portrait));
@@ -258,10 +250,10 @@ public class MainActivity extends BaseActivity implements FixedStickyViewAdapter
 
     @Override
     protected void endOperation() {
-        if (BluetoothUtil.getInstance().isBluetoothSupported() && BluetoothUtil.getInstance().isBluetoothEnabled() && mReceiver != null) {
+        if (BluetoothUtil.getInstance().isBluetoothSupported() && BluetoothUtil.getInstance().isBluetoothEnabled()) {
             BluetoothUtil.getInstance().turnOffBluetooth();
-            unregisterReceiver(mReceiver);
         }
+        unregisterReceiver(mReceiver);
     }
 
     public void setFragmentHandler(Handler handler) {
