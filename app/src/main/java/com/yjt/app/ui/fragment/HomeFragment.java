@@ -9,8 +9,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yjt.app.R;
@@ -32,8 +32,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private SearchTextView stvStartPoint;
     private SearchTextView stvPassPoint;
     private SearchTextView stvEndPoint;
-    private ImageView ivVoice;
-    private TextView tvSearch;
+    private Button btnSearch;
 
     private String mTempString;
     private double mTempLongitude;
@@ -98,10 +97,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 bundle3.putString(Temp.POINT_CONTENT.getContent(), stvEndPoint.getText());
                 startActivityForResult(RouteActivity.class, Constant.RequestCode.POINT, bundle3);
                 break;
-            case R.id.ivVoice:
-                SnackBarUtil.getInstance().showSnackBar(view, "ivVoice", Snackbar.LENGTH_SHORT, Color.WHITE);
-                break;
-            case R.id.tvSearch:
+            case R.id.btnSearch:
                 if (TextUtils.isEmpty(stvStartPoint.getText())
                         || TextUtils.equals(stvStartPoint.getText(), getString(R.string.start_point))
                         || mStartLongitude == 0
@@ -167,8 +163,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         stvEndPoint.setHint(R.string.end_point);
         stvEndPoint.setLineVisible(View.GONE);
 
-        ivVoice = ViewUtil.getInstance().findViewAttachOnclick(mRootView, R.id.ivVoice, this);
-        tvSearch = ViewUtil.getInstance().findViewAttachOnclick(mRootView, R.id.tvSearch, this);
+        btnSearch = ViewUtil.getInstance().findViewAttachOnclick(mRootView, R.id.btnSearch, this);
     }
 
     @Override

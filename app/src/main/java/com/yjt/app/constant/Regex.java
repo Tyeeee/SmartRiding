@@ -1,10 +1,5 @@
 package com.yjt.app.constant;
 
-/**
- * 正则表达式枚举
- *
- * @author yjt
- */
 public enum Regex {
 
     NONE(""),

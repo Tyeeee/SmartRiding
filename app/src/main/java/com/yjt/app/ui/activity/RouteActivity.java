@@ -156,13 +156,9 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
         mClient.setLocationOption(mOption);
         mClient.startLocation();
         mDialog = ViewUtil.getInstance().showProgressDialog(this, null, getString(R.string.location_prompt), null, false);
-
         TTSUtil.getInstance().initializeSpeechRecognizer();
-
         mSearch = new GeocodeSearch(this);
-
         mTips = new Inputtips(this, this);
-
         mLayoutManager = new LinearLayoutManager(this);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvRecommendPosition.setHasFixedSize(true);

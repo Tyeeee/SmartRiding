@@ -11,14 +11,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.model.Menu;
-import com.yjt.app.ui.sticky.FixedStickyViewAdapter;
 import com.yjt.app.ui.adapter.MenuAdapter;
 import com.yjt.app.ui.adapter.binder.MenuBinder;
 import com.yjt.app.ui.base.BaseFragment;
+import com.yjt.app.ui.sticky.FixedStickyViewAdapter;
 import com.yjt.app.ui.widget.CircleImageView;
 import com.yjt.app.ui.widget.LinearLayoutDividerItemDecoration;
 import com.yjt.app.utils.SnackBarUtil;
@@ -29,13 +32,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SettingFragment extends BaseFragment implements FixedStickyViewAdapter.OnItemClickListener {
+public class SettingFragment extends BaseFragment implements View.OnClickListener, FixedStickyViewAdapter.OnItemClickListener {
 
-    private CircleImageView civDevice;
+    private RelativeLayout rlSetting;
+    private CircleImageView civSetting;
+    private TextView tvAccountName;
+    private TextView tvTelphoneNumber;
     private RecyclerView rvMenu;
     private LinearLayoutManager mLayoutManager;
     private FixedStickyViewAdapter mAdapter;
     private SettingHandler mHandler;
+    private Button btnLogout;
 
     private static class SettingHandler extends Handler {
 
@@ -76,8 +83,12 @@ public class SettingFragment extends BaseFragment implements FixedStickyViewAdap
 
     @Override
     protected void findViewById() {
-        civDevice = ViewUtil.getInstance().findView(mRootView, R.id.civDevice);
+        rlSetting = ViewUtil.getInstance().findViewAttachOnclick(mRootView, R.id.rlSetting, this);
+        civSetting = ViewUtil.getInstance().findView(mRootView, R.id.civSetting);
+        tvAccountName = ViewUtil.getInstance().findView(mRootView, R.id.tvAccountName);
+        tvTelphoneNumber = ViewUtil.getInstance().findView(mRootView, R.id.tvTelphoneNumber);
         rvMenu = ViewUtil.getInstance().findView(mRootView, R.id.rvMenu);
+        btnLogout = ViewUtil.getInstance().findViewAttachOnclick(mRootView, R.id.btnLogout, this);
     }
 
     @Override
@@ -88,6 +99,7 @@ public class SettingFragment extends BaseFragment implements FixedStickyViewAdap
     @Override
     protected void initialize(Bundle savedInstanceState) {
         mHandler = new SettingHandler(this);
+        civSetting.setText(getString(R.string.head_portrait));
         mLayoutManager = new LinearLayoutManager(getActivity());
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvMenu.setHasFixedSize(true);
@@ -100,27 +112,27 @@ public class SettingFragment extends BaseFragment implements FixedStickyViewAdap
                 List<Menu> menus = new ArrayList<>();
                 Menu menu1 = new Menu();
                 menu1.setIcon(R.mipmap.dir1);
-                menu1.setTitle(getResources().getString(R.string.search_device));
+                menu1.setTitle(getResources().getString(R.string.password_management));
                 menus.add(menu1);
                 Menu menu2 = new Menu();
                 menu2.setIcon(R.mipmap.dir1);
-                menu2.setTitle(getResources().getString(R.string.general_setting));
+                menu2.setTitle(getResources().getString(R.string.device_label));
                 menus.add(menu2);
                 Menu menu3 = new Menu();
                 menu3.setIcon(R.mipmap.dir1);
-                menu3.setTitle(getResources().getString(R.string.check_update));
+                menu3.setTitle(getResources().getString(R.string.use_help));
                 menus.add(menu3);
                 Menu menu4 = new Menu();
                 menu4.setIcon(R.mipmap.dir1);
-                menu4.setTitle(getResources().getString(R.string.clear_data));
+                menu4.setTitle(getResources().getString(R.string.feedback));
                 menus.add(menu4);
                 Menu menu5 = new Menu();
                 menu5.setIcon(R.mipmap.dir1);
-                menu5.setTitle(getResources().getString(R.string.break_link));
+                menu5.setTitle(getResources().getString(R.string.version_update));
                 menus.add(menu5);
                 Menu menu6 = new Menu();
                 menu6.setIcon(R.mipmap.dir1);
-                menu6.setTitle(getResources().getString(R.string.about_device));
+                menu6.setTitle(getResources().getString(R.string.about_us));
                 menus.add(menu6);
                 mAdapter.addItems(menus);
             }
@@ -153,26 +165,41 @@ public class SettingFragment extends BaseFragment implements FixedStickyViewAdap
 
     }
 
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.rlSetting:
+                SnackBarUtil.getInstance().showSnackBar(mRootView, "rlSetting", Snackbar.LENGTH_SHORT);
+                break;
+            case R.id.btnLogout:
+                SnackBarUtil.getInstance().showSnackBar(mRootView, "btnLogout", Snackbar.LENGTH_SHORT);
+                break;
+            default:
+                break;
+        }
+    }
+
     @Override
     public void onItemClick(int position) {
         switch (position) {
-            case Constant.ItemPosition.SEARCH_DEVICE:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "SEARCH_DEVICE", Snackbar.LENGTH_SHORT, Color.WHITE);
+            case Constant.ItemPosition.PASSWORD_MANAGEMENT:
+                SnackBarUtil.getInstance().showSnackBar(mRootView, "PASSWORD_MANAGEMENT", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
-            case Constant.ItemPosition.GENERAL_SETTING:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "GENERAL_SETTING", Snackbar.LENGTH_SHORT, Color.WHITE);
+            case Constant.ItemPosition.DEVICE_LABEL:
+                SnackBarUtil.getInstance().showSnackBar(mRootView, "DEVICE_LABEL", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
-            case Constant.ItemPosition.CHECK_UPDATE:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "CHECK_UPDATE", Snackbar.LENGTH_SHORT, Color.WHITE);
+            case Constant.ItemPosition.USE_HELP:
+                SnackBarUtil.getInstance().showSnackBar(mRootView, "USE_HELP", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
-            case Constant.ItemPosition.CLEAR_DATA:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "CLEAR_DATA", Snackbar.LENGTH_SHORT, Color.WHITE);
+            case Constant.ItemPosition.FEEDBACK:
+                SnackBarUtil.getInstance().showSnackBar(mRootView, "FEEDBACK", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
-            case Constant.ItemPosition.BREAK_LINK:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "BREAK_LINK", Snackbar.LENGTH_SHORT, Color.WHITE);
+            case Constant.ItemPosition.VERSION_UPDATE:
+                SnackBarUtil.getInstance().showSnackBar(mRootView, "VERSION_UPDATE", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
-            case Constant.ItemPosition.ABOUT_DEVICE:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "ABOUT_DEVICE", Snackbar.LENGTH_SHORT, Color.WHITE);
+            case Constant.ItemPosition.ABOUT_US:
+                SnackBarUtil.getInstance().showSnackBar(mRootView, "ABOUT_US", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
         }
     }

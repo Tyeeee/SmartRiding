@@ -2,8 +2,10 @@ package com.yjt.app.constant;
 
 public class Constant {
 
+    public static final String CHANNEL_NAME = "CHANNEL_NAME";
     public static final String BUGLY_APP_ID = "900018257";
     public static final String IFLY_APP_ID = "appid=57c7f443";
+    public static final int PERMISSION_REQUEST_CODE = 0x00001;
 
     public static class View {
         public static final int COLOR_DEFAULT = 0x9999;
@@ -25,6 +27,12 @@ public class Constant {
         public static final int CLEAR_DATA = 3;
         public static final int BREAK_LINK = 4;
         public static final int ABOUT_DEVICE = 5;
+        public static final int PASSWORD_MANAGEMENT = 0;
+        public static final int DEVICE_LABEL = 1;
+        public static final int USE_HELP = 2;
+        public static final int FEEDBACK = 3;
+        public static final int VERSION_UPDATE = 4;
+        public static final int ABOUT_US = 5;
     }
 
     public static class ItemType {

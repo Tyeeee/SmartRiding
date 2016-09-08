@@ -3,16 +3,22 @@ package com.yjt.app.ui.base;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.Window;
 
 import com.yjt.app.R;
 import com.yjt.app.base.BaseApplication;
+import com.yjt.app.constant.Constant;
 import com.yjt.app.utils.ActivityUtil;
 import com.yjt.app.utils.InputUtil;
 import com.yjt.app.utils.LogUtil;
+import com.yjt.app.utils.PermissionUtil;
 import com.yjt.app.utils.ViewUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -178,6 +184,47 @@ public abstract class BaseActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         }, null);
+    }
+
+    protected void permissionRequest(String... permissions) {
+        LogUtil.print("---->" + permissions);
+        if (PermissionUtil.getInstance().isCheckPermission()) {
+            if (PermissionUtil.getInstance().hasAllPermissions(this, permissions)) {
+                LogUtil.print("---->hasAllPermissions:" + permissions);
+                permissionRequestIntent();
+            } else {
+                LogUtil.print("---->requestPermissions:" + permissions);
+                PermissionUtil.getInstance().requestPermissionsIfNecessaryForResult(this, null, permissions);
+            }
+        } else {
+            permissionRequestIntent();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case Constant.PERMISSION_REQUEST_CODE:
+                for (int i = 0; i < permissions.length; i++) {
+                    LogUtil.print("---->permission:" + permissions[i] + ",result:" + grantResults[i]);
+                }
+                if (PermissionUtil.getInstance().verifyPermissions(grantResults)) {
+                    permissionRequestResult();
+                } else {
+                    List<String> surplus = new ArrayList<>();
+                    for (int i = 0; i < permissions.length; i++) {
+                        if (grantResults[i] != 0) {
+                            surplus.add(permissions[i]);
+                            LogUtil.print("---->denied permission:" + permissions[i] + ",result:" + grantResults[i]);
+                        }
+                    }
+                    PermissionUtil.getInstance().checkPermissions(this, Constant.PERMISSION_REQUEST_CODE, surplus.toArray(new String[surplus.size()]));
+                }
+                PermissionUtil.getInstance().notifyPermissionsChange(permissions, grantResults);
+                break;
+            default:
+                break;
+        }
     }
 }
 

@@ -1,4 +1,4 @@
-package com.yjt.app.base.validation;
+package com.yjt.app.validation;
 
 import android.content.Context;
 

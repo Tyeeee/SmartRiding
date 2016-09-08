@@ -1,10 +1,5 @@
 package com.yjt.app.constant;
 
-/**
- * 网络状态枚举
- *
- * @author yjt
- */
 public enum Net {
 
     // wifi

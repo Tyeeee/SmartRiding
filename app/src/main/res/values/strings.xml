@@ -1,17 +1,24 @@
 <resources>
-
     <string name="open">open</string>
     <string name="close">close</string>
     <string name="home_page">首页</string>
     <string name="device_management">设备管理</string>
-    <string name="message">消息</string>
-    <string name="setting">设置</string>
     <string name="search_device">搜索设备</string>
     <string name="general_setting">通用设置</string>
     <string name="check_update">检查更新</string>
     <string name="clear_data">清楚数据</string>
     <string name="break_link">断开连接</string>
     <string name="about_device">关于设备</string>
+    <string name="message">消息</string>
+    <string name="setting">设置</string>
+    <string name="head_portrait">头像</string>
+    <string name="password_management">密码管理</string>
+    <string name="device_label">设备标签</string>
+    <string name="use_help">使用帮助</string>
+    <string name="feedback">意见反馈</string>
+    <string name="version_update">版本更新</string>
+    <string name="about_us">关于我们</string>
+    <string name="logout">退出登陆</string>
     <string name="prompt_title">提示</string>
     <string name="exit_application_prompt_content">确定退出应用?</string>
     <string name="exit_navigation_prompt_content">确定退出导航?</string>

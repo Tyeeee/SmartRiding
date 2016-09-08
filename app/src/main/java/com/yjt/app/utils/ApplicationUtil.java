@@ -59,6 +59,16 @@ public class ApplicationUtil {
         return getPackageInfo().versionName;
     }
 
+    public Object getMetaData(String key) {
+        try {
+            return BaseApplication.getInstance().getPackageManager().getApplicationInfo(getPackageName()
+                    , PackageManager.GET_META_DATA).metaData.get(key);
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public int getVersionCode() {
         return getPackageInfo().versionCode;
     }
@@ -112,10 +122,10 @@ public class ApplicationUtil {
         try {
             PackageInfo info = BaseApplication.getInstance().getPackageManager().getPackageInfo(
                     BaseApplication.getInstance().getPackageName(), PackageManager.GET_SIGNATURES);
-            byte[]        cert      = info.signatures[0].toByteArray();
-            MessageDigest md        = MessageDigest.getInstance("SHA1");
-            byte[]        publicKey = md.digest(cert);
-            StringBuffer  hexString = new StringBuffer();
+            byte[] cert = info.signatures[0].toByteArray();
+            MessageDigest md = MessageDigest.getInstance("SHA1");
+            byte[] publicKey = md.digest(cert);
+            StringBuffer hexString = new StringBuffer();
             for (int i = 0; i < publicKey.length; i++) {
                 String appendString = Integer.toHexString(0xFF & publicKey[i])
                         .toUpperCase(Locale.US);
