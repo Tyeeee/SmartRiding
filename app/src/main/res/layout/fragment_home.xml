@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_f2f2f2"
     tools:context="com.yjt.app.ui.activity.MainActivity">
 
     <RelativeLayout
@@ -137,8 +136,12 @@
         android:layout_height="@dimen/dp_48"
         android:layout_alignParentBottom="true"
         android:layout_centerVertical="true"
-        android:layout_margin="@dimen/dp_10"
-        android:background="@drawable/selector_button1"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:layout_marginEnd="@dimen/dp_0.5"
+        android:layout_marginLeft="@dimen/dp_0.5"
+        android:layout_marginRight="@dimen/dp_0.5"
+        android:layout_marginStart="@dimen/dp_0.5"
+        android:background="@drawable/selector_button3"
         android:gravity="center"
         android:padding="@dimen/dp_10"
         android:text="@string/search"

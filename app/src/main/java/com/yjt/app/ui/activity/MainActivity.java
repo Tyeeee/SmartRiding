@@ -13,8 +13,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
@@ -34,7 +35,6 @@ import com.yjt.app.utils.ApplicationUtil;
 import com.yjt.app.utils.BluetoothUtil;
 import com.yjt.app.utils.FragmentHelper;
 import com.yjt.app.utils.LogUtil;
-import com.yjt.app.utils.ToastUtil;
 import com.yjt.app.utils.ViewUtil;
 
 import java.lang.ref.WeakReference;
@@ -42,13 +42,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends BaseActivity implements FixedStickyViewAdapter.OnItemClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener, FixedStickyViewAdapter.OnItemClickListener {
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle mToggle;
 
-    private CircleImageView civHead;
+    private RelativeLayout rlAccount;
+    private CircleImageView civHeadPortrait;
     private TextView tvAccountName;
     private TextView tvTelphoneNumber;
 
@@ -120,7 +121,8 @@ public class MainActivity extends BaseActivity implements FixedStickyViewAdapter
         toolbar = ViewUtil.getInstance().findView(this, R.id.toolbar);
         drawerLayout = ViewUtil.getInstance().findView(this, R.id.drawerLayout);
         rvMenu = ViewUtil.getInstance().findView(this, R.id.rvMenu);
-        civHead = ViewUtil.getInstance().findView(this, R.id.civHead);
+        rlAccount = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.rlAccount, this);
+        civHeadPortrait = ViewUtil.getInstance().findView(this, R.id.civHeadPortrait);
         tvAccountName = ViewUtil.getInstance().findView(this, R.id.tvAccountName);
         tvTelphoneNumber = ViewUtil.getInstance().findView(this, R.id.tvTelphoneNumber);
     }
@@ -140,7 +142,7 @@ public class MainActivity extends BaseActivity implements FixedStickyViewAdapter
             BluetoothUtil.getInstance().turnOnBluetooth();
         }
         mHandler = new MainHandler(this);
-        civHead.setText(getString(R.string.head_portrait));
+        civHeadPortrait.setText(getString(R.string.head_portrait));
         mHelper = new FragmentHelper(getSupportFragmentManager(), R.id.flContent);
         mHelper.addItem(new FragmentHelper.OperationInfo(this, Constant.ItemPosition.HOME, HomeFragment.class));
         mHelper.addItem(new FragmentHelper.OperationInfo(this, Constant.ItemPosition.DEVICE, DeviceFragment.class));
@@ -190,6 +192,17 @@ public class MainActivity extends BaseActivity implements FixedStickyViewAdapter
     protected void setListener() {
         drawerLayout.addDrawerListener(mToggle);
         mAdapter.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.rlAccount:
+                startActivity(AccountActivity.class);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override

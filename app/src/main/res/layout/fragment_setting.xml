@@ -1,87 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray_f2f2f2">
-
-    <RelativeLayout
-        android:id="@+id/rlSetting"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:clickable="true"
-        android:paddingBottom="@dimen/dp_20"
-        android:paddingTop="@dimen/dp_20">
-
-        <com.yjt.app.ui.widget.CircleImageView
-            android:id="@+id/civSetting"
-            android:layout_width="@dimen/dp_60"
-            android:layout_height="@dimen/dp_60"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/dp_20"
-            android:clickable="false"
-            android:contentDescription="@null"
-            app:border_color="@android:color/black"
-            app:border_width="@dimen/dp_1"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:text_color="@android:color/black"
-            app:text_padding="@dimen/dp_5"
-            app:text_size="@dimen/sp_10"/>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/civSetting"
-            android:layout_toRightOf="@+id/civSetting"
-            android:clickable="false"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tvAccountName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dp_5"
-                android:clickable="false"
-                android:text="Tye"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/sp_20"/>
-
-            <TextView
-                android:id="@+id/tvTelphoneNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="false"
-                android:text="18888888888"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/sp_15"/>
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="@dimen/dp_24"
-            android:layout_height="@dimen/dp_24"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/dp_10"
-            android:layout_marginRight="@dimen/dp_10"
-            android:contentDescription="@null"
-            android:src="@mipmap/icon_forward"/>
-    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvMenu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/btnLogout"
-        android:layout_below="@+id/rlSetting"
+        android:layout_alignParentTop="true"
         android:layout_marginBottom="@dimen/dp_5"
-        android:layout_marginTop="@dimen/dp_5"
         android:fadeScrollbars="@null"
         android:scrollbars="none"/>
 
@@ -91,12 +21,12 @@
         android:layout_height="@dimen/dp_48"
         android:layout_alignParentBottom="true"
         android:layout_centerVertical="true"
-        android:layout_marginBottom="@dimen/dp_10"
-        android:layout_marginEnd="@dimen/dp_10"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:layout_marginRight="@dimen/dp_10"
-        android:layout_marginStart="@dimen/dp_10"
-        android:background="@drawable/selector_button1"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:layout_marginEnd="@dimen/dp_0.5"
+        android:layout_marginLeft="@dimen/dp_0.5"
+        android:layout_marginRight="@dimen/dp_0.5"
+        android:layout_marginStart="@dimen/dp_0.5"
+        android:background="@drawable/selector_button3"
         android:gravity="center"
         android:text="@string/logout"
         android:textColor="@android:color/white"

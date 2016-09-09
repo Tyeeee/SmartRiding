@@ -12,8 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
@@ -22,7 +20,6 @@ import com.yjt.app.ui.adapter.MenuAdapter;
 import com.yjt.app.ui.adapter.binder.MenuBinder;
 import com.yjt.app.ui.base.BaseFragment;
 import com.yjt.app.ui.sticky.FixedStickyViewAdapter;
-import com.yjt.app.ui.widget.CircleImageView;
 import com.yjt.app.ui.widget.LinearLayoutDividerItemDecoration;
 import com.yjt.app.utils.SnackBarUtil;
 import com.yjt.app.utils.ViewUtil;
@@ -34,10 +31,6 @@ import java.util.List;
 
 public class SettingFragment extends BaseFragment implements View.OnClickListener, FixedStickyViewAdapter.OnItemClickListener {
 
-    private RelativeLayout rlSetting;
-    private CircleImageView civSetting;
-    private TextView tvAccountName;
-    private TextView tvTelphoneNumber;
     private RecyclerView rvMenu;
     private LinearLayoutManager mLayoutManager;
     private FixedStickyViewAdapter mAdapter;
@@ -83,23 +76,18 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     protected void findViewById() {
-        rlSetting = ViewUtil.getInstance().findViewAttachOnclick(mRootView, R.id.rlSetting, this);
-        civSetting = ViewUtil.getInstance().findView(mRootView, R.id.civSetting);
-        tvAccountName = ViewUtil.getInstance().findView(mRootView, R.id.tvAccountName);
-        tvTelphoneNumber = ViewUtil.getInstance().findView(mRootView, R.id.tvTelphoneNumber);
         rvMenu = ViewUtil.getInstance().findView(mRootView, R.id.rvMenu);
         btnLogout = ViewUtil.getInstance().findViewAttachOnclick(mRootView, R.id.btnLogout, this);
     }
 
     @Override
     protected void setViewListener() {
-        
+
     }
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
         mHandler = new SettingHandler(this);
-        civSetting.setText(getString(R.string.head_portrait));
         mLayoutManager = new LinearLayoutManager(getActivity());
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvMenu.setHasFixedSize(true);
@@ -169,9 +157,6 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.rlSetting:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "rlSetting", Snackbar.LENGTH_SHORT);
-                break;
             case R.id.btnLogout:
                 SnackBarUtil.getInstance().showSnackBar(mRootView, "btnLogout", Snackbar.LENGTH_SHORT);
                 break;

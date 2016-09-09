@@ -34,14 +34,14 @@
             android:background="@color/gray_2b2b2b">
 
             <RelativeLayout
-                android:id="@+id/rlHeader"
+                android:id="@+id/rlAccount"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_125"
                 android:layout_alignParentTop="true"
                 android:clickable="false">
 
                 <com.yjt.app.ui.widget.CircleImageView
-                    android:id="@+id/civHead"
+                    android:id="@+id/civHeadPortrait"
                     android:layout_width="@dimen/dp_60"
                     android:layout_height="@dimen/dp_60"
                     android:layout_alignParentLeft="true"
@@ -62,8 +62,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/civHead"
-                    android:layout_toRightOf="@+id/civHead"
+                    android:layout_toEndOf="@+id/civHeadPortrait"
+                    android:layout_toRightOf="@+id/civHeadPortrait"
                     android:clickable="false"
                     android:orientation="vertical">
 
@@ -87,13 +87,24 @@
                         android:textSize="@dimen/sp_15"/>
                 </LinearLayout>
 
+                <ImageView
+                    android:layout_width="@dimen/dp_24"
+                    android:layout_height="@dimen/dp_24"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:contentDescription="@null"
+                    android:src="@mipmap/icon_forward"/>
+
             </RelativeLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvMenu"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/rlHeader"
+                android:layout_below="@+id/rlAccount"
                 android:fadeScrollbars="@null"
                 android:scrollbars="none"/>
 
