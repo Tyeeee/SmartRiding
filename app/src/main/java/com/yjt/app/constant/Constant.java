@@ -10,6 +10,7 @@ public class Constant {
     public static class View {
         public static final int COLOR_DEFAULT = 0x9999;
         public static final int SIZE_DEFAULT = 0x9999;
+        public static final int RESOURCE_DEFAULT = 0x9999;
         public static final int DRAWABLE_TOP = 0x0001;
         public static final int DRAWABLE_LEFT = 0x0002;
         public static final int DRAWABLE_RIGHT = 0x0003;

@@ -1,7 +1,6 @@
 package com.yjt.app.utils;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,7 +19,7 @@ public class FragmentHelper {
     private FragmentManager mFragmentManager;
     private HashMap<String, OperationInfo> mItems = new HashMap<String, OperationInfo>();
     private OperationInfo mInfo;
-    private int mResource;
+    private int           mResource;
     private int[] mAnimations = new int[2];
 
     public FragmentHelper(FragmentManager fragmentManager, int mResource) {
@@ -71,7 +70,6 @@ public class FragmentHelper {
                 transaction.hide(mInfo.mFragment);
                 if (toolbar != null) {
                     toolbar.setTitle(resId);
-                    toolbar.setTitleTextColor(Color.WHITE);
                 }
             }
             mInfo = info;
@@ -87,7 +85,6 @@ public class FragmentHelper {
                 }
                 if (toolbar != null) {
                     toolbar.setTitle(resId);
-                    toolbar.setTitleTextColor(Color.WHITE);
                 }
             }
         } else {
@@ -102,10 +99,10 @@ public class FragmentHelper {
     }
 
     public static class OperationInfo {
-        protected Context mContext;
-        protected String mTag;
+        protected Context  mContext;
+        protected String   mTag;
         protected Class<?> mClass;
-        protected Bundle mBundle;
+        protected Bundle   mBundle;
         protected Fragment mFragment;
 
         public OperationInfo(Context context, String tag, Class<?> cls) {

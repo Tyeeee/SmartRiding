@@ -6,11 +6,11 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,6 +35,7 @@ import com.yjt.app.utils.ApplicationUtil;
 import com.yjt.app.utils.BluetoothUtil;
 import com.yjt.app.utils.FragmentHelper;
 import com.yjt.app.utils.LogUtil;
+import com.yjt.app.utils.SnackBarUtil;
 import com.yjt.app.utils.ViewUtil;
 
 import java.lang.ref.WeakReference;
@@ -44,24 +45,23 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener, FixedStickyViewAdapter.OnItemClickListener {
 
-    private Toolbar toolbar;
-    private DrawerLayout drawerLayout;
+    private DrawerLayout          drawerLayout;
     private ActionBarDrawerToggle mToggle;
 
-    private RelativeLayout rlAccount;
+    private RelativeLayout  rlAccount;
     private CircleImageView civHeadPortrait;
-    private TextView tvAccountName;
-    private TextView tvTelphoneNumber;
+    private TextView        tvAccountName;
+    private TextView        tvTelphoneNumber;
 
-    private RecyclerView rvMenu;
-    private LinearLayoutManager mLayoutManager;
+    private RecyclerView           rvMenu;
+    private LinearLayoutManager    mLayoutManager;
     private FixedStickyViewAdapter mAdapter;
 
     private FragmentHelper mHelper;
 
     private BluetoothReceiver mReceiver;
 
-    private Handler mFragmentHandler;
+    private Handler     mFragmentHandler;
     private MainHandler mHandler;
 
     protected static class MainHandler extends Handler {
@@ -96,6 +96,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+        menu.findItem(R.id.menuLogout).setVisible(true);
+        return true;
+    }
+
+    @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mToggle.syncState();
@@ -105,6 +112,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mToggle.onOptionsItemSelected(item)) {
             return true;
+        }
+        switch (item.getItemId()) {
+            case R.id.menuLogout:
+                SnackBarUtil.getInstance().showSnackBar(tbTitle, "menuLogout", Snackbar.LENGTH_SHORT);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -118,7 +130,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void findViewById() {
-        toolbar = ViewUtil.getInstance().findView(this, R.id.toolbar);
+        tbTitle = ViewUtil.getInstance().findView(this, R.id.tbTitle);
         drawerLayout = ViewUtil.getInstance().findView(this, R.id.drawerLayout);
         rvMenu = ViewUtil.getInstance().findView(this, R.id.rvMenu);
         rlAccount = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.rlAccount, this);
@@ -148,8 +160,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         mHelper.addItem(new FragmentHelper.OperationInfo(this, Constant.ItemPosition.DEVICE, DeviceFragment.class));
         mHelper.addItem(new FragmentHelper.OperationInfo(this, Constant.ItemPosition.MESSAGE, MessageFragment.class));
         mHelper.addItem(new FragmentHelper.OperationInfo(this, Constant.ItemPosition.SETTING, SettingFragment.class));
-        mHelper.show(Constant.ItemPosition.HOME, false, toolbar, R.string.home_page);
-        mToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
+        mHelper.show(Constant.ItemPosition.HOME, false, tbTitle, R.string.home_page);
+        mToggle = new ActionBarDrawerToggle(this, drawerLayout, tbTitle, R.string.open, R.string.close);
         mLayoutManager = new LinearLayoutManager(this);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvMenu.setHasFixedSize(true);
@@ -160,7 +172,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             @Override
             public void run() {
                 List<Menu> menus = new ArrayList<>();
-                Menu menu1 = new Menu();
+                Menu       menu1 = new Menu();
                 menu1.setIcon(R.mipmap.dir1);
                 menu1.setTitle(getResources().getString(R.string.home_page));
                 menus.add(menu1);
@@ -199,6 +211,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         switch (v.getId()) {
             case R.id.rlAccount:
                 startActivity(AccountActivity.class);
+                drawerLayout.closeDrawers();
                 break;
             default:
                 break;
@@ -209,23 +222,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public void onItemClick(int position) {
         switch (position) {
             case Constant.ItemPosition.HOME:
-                mHelper.show(Constant.ItemPosition.HOME, false, toolbar, R.string.home_page);
+                mHelper.show(Constant.ItemPosition.HOME, false, tbTitle, R.string.home_page);
                 drawerLayout.closeDrawers();
                 break;
             case Constant.ItemPosition.DEVICE:
-                mHelper.show(Constant.ItemPosition.DEVICE, false, toolbar, R.string.device_management);
+                mHelper.show(Constant.ItemPosition.DEVICE, false, tbTitle, R.string.device_management);
                 drawerLayout.closeDrawers();
                 break;
             case Constant.ItemPosition.MESSAGE:
-                mHelper.show(Constant.ItemPosition.MESSAGE, false, toolbar, R.string.message);
+                mHelper.show(Constant.ItemPosition.MESSAGE, false, tbTitle, R.string.message);
                 drawerLayout.closeDrawers();
                 break;
             case Constant.ItemPosition.SETTING:
-                mHelper.show(Constant.ItemPosition.SETTING, false, toolbar, R.string.setting);
+                mHelper.show(Constant.ItemPosition.SETTING, false, tbTitle, R.string.setting);
                 drawerLayout.closeDrawers();
                 break;
             default:
-                mHelper.show(Constant.ItemPosition.HOME, false, toolbar, R.string.home_page);
+                mHelper.show(Constant.ItemPosition.HOME, false, tbTitle, R.string.home_page);
                 drawerLayout.closeDrawers();
                 break;
         }

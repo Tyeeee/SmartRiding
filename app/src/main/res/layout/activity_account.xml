@@ -5,9 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_f2f2f2"
     android:orientation="vertical"
     tools:context="com.yjt.app.ui.activity.RouteActivity">
+
+    <include layout="@layout/toolbar_title"/>
 
     <RelativeLayout
         android:id="@+id/rlHeadPortrait"

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.Window;
 
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseActivity extends AppCompatActivity {
+
+    protected Toolbar tbTitle;
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -118,7 +121,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         return false;
     }
 
-    protected void onFinish(String message) {
+    public void onFinish(String message) {
         super.finish();
         overridePendingTransition(R.anim.slide_left_in, R.anim.slide_right_out);
         LogUtil.print("onFinish is called: " + message);

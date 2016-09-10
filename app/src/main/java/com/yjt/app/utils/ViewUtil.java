@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.IdRes;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 
 import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Constant;
+import com.yjt.app.ui.base.BaseActivity;
 
 public class ViewUtil {
 
@@ -91,6 +93,23 @@ public class ViewUtil {
         if (d != null)
             d.setCallback(null);
         setViewBackground(view, null);
+    }
+
+    public void setToolBar(final BaseActivity activity, int toolbarId, boolean isHomeButtonEnable) {
+        if (activity != null && toolbarId != Constant.View.RESOURCE_DEFAULT) {
+            Toolbar toolbar = findView(activity, toolbarId);
+            activity.setSupportActionBar(toolbar);
+            if (activity.getSupportActionBar() != null) {
+                activity.getSupportActionBar().setDisplayHomeAsUpEnabled(isHomeButtonEnable);
+                toolbar.setTitle(activity.getTitle());
+                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        activity.onFinish("setNavigationOnClickListener");
+                    }
+                });
+            }
+        }
     }
 
     public <V> V findView(Activity activity, @IdRes int resId) {

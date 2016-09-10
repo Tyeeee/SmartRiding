@@ -1,0 +1,43 @@
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menuSearch"
+        android:icon="@mipmap/icon_search"
+        android:orderInCategory="0"
+        android:title="@string/search"
+        android:visible="false"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/menuVoice"
+        android:icon="@mipmap/icon_voice"
+        android:orderInCategory="1"
+        android:title="@string/voice"
+        android:visible="false"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/menuCollection"
+        android:icon="@mipmap/dir1"
+        android:orderInCategory="2"
+        android:title="@string/collection"
+        android:visible="false"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/menuLogout"
+        android:icon="@mipmap/icon_delete"
+        android:orderInCategory="3"
+        android:title="@string/logout"
+        android:visible="false"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/menuShare"
+        android:icon="@mipmap/dir1"
+        android:orderInCategory="4"
+        android:title="@string/share"
+        android:visible="false"
+        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+        app:showAsAction="ifRoom"/>
+
+</menu>

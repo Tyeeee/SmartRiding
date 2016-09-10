@@ -12,26 +12,26 @@ import com.yjt.app.utils.ViewUtil;
 
 public class AccountActivity extends BaseActivity implements View.OnClickListener {
 
-    private RelativeLayout rlHeadPortrait;
+    private RelativeLayout  rlHeadPortrait;
     private CircleImageView civHeadPortrait;
 
     private RelativeLayout rlNickname;
-    private TextView tvNickname;
+    private TextView       tvNickname;
 
     private RelativeLayout rlPhoneNumber;
-    private TextView tvPhoneNumber;
+    private TextView       tvPhoneNumber;
 
     private RelativeLayout rlGender;
-    private TextView tvGender;
+    private TextView       tvGender;
 
     private RelativeLayout rlHeight;
-    private TextView tvHeight;
+    private TextView       tvHeight;
 
     private RelativeLayout rlWeight;
-    private TextView tvWeight;
+    private TextView       tvWeight;
 
     private RelativeLayout rlBirthday;
-    private TextView tvBirthday;
+    private TextView       tvBirthday;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void findViewById() {
+        ViewUtil.getInstance().setToolBar(this, R.id.tbTitle, true);
         rlHeadPortrait = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.rlHeadPortrait, this);
         civHeadPortrait = ViewUtil.getInstance().findView(this, R.id.civHeadPortrait);
         rlNickname = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.rlNickname, this);

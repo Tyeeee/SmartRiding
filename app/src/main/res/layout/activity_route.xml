@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_f2f2f2"
     android:orientation="vertical"
     tools:context="com.yjt.app.ui.activity.RouteActivity">
 
@@ -58,6 +57,7 @@
                 android:layout_toStartOf="@+id/ivDelete"
                 android:background="@null"
                 android:inputType="text"
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_15"/>
 
             <ImageView

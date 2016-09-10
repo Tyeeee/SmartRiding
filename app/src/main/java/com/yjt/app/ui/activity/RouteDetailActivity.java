@@ -16,10 +16,10 @@ import com.yjt.app.R;
 import com.yjt.app.constant.Regex;
 import com.yjt.app.constant.Temp;
 import com.yjt.app.model.RouteDetail;
-import com.yjt.app.ui.sticky.FixedStickyViewAdapter;
 import com.yjt.app.ui.adapter.RouteDetailAdapter;
 import com.yjt.app.ui.adapter.binder.RouteDetailBinder;
 import com.yjt.app.ui.base.BaseActivity;
+import com.yjt.app.ui.sticky.FixedStickyViewAdapter;
 import com.yjt.app.ui.widget.LinearLayoutDividerItemDecoration;
 import com.yjt.app.utils.IntentDataUtil;
 import com.yjt.app.utils.MapUtil;
@@ -28,7 +28,6 @@ import com.yjt.app.utils.ViewUtil;
 
 import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,6 +76,7 @@ public class RouteDetailActivity extends BaseActivity {
 
     @Override
     protected void findViewById() {
+        ViewUtil.getInstance().setToolBar(this, R.id.tbTitle, true);
         tvDistance = ViewUtil.getInstance().findView(this, R.id.tvDistance);
         tvCost = ViewUtil.getInstance().findView(this, R.id.tvCost);
         rvRouteDetail = ViewUtil.getInstance().findView(this, R.id.rvRouteDetail);
