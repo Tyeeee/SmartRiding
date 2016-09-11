@@ -137,7 +137,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onPositiveButtonClicked(int requestCode, Date date) {
-
+        tvBirthday.setText(date.toString());
     }
 
     @Override
