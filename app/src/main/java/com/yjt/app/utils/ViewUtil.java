@@ -64,6 +64,14 @@ public class ViewUtil {
         return view.getVisibility() == View.VISIBLE;
     }
 
+    public boolean isInvisible(View view) {
+        return view.getVisibility() == View.INVISIBLE;
+    }
+
+    public boolean isGone(View view) {
+        return view.getVisibility() == View.GONE;
+    }
+
     public void setViewVisible(View view) {
         view.setVisibility(View.VISIBLE);
     }
@@ -136,6 +144,14 @@ public class ViewUtil {
         return (V) view;
     }
 
+
+    public boolean isScrollable(ViewGroup group) {
+        int totalHeight = 0;
+        for (int i = 0; i < group.getChildCount(); i++) {
+            totalHeight += group.getChildAt(i).getMeasuredHeight();
+        }
+        return group.getMeasuredHeight() < totalHeight;
+    }
 
     public boolean isScrollTop(RecyclerView recyclerView) {
         if (recyclerView != null && recyclerView.getChildCount() > 0) {

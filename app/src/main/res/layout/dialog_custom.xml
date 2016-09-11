@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    style="@style/yjt.Light.Dialog.Layout"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/tvDialogTitle"
+        style="@style/yjt.Light.Dialog.TextView.Title"/>
+
+    <LinearLayout style="@style/yjt.Light.Dialog.Layout.Content">
+
+        <ScrollView
+            android:id="@+id/svDialogContent"
+            style="@style/yjt.Light.Dialog.ScrollView">
+
+            <TextView
+                android:id="@+id/tvDialogMessage"
+                style="@style/yjt.Light.Dialog.TextView.Message"/>
+        </ScrollView>
+
+        <FrameLayout
+            android:id="@+id/flDialogCustom"
+            style="@style/yjt.Light.Dialog.Layout.Custom"/>
+
+        <ListView
+            android:id="@+id/lvDialogContent"
+            style="@style/yjt.Light.Dialog.ListView"/>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/vDialogDivider"
+        style="@style/yjt.Light.Dialog.Divider"/>
+
+    <RelativeLayout
+        android:id="@+id/rlDialogLayoutButtons"
+        style="@style/yjt.Light.Dialog.Layout.Buttons">
+
+        <Button
+            android:id="@+id/btnDialogNeutral"
+            style="@style/yjt.Light.Dialog.Button.Neutral"/>
+
+        <LinearLayout
+            android:id="@+id/llDialogLayoutButtonsRight"
+            style="@style/yjt.Light.Dialog.Layout.Buttons.Right">
+
+            <Button
+                android:id="@+id/btnDialogNegative"
+                style="@style/yjt.Light.Dialog.Button"/>
+
+            <Button
+                android:id="@+id/btnDialogPositive"
+                style="@style/yjt.Light.Dialog.Button"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/llDialogLayoutButtonsStacked"
+        style="@style/yjt.Light.Dialog.Layout.Buttons.Stacked">
+
+        <Button
+            android:id="@+id/btnDialogButtonPositiveStacked"
+            style="@style/yjt.Light.Dialog.Button.Stacked"/>
+
+        <Button
+            android:id="@+id/btnDialogButtonNegativestacked"
+            style="@style/yjt.Light.Dialog.Button.Stacked"/>
+
+        <Button
+            android:id="@+id/btnDialogButtonNeutralStacked"
+            style="@style/yjt.Light.Dialog.Button.Stacked"/>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/vDialogButtonsBottomSpace"
+        style="@style/yjt.Light.Dialog.Space.ButtonsBottom"/>
+</LinearLayout>

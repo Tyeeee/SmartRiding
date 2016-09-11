@@ -27,7 +27,7 @@
         <attr name="fab_title" format="string"/>
         <attr name="fab_stroke_visible" format="boolean"/>
     </declare-styleable>
-    
+
     <declare-styleable name="FloatingActionMenu">
         <attr name="fab_addButtonColorPressed" format="color"/>
         <attr name="fab_addButtonColorNormal" format="color"/>
@@ -52,5 +52,14 @@
 
     <declare-styleable name="AddFloatingActionButton">
         <attr name="fab_plusIconColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="CustomDialog">
+        <attr name="textPrimaryColor" format="color|reference"/>
+        <attr name="textSecondaryColor" format="color|reference"/>
+        <attr name="dividerColor" format="color|reference"/>
+        <attr name="pressedColor" format="color|reference"/>
+        <attr name="buttonBackground" format="reference"/>
+        <attr name="listSelector" format="reference"/>
     </declare-styleable>
 </resources>

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -19,5 +19,258 @@
     <style name="AppTheme.DrawerArrowToggle" parent="Base.Widget.AppCompat.DrawerArrowToggle">
         <item name="color">@android:color/white</item>
     </style>
+
+
+    <style name="yjt.Light.Dialog" parent="android:Theme.Light"/>
+
+    <style name="yjt.Dark.Dialog" parent="android:Theme"/>
+
+    <style name="yjt.Light.Dialog.Appearance" parent="android:Theme.Light">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:backgroundDimAmount">0.6</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:listChoiceIndicatorSingle" tools:ignore="PrivateResource">
+            @drawable/abc_btn_radio_material
+        </item>
+        <item name="android:listChoiceIndicatorMultiple" tools:ignore="PrivateResource">
+            @drawable/abc_btn_check_material
+        </item>
+        <item name="android:colorAccent" tools:targetApi="lollipop">?colorAccent</item>
+        <item name="android:colorPrimary" tools:targetApi="lollipop">?colorPrimary</item>
+        <item name="buttonBackground">@drawable/selector_dialog_button</item>
+        <item name="textPrimaryColor">@color/gray_DE000000</item>
+        <item name="textSecondaryColor">@color/gray_8A000000</item>
+        <item name="dividerColor">@color/gray_1F000000</item>
+        <item name="pressedColor">@color/gray_29000000</item>
+        <item name="listSelector">@drawable/selector_dialog_list</item>
+        <item name="android:windowBackground">@drawable/dialog_dark</item>
+    </style>
+
+    <style name="yjt.Dark.Dialog.Appearance" parent="android:Theme">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:backgroundDimAmount">0.6</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:listChoiceIndicatorSingle" tools:ignore="PrivateResource">
+            @drawable/abc_btn_radio_material
+        </item>
+        <item name="android:listChoiceIndicatorMultiple" tools:ignore="PrivateResource">
+            @drawable/abc_btn_check_material
+        </item>
+        <item name="android:colorAccent" tools:targetApi="lollipop">?colorAccent</item>
+        <item name="android:colorPrimary" tools:targetApi="lollipop">?colorPrimary</item>
+        <item name="buttonBackground">@drawable/selector_dialog_button</item>
+        <item name="textPrimaryColor">@android:color/white</item>
+        <item name="listSelector">@drawable/selector_dialog_list</item>
+        <item name="textSecondaryColor">@color/gray_B3FFFFFF</item>
+        <item name="dividerColor">@color/gray_1FFFFFFF</item>
+        <item name="pressedColor">@color/gray_29FFFFFF</item>
+        <item name="android:windowBackground">@color/gray_ff424242</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.Layout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.Layout.Content">
+        <item name="android:layout_height">@dimen/dp_0</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.Layout.Custom">
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.Layout.Buttons">
+        <item name="android:layout_height">@dimen/dp_12</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingLeft">@dimen/dp_2</item>
+        <item name="android:paddingRight">@dimen/dp_2</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.Layout.Buttons.Right">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:paddingLeft">@dimen/dp_0</item>
+        <item name="android:paddingRight">@dimen/dp_0</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.Layout.Buttons.Stacked">
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/dp_0</item>
+        <item name="android:paddingRight">@dimen/dp_0</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.Button">
+        <item name="android:background">?buttonBackground</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:minWidth">@dimen/dp_16</item>
+        <item name="android:layout_height">@dimen/dp_9</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:paddingRight">@dimen/dp_2</item>
+        <item name="android:paddingLeft">@dimen/dp_2</item>
+        <item name="android:layout_marginRight">@dimen/dp_1</item>
+        <item name="android:layout_marginLeft">@dimen/dp_1</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">?colorAccent</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.Button.Neutral" parent="@style/yjt.Light.Dialog.Button">
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.Button.Stacked">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dp_12</item>
+        <item name="android:gravity">center_vertical|end</item>
+        <item name="android:paddingRight">@dimen/dp_8</item>
+        <item name="android:paddingLeft">@dimen/dp_8</item>
+        <item name="android:layout_marginRight">0dp</item>
+        <item name="android:layout_marginLeft">0dp</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.Expander">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">?dividerColor</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.Space">
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.Space.ButtonsBottom">
+        <item name="android:layout_height">@dimen/dp_2</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.Progress1">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.Progress2" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginRight">@dimen/dp_1</item>
+        <item name="android:layout_marginLeft">@dimen/dp_4</item>
+        <item name="android:layout_marginTop">@dimen/dp_4</item>
+        <item name="android:layout_marginBottom">@dimen/dp_4</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.ScrollView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+
+    <style name="yjt.Light.Dialog.TextView" parent="@android:style/Widget.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.TextView.Title">
+        <item name="android:textSize">@dimen/sp_20</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textColor">?textPrimaryColor</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.TextView.Message">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">?textSecondaryColor</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.TextView.Message.Progress">
+        <item name="android:paddingRight">@dimen/dp_4</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.ListView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:scrollbarStyle">outsideOverlay</item>
+        <item name="android:divider">@null</item>
+        <item name="android:scrollbars">none</item>
+        <item name="android:dividerHeight">@dimen/dp_0</item>
+        <item name="android:listSelector">?listSelector</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.ListItemControl">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:clickable">false</item>
+        <item name="android:minHeight">@dimen/dp_13</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">@dimen/dp_6</item>
+        <item name="android:paddingRight">@dimen/dp_0</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.ListItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical|start</item>
+        <item name="android:descendantFocusability">blocksDescendants</item>
+        <item name="android:paddingLeft">@dimen/dp_6</item>
+        <item name="android:paddingRight">@dimen/dp_6</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.TextView.ListItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/dp_13</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">?textPrimaryColor</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">@dimen/dp_6</item>
+        <item name="android:paddingRight">@dimen/dp_6</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.TextView.MultiChoice">
+        <item name="android:minHeight">@dimen/dp_13</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">?textPrimaryColor</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingRight">@dimen/dp_6</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.DatePicker">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:spinnersShown">true</item>
+        <item name="android:calendarViewShown">false</item>
+    </style>
+
 
 </resources>

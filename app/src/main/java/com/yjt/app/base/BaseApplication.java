@@ -20,6 +20,7 @@ import com.yjt.app.utils.SnackBarUtil;
 import com.yjt.app.utils.StrictModeUtil;
 import com.yjt.app.utils.TTSUtil;
 import com.yjt.app.utils.ToastUtil;
+import com.yjt.app.utils.TypefaceUtil;
 import com.yjt.app.utils.VersionUtil;
 import com.yjt.app.utils.ViewUtil;
 
@@ -65,6 +66,7 @@ public class BaseApplication extends MultiDexApplication {
         ViewUtil.releaseInstance();
         FragmentUtil.getInstance().clearCache();
         FragmentUtil.releaseInstance();
+        TypefaceUtil.releaseInstance();
         ActivityUtil.removeAll();
         mApplication = null;
     }

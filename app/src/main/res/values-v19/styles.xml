@@ -16,4 +16,9 @@
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
+
+    <style name="yjt.Light.Dialog" parent="android:Theme.Holo.Light.Dialog"/>
+
+    <style name="yjt.Dark.Dialog" parent="android:Theme.Holo.Dialog"/>
+
 </resources>

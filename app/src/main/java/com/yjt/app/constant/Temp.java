@@ -2,6 +2,16 @@ package com.yjt.app.constant;
 
 public enum Temp {
 
+    REQUEST_CODE("request_code"),
+    CANCELABLE_ON_TOUCH_OUTSIDE("cancelable_on_touch_outside"),
+    USE_LIGHT_THEME("use_light_theme"),
+    USE_DARK_THEME("use_dark_theme"),
+    DIALOG_TITLE("dialog_title"),
+    DIALOG_BUTTON_POSITIVE("dialog_button_positive"),
+    DIALOG_BUTTON_NEGATIVE("dialog_button_negative"),
+    TIME_ZONE("time_zone"),
+    DATE("date"),
+    TIME_FORMAT("time_format"),
     POINT_TYPE("point_type"),
     POINT_CONTENT("point_content"),
     START_POINT("start_point"),

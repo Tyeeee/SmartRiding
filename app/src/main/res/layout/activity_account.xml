@@ -352,6 +352,10 @@
             android:layout_marginRight="@dimen/dp_5"
             android:contentDescription="@null"
             android:src="@mipmap/icon_forward"/>
-
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0.5"
+        android:background="@color/gray_999999"/>
 </LinearLayout>

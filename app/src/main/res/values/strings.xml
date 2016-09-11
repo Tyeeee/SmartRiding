@@ -1,5 +1,5 @@
 <resources>
-    <string name="activity_account">用户中心</string>
+    <string name="activity_account">用户信息</string>
     <string name="activity_route_detail">路线详情</string>
 
     <string name="open">open</string>

@@ -17,4 +17,8 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
+    <style name="yjt.Light.Dialog" parent="android:Theme.Material.Light.Dialog"/>
+
+    <style name="yjt.Dark.Dialog" parent="android:Theme.Material.Dialog"/>
+
 </resources>

@@ -6,11 +6,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yjt.app.R;
+import com.yjt.app.constant.Constant;
 import com.yjt.app.ui.base.BaseActivity;
+import com.yjt.app.ui.dialog.DatePickerDialog;
+import com.yjt.app.ui.listener.OnDateDialogListener;
 import com.yjt.app.ui.widget.CircleImageView;
 import com.yjt.app.utils.ViewUtil;
 
-public class AccountActivity extends BaseActivity implements View.OnClickListener {
+import java.util.Date;
+
+public class AccountActivity extends BaseActivity implements View.OnClickListener, OnDateDialogListener {
 
     private RelativeLayout  rlHeadPortrait;
     private CircleImageView civHeadPortrait;
@@ -117,10 +122,26 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.rlWeight:
                 break;
-            case R.id.tvBirthday:
+            case R.id.rlBirthday:
+                DatePickerDialog.createBuilder(getSupportFragmentManager())
+                        .setDate(new Date())
+                        .setPositiveButtonText(R.string.enter)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_DATE)
+                        .show();
                 break;
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onPositiveButtonClicked(int requestCode, Date date) {
+
+    }
+
+    @Override
+    public void onNegativeButtonClicked(int requestCode, Date date) {
+
     }
 }

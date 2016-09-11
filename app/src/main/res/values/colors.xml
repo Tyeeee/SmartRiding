@@ -9,11 +9,20 @@
     <color name="gray_f0f0f0">#f0f0f0</color>
     <color name="gray_e0e0e0">#e0e0e0</color>
     <color name="gray_f2f2f2">#f2f2f2</color>
+    <color name="gray_ffeeeeee">#ffeeeeee</color>
+    <color name="gray_B3FFFFFF">#B3FFFFFF</color>
     <color name="gray_b6b6b6">#b6b6b6</color>
     <color name="gray_999999">#999999</color>
     <color name="gray_979797">#979797</color>
     <color name="gray_808080">#808080</color>
+    <color name="gray_29FFFFFF">#29FFFFFF</color>
+    <color name="gray_1FFFFFFF">#1FFFFFFF</color>
     <color name="gray_494949">#494949</color>
+    <color name="gray_ff424242">#ff424242</color>
     <color name="gray_3c3f41">#3c3f41</color>
     <color name="gray_2b2b2b">#2b2b2b</color>
+    <color name="gray_1F000000">#1F000000</color>
+    <color name="gray_29000000">#29000000</color>
+    <color name="gray_8A000000">#8A000000</color>
+    <color name="gray_DE000000">#DE000000</color>
 </resources>
