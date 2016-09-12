@@ -108,6 +108,8 @@ public class ListDialog extends BaseDialogFragment {
                         }
                     };
                     break;
+                case AbsListView.CHOICE_MODE_NONE:
+                    break;
                 default:
                     break;
             }

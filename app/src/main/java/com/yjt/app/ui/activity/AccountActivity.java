@@ -1,6 +1,7 @@
 package com.yjt.app.ui.activity;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.RelativeLayout;
@@ -18,6 +19,7 @@ import com.yjt.app.ui.listener.OnListDialogListener;
 import com.yjt.app.ui.listener.OnMultiChoiceListDialogListener;
 import com.yjt.app.ui.widget.CircleImageView;
 import com.yjt.app.utils.DateUtil;
+import com.yjt.app.utils.SnackBarUtil;
 import com.yjt.app.utils.ViewUtil;
 
 import java.util.Date;
@@ -127,7 +129,6 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
                 ListDialog.createBuilder(getSupportFragmentManager())
                         .setTitle(getString(R.string.gender))
                         .setPositiveButtonText(R.string.enter)
-                        .setNegativeButtonText(R.string.cancel)
                         .setItems(getString(R.string.male), getString(R.string.female), getString(R.string.secrecy))
                         .setRequestCode(Constant.RequestCode.DIALOG_RADIO)
                         .setChoiceMode(AbsListView.CHOICE_MODE_SINGLE)
@@ -165,6 +166,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
     public void onNegativeButtonClicked(int requestCode) {
         switch (requestCode) {
             case Constant.RequestCode.DIALOG_DATE:
+                SnackBarUtil.getInstance().showSnackBar(rlHeadPortrait, "DIALOG_DATE-->onNegativeButtonClicked", Snackbar.LENGTH_SHORT);
                 break;
             default:
                 break;
@@ -175,7 +177,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
     public void onCanceled(int requestCode) {
         switch (requestCode) {
             case Constant.RequestCode.DIALOG_RADIO:
-//                SnackBarUtil.getInstance().showSnackBar(rlHeadPortrait, "", Snackbar.LENGTH_SHORT);
+                SnackBarUtil.getInstance().showSnackBar(rlHeadPortrait, "DIALOG_RADIO-->onCanceled", Snackbar.LENGTH_SHORT);
                 break;
             default:
                 break;
@@ -197,6 +199,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
     public void onMultiChoiceListItemsSelected(CharSequence[] values, int[] selectedPositions, int requestCode) {
         switch (requestCode) {
             case Constant.RequestCode.DIALOG_DATE:
+                SnackBarUtil.getInstance().showSnackBar(rlHeadPortrait, "DIALOG_DATE", Snackbar.LENGTH_SHORT);
                 break;
             default:
                 break;
