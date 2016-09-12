@@ -89,8 +89,8 @@ public abstract class BaseDialogFragment extends DialogFragment implements Dialo
         super.onCancel(dialog);
         LogUtil.d(getClass().getName(), this.getClass().getSimpleName()
                 + " onCancel() invoked!!");
-        for (OnDialogCancelListener listener : getCancelListeners()) {
-            listener.onCancelled(mRequestCode);
+        for (OnDialogCancelListener listener : getDialogListeners(OnDialogCancelListener.class)) {
+            listener.onCanceled(mRequestCode);
         }
     }
 
@@ -193,10 +193,6 @@ public abstract class BaseDialogFragment extends DialogFragment implements Dialo
             listeners.add((T) getActivity());
         }
         return Collections.unmodifiableList(listeners);
-    }
-
-    protected List<OnDialogCancelListener> getCancelListeners() {
-        return getDialogListeners(OnDialogCancelListener.class);
     }
 
     protected static class Builder {

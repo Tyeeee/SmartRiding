@@ -2,6 +2,7 @@ package com.yjt.app.ui.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -10,14 +11,18 @@ import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Regex;
 import com.yjt.app.ui.base.BaseActivity;
 import com.yjt.app.ui.dialog.DatePickerDialog;
+import com.yjt.app.ui.dialog.ListDialog;
 import com.yjt.app.ui.listener.OnDateDialogListener;
+import com.yjt.app.ui.listener.OnDialogCancelListener;
+import com.yjt.app.ui.listener.OnListDialogListener;
+import com.yjt.app.ui.listener.OnMultiChoiceListDialogListener;
 import com.yjt.app.ui.widget.CircleImageView;
 import com.yjt.app.utils.DateUtil;
 import com.yjt.app.utils.ViewUtil;
 
 import java.util.Date;
 
-public class AccountActivity extends BaseActivity implements View.OnClickListener, OnDateDialogListener {
+public class AccountActivity extends BaseActivity implements View.OnClickListener, OnDialogCancelListener, OnDateDialogListener, OnListDialogListener, OnMultiChoiceListDialogListener {
 
     private RelativeLayout rlHeadPortrait;
     private CircleImageView civHeadPortrait;
@@ -119,6 +124,14 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
             case R.id.rlPhoneNumber:
                 break;
             case R.id.rlGender:
+                ListDialog.createBuilder(getSupportFragmentManager())
+                        .setTitle(getString(R.string.gender))
+                        .setPositiveButtonText(R.string.enter)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setItems(getString(R.string.male), getString(R.string.female), getString(R.string.secrecy))
+                        .setRequestCode(Constant.RequestCode.DIALOG_RADIO)
+                        .setChoiceMode(AbsListView.CHOICE_MODE_SINGLE)
+                        .show();
                 break;
             case R.id.rlHeight:
                 break;
@@ -139,11 +152,54 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onPositiveButtonClicked(int requestCode, Date date) {
-        tvBirthday.setText(DateUtil.getCurrentTime(date, Regex.DATE_FORMAT1.getRegext()));
+        switch (requestCode) {
+            case Constant.RequestCode.DIALOG_DATE:
+                tvBirthday.setText(DateUtil.getCurrentTime(date, Regex.DATE_FORMAT1.getRegext()));
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
     public void onNegativeButtonClicked(int requestCode) {
+        switch (requestCode) {
+            case Constant.RequestCode.DIALOG_DATE:
+                break;
+            default:
+                break;
+        }
+    }
 
+    @Override
+    public void onCanceled(int requestCode) {
+        switch (requestCode) {
+            case Constant.RequestCode.DIALOG_RADIO:
+//                SnackBarUtil.getInstance().showSnackBar(rlHeadPortrait, "", Snackbar.LENGTH_SHORT);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onListItemSelected(CharSequence value, int number, int requestCode) {
+        switch (requestCode) {
+            case Constant.RequestCode.DIALOG_RADIO:
+                tvGender.setText(value);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onMultiChoiceListItemsSelected(CharSequence[] values, int[] selectedPositions, int requestCode) {
+        switch (requestCode) {
+            case Constant.RequestCode.DIALOG_DATE:
+                break;
+            default:
+                break;
+        }
     }
 }

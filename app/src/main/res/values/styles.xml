@@ -255,9 +255,9 @@
         <item name="android:paddingRight">@dimen/dp_24</item>
     </style>
 
-    <style name="yjt.Light.Dialog.TextView.MultiChoice">
+    <style name="yjt.Light.Dialog.TextView.Choice">
         <item name="android:minHeight">@dimen/dp_52</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">@dimen/sp_18</item>
         <item name="android:textColor">?textPrimaryColor</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:paddingRight">@dimen/dp_24</item>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yjt.app.ui.widget.CheckableLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/yjt.Light.Dialog.ListItem">
+
+    <CheckBox
+        style="@style/yjt.Light.Dialog.ListItemControl"/>
+
+    <TextView
+        android:id="@+id/tvItem"
+        style="@style/yjt.Light.Dialog.TextView.Choice"/>
+
+</com.yjt.app.ui.widget.CheckableLinearLayout>
