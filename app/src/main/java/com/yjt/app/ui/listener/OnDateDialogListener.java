@@ -22,5 +22,5 @@ public interface OnDateDialogListener {
 
     void onPositiveButtonClicked(int requestCode, Date date);
 
-    void onNegativeButtonClicked(int requestCode, Date date);
+    void onNegativeButtonClicked(int requestCode);
 }

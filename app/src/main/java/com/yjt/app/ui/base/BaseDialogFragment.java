@@ -1,11 +1,11 @@
 package com.yjt.app.ui.base;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -28,6 +28,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.yjt.app.R;
+import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Temp;
 import com.yjt.app.ui.listener.OnDialogCancelListener;
@@ -44,6 +45,7 @@ public abstract class BaseDialogFragment extends DialogFragment implements Dialo
 
     protected int mRequestCode;
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LogUtil.d(getClass().getName(), this.getClass().getSimpleName()
@@ -63,7 +65,7 @@ public abstract class BaseDialogFragment extends DialogFragment implements Dialo
                              Bundle savedInstanceState) {
         LogUtil.d(getClass().getName(), this.getClass().getSimpleName()
                 + " onCreateView() invoked!!");
-        return build(new Builder(getActivity(), inflater, container)).create();
+        return build(new Builder(inflater, container)).create();
     }
 
     @Override
@@ -110,7 +112,7 @@ public abstract class BaseDialogFragment extends DialogFragment implements Dialo
             return theme;
         }
         boolean isLightTheme = isActivityThemeLight();
-        Bundle  bundle       = getArguments();
+        Bundle bundle = getArguments();
         if (bundle != null) {
             if (bundle.getBoolean(Temp.USE_DARK_THEME.getContent())) {
                 isLightTheme = false;
@@ -144,10 +146,10 @@ public abstract class BaseDialogFragment extends DialogFragment implements Dialo
     @Override
     public void onShow(DialogInterface dialog) {
         if (getView() != null) {
-            ScrollView  svDialogContent = ViewUtil.getInstance().findView(getView(), R.id.svDialogContent);
-            FrameLayout flDialogCustom  = ViewUtil.getInstance().findView(getView(), R.id.flDialogCustom);
-            ListView    lvDialogContent = ViewUtil.getInstance().findView(getView(), R.id.lvDialogContent);
-            boolean     scrollable      = false;
+            ScrollView svDialogContent = ViewUtil.getInstance().findView(getView(), R.id.svDialogContent);
+            FrameLayout flDialogCustom = ViewUtil.getInstance().findView(getView(), R.id.flDialogCustom);
+            ListView lvDialogContent = ViewUtil.getInstance().findView(getView(), R.id.lvDialogContent);
+            boolean scrollable = false;
             if (flDialogCustom.getChildCount() > 0) {
                 View firstChild = flDialogCustom.getChildAt(0);
                 if (firstChild instanceof ViewGroup) {
@@ -164,10 +166,10 @@ public abstract class BaseDialogFragment extends DialogFragment implements Dialo
         if (getView() == null) {
             return;
         }
-        View           vDialogDivider               = ViewUtil.getInstance().findView(getView(), R.id.vDialogDivider);
-        View           vDialogButtonsBottomSpace    = ViewUtil.getInstance().findView(getView(), R.id.vDialogButtonsBottomSpace);
-        RelativeLayout rlDialogLayoutButtons        = ViewUtil.getInstance().findView(getView(), R.id.rlDialogLayoutButtons);
-        LinearLayout   llDialogLayoutButtonsStacked = ViewUtil.getInstance().findView(getView(), R.id.llDialogLayoutButtonsStacked);
+        View vDialogDivider = ViewUtil.getInstance().findView(getView(), R.id.vDialogDivider);
+        View vDialogButtonsBottomSpace = ViewUtil.getInstance().findView(getView(), R.id.vDialogButtonsBottomSpace);
+        RelativeLayout rlDialogLayoutButtons = ViewUtil.getInstance().findView(getView(), R.id.rlDialogLayoutButtons);
+        LinearLayout llDialogLayoutButtonsStacked = ViewUtil.getInstance().findView(getView(), R.id.llDialogLayoutButtonsStacked);
         if (ViewUtil.getInstance().isGone(rlDialogLayoutButtons)
                 && ViewUtil.getInstance().isGone(llDialogLayoutButtonsStacked)) {
             ViewUtil.getInstance().setViewGone(vDialogDivider);
@@ -183,7 +185,7 @@ public abstract class BaseDialogFragment extends DialogFragment implements Dialo
 
     protected <T> List<T> getDialogListeners(Class<T> listenerInterface) {
         final Fragment targetFragment = getTargetFragment();
-        List<T>        listeners      = new ArrayList<T>(2);
+        List<T> listeners = new ArrayList<T>(2);
         if (targetFragment != null && listenerInterface.isAssignableFrom(targetFragment.getClass())) {
             listeners.add((T) targetFragment);
         }
@@ -199,26 +201,24 @@ public abstract class BaseDialogFragment extends DialogFragment implements Dialo
 
     protected static class Builder {
 
-        private final Context                         mContext;
-        private final ViewGroup                       mContainer;
-        private final LayoutInflater                  mInflater;
-        private       CharSequence                    mTitle;
-        private       CharSequence                    mPositiveButtonText;
-        private       View.OnClickListener            mPositiveButtonListener;
-        private       CharSequence                    mNegativeButtonText;
-        private       View.OnClickListener            mNegativeButtonListener;
-        private       CharSequence                    mNeutralButtonText;
-        private       View.OnClickListener            mNeutralButtonListener;
-        private       CharSequence                    mMessage;
-        private       View                            mCustomView;
-        private       ListAdapter                     mListAdapter;
-        private       int                             mListCheckedItemIdx;
-        private       int                             mChoiceMode;
-        private       int[]                           mListCheckedItemMultipleIds;
-        private       AdapterView.OnItemClickListener mOnItemClickListener;
+        private final ViewGroup mContainer;
+        private final LayoutInflater mInflater;
+        private CharSequence mTitle;
+        private CharSequence mPositiveButtonText;
+        private View.OnClickListener mPositiveButtonListener;
+        private CharSequence mNegativeButtonText;
+        private View.OnClickListener mNegativeButtonListener;
+        private CharSequence mNeutralButtonText;
+        private View.OnClickListener mNeutralButtonListener;
+        private CharSequence mMessage;
+        private View mCustomView;
+        private ListAdapter mListAdapter;
+        private int mListCheckedItemIdx;
+        private int mChoiceMode;
+        private int[] mListCheckedItemMultipleIds;
+        private AdapterView.OnItemClickListener mOnItemClickListener;
 
-        public Builder(Context context, LayoutInflater inflater, ViewGroup container) {
-            this.mContext = context;
+        Builder(LayoutInflater inflater, ViewGroup container) {
             this.mContainer = container;
             this.mInflater = inflater;
         }
@@ -228,7 +228,7 @@ public abstract class BaseDialogFragment extends DialogFragment implements Dialo
         }
 
         public Builder setTitle(int titleId) {
-            this.mTitle = mContext.getText(titleId);
+            this.mTitle = BaseApplication.getInstance().getText(titleId);
             return this;
         }
 
@@ -238,7 +238,7 @@ public abstract class BaseDialogFragment extends DialogFragment implements Dialo
         }
 
         public Builder setPositiveButton(int textId, final View.OnClickListener listener) {
-            mPositiveButtonText = mContext.getText(textId);
+            mPositiveButtonText = BaseApplication.getInstance().getText(textId);
             mPositiveButtonListener = listener;
             return this;
         }
@@ -250,7 +250,7 @@ public abstract class BaseDialogFragment extends DialogFragment implements Dialo
         }
 
         public Builder setNegativeButton(int textId, final View.OnClickListener listener) {
-            mNegativeButtonText = mContext.getText(textId);
+            mNegativeButtonText = BaseApplication.getInstance().getText(textId);
             mNegativeButtonListener = listener;
             return this;
         }
@@ -262,7 +262,7 @@ public abstract class BaseDialogFragment extends DialogFragment implements Dialo
         }
 
         public Builder setNeutralButton(int textId, final View.OnClickListener listener) {
-            mNeutralButtonText = mContext.getText(textId);
+            mNeutralButtonText = BaseApplication.getInstance().getText(textId);
             mNeutralButtonListener = listener;
             return this;
         }
@@ -274,7 +274,7 @@ public abstract class BaseDialogFragment extends DialogFragment implements Dialo
         }
 
         public Builder setMessage(int messageId) {
-            mMessage = mContext.getText(messageId);
+            mMessage = BaseApplication.getInstance().getText(messageId);
             return this;
         }
 
@@ -306,26 +306,26 @@ public abstract class BaseDialogFragment extends DialogFragment implements Dialo
             return this;
         }
 
-        public View create() {
-            LinearLayout   content                        = (LinearLayout) mInflater.inflate(R.layout.dialog_custom, mContainer, false);
-            TextView       tvDialogTitle                  = ViewUtil.getInstance().findView(content, R.id.tvDialogTitle);
-            TextView       tvDialogMessage                = ViewUtil.getInstance().findView(content, R.id.tvDialogMessage);
-            FrameLayout    flDialogCustom                 = ViewUtil.getInstance().findView(content, R.id.flDialogCustom);
-            RelativeLayout rlDialogLayoutButtons          = ViewUtil.getInstance().findView(content, R.id.rlDialogLayoutButtons);
-            Button         btnDialogNeutral               = ViewUtil.getInstance().findView(content, R.id.btnDialogNeutral);
-            Button         btnDialogNegative              = ViewUtil.getInstance().findView(content, R.id.btnDialogNegative);
-            Button         btnDialogPositive              = ViewUtil.getInstance().findView(content, R.id.btnDialogPositive);
-            LinearLayout   llDialogLayoutButtonsStacked   = ViewUtil.getInstance().findView(content, R.id.llDialogLayoutButtonsStacked);
-            Button         btnDialogButtonPositiveStacked = ViewUtil.getInstance().findView(content, R.id.btnDialogButtonPositiveStacked);
-            Button         btnDialogButtonNegativestacked = ViewUtil.getInstance().findView(content, R.id.btnDialogButtonNegativestacked);
-            Button         btnDialogButtonNeutralStacked  = ViewUtil.getInstance().findView(content, R.id.btnDialogButtonNeutralStacked);
-            ListView       lvDialogContent                = ViewUtil.getInstance().findView(content, R.id.lvDialogContent);
+        View create() {
+            LinearLayout content = (LinearLayout) mInflater.inflate(R.layout.dialog_custom, mContainer, false);
+            TextView tvDialogTitle = ViewUtil.getInstance().findView(content, R.id.tvDialogTitle);
+            TextView tvDialogMessage = ViewUtil.getInstance().findView(content, R.id.tvDialogMessage);
+            FrameLayout flDialogCustom = ViewUtil.getInstance().findView(content, R.id.flDialogCustom);
+            RelativeLayout rlDialogLayoutButtons = ViewUtil.getInstance().findView(content, R.id.rlDialogLayoutButtons);
+            Button btnDialogNeutral = ViewUtil.getInstance().findView(content, R.id.btnDialogNeutral);
+            Button btnDialogNegative = ViewUtil.getInstance().findView(content, R.id.btnDialogNegative);
+            Button btnDialogPositive = ViewUtil.getInstance().findView(content, R.id.btnDialogPositive);
+            LinearLayout llDialogLayoutButtonsStacked = ViewUtil.getInstance().findView(content, R.id.llDialogLayoutButtonsStacked);
+            Button btnDialogButtonPositiveStacked = ViewUtil.getInstance().findView(content, R.id.btnDialogButtonPositiveStacked);
+            Button btnDialogButtonNegativestacked = ViewUtil.getInstance().findView(content, R.id.btnDialogButtonNegativestacked);
+            Button btnDialogButtonNeutralStacked = ViewUtil.getInstance().findView(content, R.id.btnDialogButtonNeutralStacked);
+            ListView lvDialogContent = ViewUtil.getInstance().findView(content, R.id.lvDialogContent);
 
-            Typeface regularFont = TypefaceUtil.getInstance().get(mContext, Constant.View.ROBOTO_REGULAR);
-            Typeface mediumFont  = TypefaceUtil.getInstance().get(mContext, Constant.View.ROBOTO_MEDIUM);
+            Typeface regularFont = TypefaceUtil.getInstance().get(BaseApplication.getInstance(), Constant.View.ROBOTO_REGULAR);
+            Typeface mediumFont = TypefaceUtil.getInstance().get(BaseApplication.getInstance(), Constant.View.ROBOTO_MEDIUM);
 
-            setText(tvDialogTitle, mTitle, regularFont);
-            setText(tvDialogMessage, mMessage, mediumFont);
+            ViewUtil.getInstance().setText(tvDialogTitle, mTitle, regularFont);
+            ViewUtil.getInstance().setText(tvDialogMessage, mMessage, mediumFont);
             setPaddingOfTitleAndMessage(tvDialogTitle, tvDialogMessage);
 
             if (mCustomView != null) {
@@ -344,18 +344,17 @@ public abstract class BaseDialogFragment extends DialogFragment implements Dialo
                     }
                 }
             }
-
             if (shouldStackButtons()) {
-                setText(btnDialogButtonPositiveStacked, mPositiveButtonText, mediumFont, mPositiveButtonListener);
-                setText(btnDialogButtonNegativestacked, mNegativeButtonText, mediumFont, mNegativeButtonListener);
-                setText(btnDialogButtonNeutralStacked, mNeutralButtonText, mediumFont, mNeutralButtonListener);
+                ViewUtil.getInstance().setText(btnDialogButtonPositiveStacked, mPositiveButtonText, mediumFont, mPositiveButtonListener);
+                ViewUtil.getInstance().setText(btnDialogButtonNegativestacked, mNegativeButtonText, mediumFont, mNegativeButtonListener);
+                ViewUtil.getInstance().setText(btnDialogButtonNeutralStacked, mNeutralButtonText, mediumFont, mNeutralButtonListener);
                 ViewUtil.getInstance().setViewGone(rlDialogLayoutButtons);
                 ViewUtil.getInstance().setViewVisible(rlDialogLayoutButtons);
                 ViewUtil.getInstance().setViewVisible(llDialogLayoutButtonsStacked);
             } else {
-                setText(btnDialogPositive, mPositiveButtonText, mediumFont, mPositiveButtonListener);
-                setText(btnDialogNegative, mNegativeButtonText, mediumFont, mNegativeButtonListener);
-                setText(btnDialogNeutral, mNeutralButtonText, mediumFont, mNeutralButtonListener);
+                ViewUtil.getInstance().setText(btnDialogPositive, mPositiveButtonText, mediumFont, mPositiveButtonListener);
+                ViewUtil.getInstance().setText(btnDialogNegative, mNegativeButtonText, mediumFont, mNegativeButtonListener);
+                ViewUtil.getInstance().setText(btnDialogNeutral, mNeutralButtonText, mediumFont, mNeutralButtonListener);
                 ViewUtil.getInstance().setViewVisible(rlDialogLayoutButtons);
                 ViewUtil.getInstance().setViewGone(llDialogLayoutButtonsStacked);
             }
@@ -363,20 +362,19 @@ public abstract class BaseDialogFragment extends DialogFragment implements Dialo
                     (mNeutralButtonText)) {
                 ViewUtil.getInstance().setViewGone(rlDialogLayoutButtons);
             }
-
             return content;
         }
 
-        private void setPaddingOfTitleAndMessage(TextView vTitle, TextView vMessage) {
-            int dp6 = mContext.getResources().getDimensionPixelSize(R.dimen.dp_6);
-            int dp4 = mContext.getResources().getDimensionPixelSize(R.dimen.dp_4);
+        private void setPaddingOfTitleAndMessage(TextView title, TextView message) {
+            int dp6 = BaseApplication.getInstance().getResources().getDimensionPixelSize(R.dimen.dp_6);
+            int dp4 = BaseApplication.getInstance().getResources().getDimensionPixelSize(R.dimen.dp_4);
             if (!TextUtils.isEmpty(mTitle) && !TextUtils.isEmpty(mMessage)) {
-                vTitle.setPadding(dp6, dp6, dp6, dp4);
-                vMessage.setPadding(dp6, 0, dp6, dp4);
+                title.setPadding(dp6, dp6, dp6, dp4);
+                message.setPadding(dp6, 0, dp6, dp4);
             } else if (TextUtils.isEmpty(mTitle)) {
-                vMessage.setPadding(dp6, dp4, dp6, dp4);
+                message.setPadding(dp6, dp4, dp6, dp4);
             } else if (TextUtils.isEmpty(mMessage)) {
-                vTitle.setPadding(dp6, dp6, dp6, dp4);
+                title.setPadding(dp6, dp6, dp6, dp4);
             }
         }
 
@@ -387,22 +385,6 @@ public abstract class BaseDialogFragment extends DialogFragment implements Dialo
 
         private boolean shouldStackButton(CharSequence text) {
             return text != null && text.length() > 12;
-        }
-
-        private void setText(Button button, CharSequence text, Typeface font, View.OnClickListener listener) {
-            setText(button, text, font);
-            if (listener != null) {
-                button.setOnClickListener(listener);
-            }
-        }
-
-        private void setText(TextView textView, CharSequence text, Typeface font) {
-            if (text != null) {
-                textView.setText(text);
-                textView.setTypeface(font);
-            } else {
-                ViewUtil.getInstance().setViewGone(textView);
-            }
         }
     }
 

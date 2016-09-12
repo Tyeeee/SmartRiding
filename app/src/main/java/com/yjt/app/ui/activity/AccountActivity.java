@@ -7,36 +7,38 @@ import android.widget.TextView;
 
 import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
+import com.yjt.app.constant.Regex;
 import com.yjt.app.ui.base.BaseActivity;
 import com.yjt.app.ui.dialog.DatePickerDialog;
 import com.yjt.app.ui.listener.OnDateDialogListener;
 import com.yjt.app.ui.widget.CircleImageView;
+import com.yjt.app.utils.DateUtil;
 import com.yjt.app.utils.ViewUtil;
 
 import java.util.Date;
 
 public class AccountActivity extends BaseActivity implements View.OnClickListener, OnDateDialogListener {
 
-    private RelativeLayout  rlHeadPortrait;
+    private RelativeLayout rlHeadPortrait;
     private CircleImageView civHeadPortrait;
 
     private RelativeLayout rlNickname;
-    private TextView       tvNickname;
+    private TextView tvNickname;
 
     private RelativeLayout rlPhoneNumber;
-    private TextView       tvPhoneNumber;
+    private TextView tvPhoneNumber;
 
     private RelativeLayout rlGender;
-    private TextView       tvGender;
+    private TextView tvGender;
 
     private RelativeLayout rlHeight;
-    private TextView       tvHeight;
+    private TextView tvHeight;
 
     private RelativeLayout rlWeight;
-    private TextView       tvWeight;
+    private TextView tvWeight;
 
     private RelativeLayout rlBirthday;
-    private TextView       tvBirthday;
+    private TextView tvBirthday;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,11 +139,11 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onPositiveButtonClicked(int requestCode, Date date) {
-        tvBirthday.setText(date.toString());
+        tvBirthday.setText(DateUtil.getCurrentTime(date, Regex.DATE_FORMAT1.getRegext()));
     }
 
     @Override
-    public void onNegativeButtonClicked(int requestCode, Date date) {
+    public void onNegativeButtonClicked(int requestCode) {
 
     }
 }

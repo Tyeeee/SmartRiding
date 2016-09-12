@@ -6,6 +6,6 @@
        android:insetTop="@dimen/dp_16">
     <shape android:shape="rectangle">
         <corners android:radius="@dimen/dp_2"/>
-        <solid android:color="@color/gray_ff424242"/>
+        <solid android:color="@color/gray_ffeeeeee"/>
     </shape>
 </inset>

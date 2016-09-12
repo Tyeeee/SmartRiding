@@ -13,7 +13,6 @@ import com.yjt.app.constant.Temp;
 import com.yjt.app.ui.base.BaseDialogBuilder;
 import com.yjt.app.ui.base.BaseDialogFragment;
 import com.yjt.app.ui.listener.OnDateDialogListener;
-import com.yjt.app.utils.TypefaceUtil;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -23,11 +22,11 @@ import java.util.TimeZone;
 public class DatePickerDialog extends BaseDialogFragment {
 
     private DatePicker dpDate;
-    private Calendar   mCalendar;
+    private Calendar mCalendar;
 
     @Override
     protected Builder build(Builder builder) {
-        CharSequence title    = getArguments().getCharSequence(Temp.DIALOG_TITLE.getContent());
+        CharSequence title = getArguments().getCharSequence(Temp.DIALOG_TITLE.getContent());
         CharSequence positive = getArguments().getCharSequence(Temp.DIALOG_BUTTON_POSITIVE.getContent());
         CharSequence negative = getArguments().getCharSequence(Temp.DIALOG_BUTTON_NEGATIVE.getContent());
         if (!TextUtils.isEmpty(title)) {
@@ -45,11 +44,11 @@ public class DatePickerDialog extends BaseDialogFragment {
             });
         }
         if (!TextUtils.isEmpty(negative)) {
-            builder.setNegativeButton(positive, new View.OnClickListener() {
+            builder.setNegativeButton(negative, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     for (OnDateDialogListener listener : getDialogListeners(OnDateDialogListener.class)) {
-                        listener.onNegativeButtonClicked(mRequestCode, getDate());
+                        listener.onNegativeButtonClicked(mRequestCode);
                     }
                     dismiss();
                 }
@@ -65,7 +64,7 @@ public class DatePickerDialog extends BaseDialogFragment {
         return builder;
     }
 
-    public Date getDate() {
+    private Date getDate() {
         mCalendar.set(Calendar.YEAR, dpDate.getYear());
         mCalendar.set(Calendar.MONTH, dpDate.getMonth());
         mCalendar.set(Calendar.DAY_OF_MONTH, dpDate.getDayOfMonth());
@@ -74,17 +73,16 @@ public class DatePickerDialog extends BaseDialogFragment {
 
     public static class DateDialogBuilder extends BaseDialogBuilder<DateDialogBuilder> {
 
-        Date   mDate     = new Date();
+        Date mDate = new Date();
         String mTimeZone = null;
 
         private CharSequence mTitle;
         private CharSequence mPositiveButtonText;
         private CharSequence mNegativeButtonText;
 
-        private boolean mShowDefaultButton = true;
         private boolean is24Hours;
 
-        protected DateDialogBuilder(FragmentManager fragmentManager, Class<? extends DatePickerDialog> clazz) {
+        DateDialogBuilder(FragmentManager fragmentManager, Class<? extends DatePickerDialog> clazz) {
             super(fragmentManager, clazz);
             is24Hours = DateFormat.is24HourFormat(BaseApplication.getInstance());
         }
@@ -159,11 +157,5 @@ public class DatePickerDialog extends BaseDialogFragment {
 
     public static DateDialogBuilder createBuilder(FragmentManager manager) {
         return new DateDialogBuilder(manager, DatePickerDialog.class);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        TypefaceUtil.releaseInstance();
     }
 }

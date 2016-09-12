@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.IdRes;
@@ -15,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -221,6 +223,22 @@ public class ViewUtil {
             }
         }
         textView.setClickable(clickable);
+    }
+
+    public void setText(TextView textView, CharSequence text, Typeface font) {
+        if (text != null) {
+            textView.setText(text);
+            textView.setTypeface(font);
+        } else {
+            ViewUtil.getInstance().setViewGone(textView);
+        }
+    }
+
+    public void setText(Button button, CharSequence text, Typeface font, View.OnClickListener listener) {
+        setText(button, text, font);
+        if (listener != null) {
+            button.setOnClickListener(listener);
+        }
     }
 
     public AlertDialog showAlertDialog(Activity activity, String title, String message,
