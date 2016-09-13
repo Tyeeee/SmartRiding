@@ -3,6 +3,7 @@ package com.yjt.app.ui.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -12,10 +13,12 @@ import com.yjt.app.constant.Regex;
 import com.yjt.app.ui.base.BaseActivity;
 import com.yjt.app.ui.dialog.DateDialog;
 import com.yjt.app.ui.dialog.ListDialog;
+import com.yjt.app.ui.dialog.NumberDialog;
 import com.yjt.app.ui.listener.OnDateDialogListener;
 import com.yjt.app.ui.listener.OnDialogCancelListener;
 import com.yjt.app.ui.listener.OnListDialogListener;
 import com.yjt.app.ui.listener.OnMultiChoiceListDialogListener;
+import com.yjt.app.ui.listener.OnNumberDialogListener;
 import com.yjt.app.ui.widget.CircleImageView;
 import com.yjt.app.utils.DateUtil;
 import com.yjt.app.utils.LogUtil;
@@ -23,7 +26,7 @@ import com.yjt.app.utils.ViewUtil;
 
 import java.util.Date;
 
-public class AccountActivity extends BaseActivity implements View.OnClickListener, OnDialogCancelListener, OnDateDialogListener, OnListDialogListener, OnMultiChoiceListDialogListener {
+public class AccountActivity extends BaseActivity implements View.OnClickListener, OnDialogCancelListener, OnNumberDialogListener, OnDateDialogListener, OnListDialogListener, OnMultiChoiceListDialogListener {
 
     private RelativeLayout rlHeadPortrait;
     private CircleImageView civHeadPortrait;
@@ -31,7 +34,6 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
     private RelativeLayout rlNickname;
     private TextView tvNickname;
 
-    private RelativeLayout rlPhoneNumber;
     private TextView tvPhoneNumber;
 
     private RelativeLayout rlGender;
@@ -63,7 +65,6 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
         civHeadPortrait = ViewUtil.getInstance().findView(this, R.id.civHeadPortrait);
         rlNickname = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.rlNickname, this);
         tvNickname = ViewUtil.getInstance().findView(this, R.id.tvNickname);
-        rlPhoneNumber = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.rlPhoneNumber, this);
         tvPhoneNumber = ViewUtil.getInstance().findView(this, R.id.tvPhoneNumber);
         rlGender = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.rlGender, this);
         tvGender = ViewUtil.getInstance().findView(this, R.id.tvGender);
@@ -82,7 +83,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-
+        civHeadPortrait.setText(getString(R.string.head_portrait));
     }
 
     @Override
@@ -117,8 +118,6 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.rlNickname:
                 break;
-            case R.id.rlPhoneNumber:
-                break;
             case R.id.rlGender:
                 ListDialog.createBuilder(getSupportFragmentManager())
                         .setTitle(getString(R.string.gender))
@@ -130,8 +129,24 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
                         .show();
                 break;
             case R.id.rlHeight:
+                NumberDialog.createBuilder(getSupportFragmentManager())
+                        .setTitle(getString(R.string.height))
+                        .setMinimumValue(120)
+                        .setMaximumValue(230)
+                        .setPositiveButtonText(R.string.enter)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_NUMBER_HEIGHT)
+                        .show();
                 break;
             case R.id.rlWeight:
+                NumberDialog.createBuilder(getSupportFragmentManager())
+                        .setTitle(getString(R.string.weight))
+                        .setMinimumValue(45)
+                        .setMaximumValue(200)
+                        .setPositiveButtonText(R.string.enter)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_NUMBER_WEIGHT)
+                        .show();
                 break;
             case R.id.rlBirthday:
                 DateDialog.createBuilder(getSupportFragmentManager())
@@ -140,6 +155,20 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
                         .setNegativeButtonText(R.string.cancel)
                         .setRequestCode(Constant.RequestCode.DIALOG_DATE)
                         .show();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onPositiveButtonClicked(int requestCode, int number) {
+        switch (requestCode) {
+            case Constant.RequestCode.DIALOG_NUMBER_HEIGHT:
+                tvHeight.setText(number + getString(R.string.centimeter));
+                break;
+            case Constant.RequestCode.DIALOG_NUMBER_WEIGHT:
+                tvWeight.setText(number + getString(R.string.kilograms));
                 break;
             default:
                 break;
@@ -162,6 +191,12 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
         switch (requestCode) {
             case Constant.RequestCode.DIALOG_DATE:
                 LogUtil.print("---->DIALOG_DATE onNegativeButtonClicked");
+                break;
+            case Constant.RequestCode.DIALOG_NUMBER_HEIGHT:
+                LogUtil.print("---->DIALOG_NUMBER_HEIGHT onNegativeButtonClicked");
+                break;
+            case Constant.RequestCode.DIALOG_NUMBER_WEIGHT:
+                LogUtil.print("---->DIALOG_NUMBER_WEIGHT onNegativeButtonClicked");
                 break;
             default:
                 break;

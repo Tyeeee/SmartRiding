@@ -16,6 +16,8 @@ public enum Temp {
     DIALOG_CHOICE_MODE("dialog_choice_mode"),
     TIME_ZONE("time_zone"),
     DATE("date"),
+    MINIMUM_NUMBER("minimum_number"),
+    MAXIMUM_NUMBER("maximum_number"),
     TIME_FORMAT("time_format"),
     POINT_TYPE("point_type"),
     POINT_CONTENT("point_content"),

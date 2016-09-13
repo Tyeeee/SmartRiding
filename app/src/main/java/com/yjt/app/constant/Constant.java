@@ -68,7 +68,9 @@ public class Constant {
         public static final int DIALOG = 0x5002;
         public static final int DIALOG_EXIT = 0x5003;
         public static final int DIALOG_RADIO = 0x5004;
-        public static final int DIALOG_DATE = 0x5005;
+        public static final int DIALOG_NUMBER_HEIGHT = 0x5005;
+        public static final int DIALOG_NUMBER_WEIGHT = 0x5006;
+        public static final int DIALOG_DATE = 0x5007;
     }
 
     public static class Map {

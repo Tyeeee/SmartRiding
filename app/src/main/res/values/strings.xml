@@ -20,12 +20,14 @@
     <string name="head_portrait">头像</string>
     <string name="nickname">昵称</string>
     <string name="gender">性别</string>
-    <string name="male">男性</string>
-    <string name="female">女性</string>
+    <string name="male">男</string>
+    <string name="female">女</string>
     <string name="secrecy">保密</string>
     <string name="phone_number">手机号</string>
     <string name="height">身高</string>
+    <string name="centimeter">厘米</string>
     <string name="weight">体重</string>
+    <string name="kilograms">公斤</string>
     <string name="birthday">生日</string>
     <string name="password_management">密码管理</string>
     <string name="device_label">设备标签</string>

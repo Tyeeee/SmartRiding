@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<DatePicker
+<NumberPicker
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/dpNumber"
+    android:id="@+id/npNumber"
     style="@style/yjt.Light.Dialog.NumberPicker"/>
