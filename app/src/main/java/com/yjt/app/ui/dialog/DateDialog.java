@@ -1,16 +1,12 @@
 package com.yjt.app.ui.dialog;
 
-import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.DatePicker;
 
 import com.yjt.app.R;
-import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Temp;
-import com.yjt.app.ui.base.BaseDialogBuilder;
 import com.yjt.app.ui.base.BaseDialogFragment;
 import com.yjt.app.ui.dialog.builder.DateDialogBuilder;
 import com.yjt.app.ui.listener.OnDateDialogListener;
@@ -20,7 +16,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 
-public class DatePickerDialog extends BaseDialogFragment {
+public class DateDialog extends BaseDialogFragment {
 
     private DatePicker dpDate;
     private Calendar mCalendar;
@@ -73,6 +69,6 @@ public class DatePickerDialog extends BaseDialogFragment {
     }
 
     public static DateDialogBuilder createBuilder(FragmentManager manager) {
-        return new DateDialogBuilder(manager, DatePickerDialog.class);
+        return new DateDialogBuilder(manager, DateDialog.class);
     }
 }

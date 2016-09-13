@@ -1,7 +1,6 @@
 package com.yjt.app.ui.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.RelativeLayout;
@@ -11,7 +10,7 @@ import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Regex;
 import com.yjt.app.ui.base.BaseActivity;
-import com.yjt.app.ui.dialog.DatePickerDialog;
+import com.yjt.app.ui.dialog.DateDialog;
 import com.yjt.app.ui.dialog.ListDialog;
 import com.yjt.app.ui.listener.OnDateDialogListener;
 import com.yjt.app.ui.listener.OnDialogCancelListener;
@@ -19,7 +18,7 @@ import com.yjt.app.ui.listener.OnListDialogListener;
 import com.yjt.app.ui.listener.OnMultiChoiceListDialogListener;
 import com.yjt.app.ui.widget.CircleImageView;
 import com.yjt.app.utils.DateUtil;
-import com.yjt.app.utils.SnackBarUtil;
+import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.ViewUtil;
 
 import java.util.Date;
@@ -112,11 +111,6 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
     }
 
     @Override
-    protected void endOperation() {
-
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rlHeadPortrait:
@@ -129,6 +123,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
                 ListDialog.createBuilder(getSupportFragmentManager())
                         .setTitle(getString(R.string.gender))
                         .setPositiveButtonText(R.string.enter)
+                        .setNegativeButtonText(R.string.cancel)
                         .setItems(getString(R.string.male), getString(R.string.female), getString(R.string.secrecy))
                         .setRequestCode(Constant.RequestCode.DIALOG_RADIO)
                         .setChoiceMode(AbsListView.CHOICE_MODE_SINGLE)
@@ -139,7 +134,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
             case R.id.rlWeight:
                 break;
             case R.id.rlBirthday:
-                DatePickerDialog.createBuilder(getSupportFragmentManager())
+                DateDialog.createBuilder(getSupportFragmentManager())
                         .setDate(new Date())
                         .setPositiveButtonText(R.string.enter)
                         .setNegativeButtonText(R.string.cancel)
@@ -166,7 +161,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
     public void onNegativeButtonClicked(int requestCode) {
         switch (requestCode) {
             case Constant.RequestCode.DIALOG_DATE:
-                SnackBarUtil.getInstance().showSnackBar(rlHeadPortrait, "DIALOG_DATE-->onNegativeButtonClicked", Snackbar.LENGTH_SHORT);
+                LogUtil.print("---->DIALOG_DATE onNegativeButtonClicked");
                 break;
             default:
                 break;
@@ -177,7 +172,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
     public void onCanceled(int requestCode) {
         switch (requestCode) {
             case Constant.RequestCode.DIALOG_RADIO:
-                SnackBarUtil.getInstance().showSnackBar(rlHeadPortrait, "DIALOG_RADIO-->onCanceled", Snackbar.LENGTH_SHORT);
+                LogUtil.print("---->DIALOG_RADIO onCanceled");
                 break;
             default:
                 break;
@@ -188,6 +183,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
     public void onListItemSelected(CharSequence value, int number, int requestCode) {
         switch (requestCode) {
             case Constant.RequestCode.DIALOG_RADIO:
+                LogUtil.print("---->DIALOG_RADIO onListItemSelected");
                 tvGender.setText(value);
                 break;
             default:
@@ -199,7 +195,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
     public void onMultiChoiceListItemsSelected(CharSequence[] values, int[] selectedPositions, int requestCode) {
         switch (requestCode) {
             case Constant.RequestCode.DIALOG_DATE:
-                SnackBarUtil.getInstance().showSnackBar(rlHeadPortrait, "DIALOG_DATE", Snackbar.LENGTH_SHORT);
+                LogUtil.print("---->DIALOG_DATE onMultiChoiceListItemsSelected");
                 break;
             default:
                 break;

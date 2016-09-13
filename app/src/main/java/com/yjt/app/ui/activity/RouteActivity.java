@@ -55,30 +55,30 @@ import java.util.List;
 public class RouteActivity extends BaseActivity implements View.OnClickListener, TextWatcher, AMapLocationListener, GeocodeSearch.OnGeocodeSearchListener, Inputtips.InputtipsListener, FixedStickyViewAdapter.OnItemClickListener, OnDictationListener {
 
     private ImageView ivBack;
-    private EditText  etSearch;
+    private EditText etSearch;
     private ImageView ivDelete;
     private ImageView ivVoice;
-    private TextView  tvEnter;
+    private TextView tvEnter;
 
     private TextView tvLocation;
     private TextView tvCollection;
 
     private RecyclerView rvRecommendPosition;
 
-    private AMapLocationClient       mClient;
+    private AMapLocationClient mClient;
     private AMapLocationClientOption mOption;
 
-    private int           mPointType;
-    private AMapLocation  mLocation;
+    private int mPointType;
+    private AMapLocation mLocation;
     private GeocodeSearch mSearch;
-    private String        mCityCode;
+    private String mCityCode;
 
     private ProgressDialog mDialog;
 
-    private LinearLayoutManager    mLayoutManager;
+    private LinearLayoutManager mLayoutManager;
     private FixedStickyViewAdapter mAdapter;
-    private DrivePath              mPath;
-    private RouteHandler           mHandler;
+    private DrivePath mPath;
+    private RouteHandler mHandler;
 
     private Inputtips mTips;
 
@@ -192,11 +192,6 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     protected void permissionRequestResult() {
-
-    }
-
-    @Override
-    protected void endOperation() {
 
     }
 
@@ -366,7 +361,7 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
                     && geocodeResult.getGeocodeAddressList() != null
                     && geocodeResult.getGeocodeAddressList().size() > 0) {
                 LatLonPoint coordinate = geocodeResult.getGeocodeAddressList().get(0).getLatLonPoint();
-                Intent      intent     = new Intent();
+                Intent intent = new Intent();
                 intent.putExtra(Temp.POINT_TYPE.getContent(), mPointType);
                 intent.putExtra(Temp.POINT_CONTENT.getContent(), etSearch.getText().toString());
                 intent.putExtra(Temp.LOCATION_LATITUDE.getContent(), coordinate.getLatitude());

@@ -1,10 +1,9 @@
 package com.yjt.app.ui.activity;
 
-import android.app.Activity;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
 import com.amap.api.navi.AMapNavi;
@@ -30,6 +29,8 @@ import com.yjt.app.R;
 import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Temp;
+import com.yjt.app.ui.dialog.PromptDialog;
+import com.yjt.app.ui.listener.OnPromptDialogListener;
 import com.yjt.app.utils.IntentDataUtil;
 import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.MapUtil;
@@ -42,7 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class NavigationActivity extends Activity implements AMapNaviListener, AMapNaviViewListener {
+public class NavigationActivity extends FragmentActivity implements AMapNaviListener, AMapNaviViewListener, OnPromptDialogListener {
 
     private AMapNaviView nvMap;
     private RouteResult mResult;
@@ -91,7 +92,13 @@ public class NavigationActivity extends Activity implements AMapNaviListener, AM
     @Override
     public void onBackPressed() {
 //        super.onBackPressed();
-        showNavigationExitDialog();
+        PromptDialog.createBuilder(getSupportFragmentManager())
+                .setTitle(getString(R.string.prompt_title))
+                .setPrompt(getString(R.string.prompt_exit_navigation))
+                .setPositiveButtonText(R.string.enter)
+                .setNegativeButtonText(R.string.cancel)
+                .setRequestCode(Constant.RequestCode.DIALOG_EXIT)
+                .show();
     }
 
     protected void findViewById() {
@@ -140,19 +147,38 @@ public class NavigationActivity extends Activity implements AMapNaviListener, AM
         }
     }
 
-    private void showNavigationExitDialog() {
-        ViewUtil.getInstance().showAlertDialog(this, getString(R.string.prompt_title), getString(R.string.exit_navigation_prompt_content), getString(R.string.enter), getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+    @Override
+    public void onNegativeButtonClicked(int requestCode) {
+        switch (requestCode) {
+            case Constant.RequestCode.DIALOG_EXIT:
+                LogUtil.print("---->DIALOG_EXIT onNegativeButtonClicked");
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onNeutralButtonClicked(int requestCode) {
+        switch (requestCode) {
+            case Constant.RequestCode.DIALOG_EXIT:
+                LogUtil.print("---->DIALOG_EXIT onNeutralButtonClicked");
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onPositiveButtonClicked(int requestCode) {
+        switch (requestCode) {
+            case Constant.RequestCode.DIALOG_EXIT:
+                LogUtil.print("---->DIALOG_EXIT onPositiveButtonClicked");
                 finish();
-            }
-        }, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        }, null);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -195,7 +221,6 @@ public class NavigationActivity extends Activity implements AMapNaviListener, AM
     @Override
     public void onEndEmulatorNavi() {
         LogUtil.print("---->onEndEmulatorNavi");
-        showNavigationExitDialog();
     }
 
     @Override
@@ -370,5 +395,4 @@ public class NavigationActivity extends Activity implements AMapNaviListener, AM
     public void onNaviViewLoaded() {
         LogUtil.print("---->onNaviViewLoaded");
     }
-
 }

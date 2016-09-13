@@ -14,11 +14,9 @@ import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.overlay.WalkRouteOverlay;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.route.BusRouteResult;
-import com.amap.api.services.route.DrivePath;
 import com.amap.api.services.route.DriveRouteResult;
 import com.amap.api.services.route.RouteResult;
 import com.amap.api.services.route.RouteSearch;
-import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
 import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
@@ -180,11 +178,6 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
 
     @Override
     protected void permissionRequestResult() {
-
-    }
-
-    @Override
-    protected void endOperation() {
 
     }
 

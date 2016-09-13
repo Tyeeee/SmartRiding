@@ -66,8 +66,9 @@ public class Constant {
     public static class RequestCode {
         public static final int POINT = 0x5001;
         public static final int DIALOG = 0x5002;
-        public static final int DIALOG_RADIO = 0x5003;
-        public static final int DIALOG_DATE = 0x5004;
+        public static final int DIALOG_EXIT = 0x5003;
+        public static final int DIALOG_RADIO = 0x5004;
+        public static final int DIALOG_DATE = 0x5005;
     }
 
     public static class Map {

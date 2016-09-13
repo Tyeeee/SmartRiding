@@ -362,15 +362,15 @@ public abstract class BaseDialogFragment extends DialogFragment implements Dialo
         }
 
         private void setPaddingOfTitleAndMessage(TextView title, TextView message) {
-            int dp6 = BaseApplication.getInstance().getResources().getDimensionPixelSize(R.dimen.dp_6);
-            int dp4 = BaseApplication.getInstance().getResources().getDimensionPixelSize(R.dimen.dp_4);
+            int dp24 = BaseApplication.getInstance().getResources().getDimensionPixelSize(R.dimen.dp_24);
+            int dp16 = BaseApplication.getInstance().getResources().getDimensionPixelSize(R.dimen.dp_16);
             if (!TextUtils.isEmpty(mTitle) && !TextUtils.isEmpty(mMessage)) {
-                title.setPadding(dp6, dp6, dp6, dp4);
-                message.setPadding(dp6, 0, dp6, dp4);
+                title.setPadding(dp24, dp24, dp24, dp16);
+                message.setPadding(dp24, 0, dp24, dp16);
             } else if (TextUtils.isEmpty(mTitle)) {
-                message.setPadding(dp6, dp4, dp6, dp4);
+                message.setPadding(dp24, dp16, dp24, dp16);
             } else if (TextUtils.isEmpty(mMessage)) {
-                title.setPadding(dp6, dp6, dp6, dp4);
+                title.setPadding(dp24, dp24, dp24, dp16);
             }
         }
 

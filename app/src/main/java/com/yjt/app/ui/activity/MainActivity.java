@@ -18,16 +18,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yjt.app.R;
+import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.model.Menu;
 import com.yjt.app.receiver.BluetoothReceiver;
 import com.yjt.app.ui.adapter.MenuAdapter;
 import com.yjt.app.ui.adapter.binder.MenuBinder;
 import com.yjt.app.ui.base.BaseActivity;
+import com.yjt.app.ui.dialog.PromptDialog;
 import com.yjt.app.ui.fragment.DeviceFragment;
 import com.yjt.app.ui.fragment.HomeFragment;
 import com.yjt.app.ui.fragment.MessageFragment;
 import com.yjt.app.ui.fragment.SettingFragment;
+import com.yjt.app.ui.listener.OnPromptDialogListener;
 import com.yjt.app.ui.sticky.FixedStickyViewAdapter;
 import com.yjt.app.ui.widget.CircleImageView;
 import com.yjt.app.ui.widget.LinearLayoutDividerItemDecoration;
@@ -43,7 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends BaseActivity implements View.OnClickListener, FixedStickyViewAdapter.OnItemClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener, FixedStickyViewAdapter.OnItemClickListener, OnPromptDialogListener {
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle mToggle;
@@ -250,7 +253,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         if (drawerLayout.isDrawerOpen(Gravity.LEFT)) {
             drawerLayout.closeDrawers();
         } else {
-            showExitDialog();
+            PromptDialog.createBuilder(getSupportFragmentManager())
+                    .setTitle(getString(R.string.prompt_title))
+                    .setPrompt(getString(R.string.prompt_exit_application))
+                    .setPositiveButtonText(R.string.enter)
+                    .setNegativeButtonText(R.string.cancel)
+                    .setRequestCode(Constant.RequestCode.DIALOG_EXIT)
+                    .show();
         }
     }
 
@@ -275,11 +284,41 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     @Override
-    protected void endOperation() {
-        if (BluetoothUtil.getInstance().isBluetoothSupported() && BluetoothUtil.getInstance().isBluetoothEnabled()) {
-            BluetoothUtil.getInstance().turnOffBluetooth();
+    public void onNegativeButtonClicked(int requestCode) {
+        switch (requestCode) {
+            case Constant.RequestCode.DIALOG_EXIT:
+                LogUtil.print("---->DIALOG_EXIT onNegativeButtonClicked");
+                break;
+            default:
+                break;
         }
-        unregisterReceiver(mReceiver);
+    }
+
+    @Override
+    public void onNeutralButtonClicked(int requestCode) {
+        switch (requestCode) {
+            case Constant.RequestCode.DIALOG_EXIT:
+                LogUtil.print("---->DIALOG_EXIT onNeutralButtonClicked");
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onPositiveButtonClicked(int requestCode) {
+        switch (requestCode) {
+            case Constant.RequestCode.DIALOG_EXIT:
+                LogUtil.print("---->DIALOG_EXIT onNegativeButtonClicked");
+                if (BluetoothUtil.getInstance().isBluetoothSupported() && BluetoothUtil.getInstance().isBluetoothEnabled()) {
+                    BluetoothUtil.getInstance().turnOffBluetooth();
+                }
+                unregisterReceiver(mReceiver);
+                BaseApplication.getInstance().releaseReference();
+                break;
+            default:
+                break;
+        }
     }
 
     public void setFragmentHandler(Handler handler) {

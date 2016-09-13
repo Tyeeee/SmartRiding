@@ -1,6 +1,5 @@
 package com.yjt.app.ui.base;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,13 +9,11 @@ import android.view.MotionEvent;
 import android.view.Window;
 
 import com.yjt.app.R;
-import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.utils.ActivityUtil;
 import com.yjt.app.utils.InputUtil;
 import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.PermissionUtil;
-import com.yjt.app.utils.ViewUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -143,8 +140,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected abstract void permissionRequestResult();
 
-    protected abstract void endOperation();
-
     protected void startActivity(Class<?> cls) {
         startActivity(cls, null);
     }
@@ -171,22 +166,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
         startActivity(intent);
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
-    }
-
-    protected void showExitDialog() {
-        ViewUtil.getInstance().showAlertDialog(this, getString(R.string.prompt_title), getString(R.string.exit_application_prompt_content), getString(R.string.enter), getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                endOperation();
-                BaseApplication.getInstance().releaseReference();
-            }
-        }, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        }, null);
     }
 
     protected void permissionRequest(String... permissions) {

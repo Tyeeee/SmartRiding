@@ -34,14 +34,14 @@ import java.util.List;
 
 public class RouteDetailActivity extends BaseActivity {
 
-    private DriveRouteResult       mResult;
-    private TextView               tvDistance;
-    private TextView               tvCost;
-    private RecyclerView           rvRouteDetail;
-    private LinearLayoutManager    mLayoutManager;
+    private DriveRouteResult mResult;
+    private TextView tvDistance;
+    private TextView tvCost;
+    private RecyclerView rvRouteDetail;
+    private LinearLayoutManager mLayoutManager;
     private FixedStickyViewAdapter mAdapter;
-    private DrivePath              mPath;
-    private RouteDetailHandler     mHandler;
+    private DrivePath mPath;
+    private RouteDetailHandler mHandler;
 
     private static class RouteDetailHandler extends Handler {
 
@@ -105,8 +105,8 @@ public class RouteDetailActivity extends BaseActivity {
                 @Override
                 public void run() {
                     List<RouteDetail> details = new ArrayList<>();
-                    List<DriveStep>   steps   = mPath.getSteps();
-                    int               size    = steps.size();
+                    List<DriveStep> steps = mPath.getSteps();
+                    int size = steps.size();
                     for (int i = -1; i <= size; i++) {
                         if (i < 0) {
                             RouteDetail detail = new RouteDetail();
@@ -117,7 +117,7 @@ public class RouteDetailActivity extends BaseActivity {
                             detail.setRoutDetail(getString(R.string.start_off));
                             details.add(detail);
                         } else if (i < size) {
-                            DriveStep   step   = steps.get(i);
+                            DriveStep step = steps.get(i);
                             RouteDetail detail = new RouteDetail();
                             detail.setDirection(MapUtil.getInstance().getDriveActionID(step.getAction()));
                             detail.setLineVisible(View.VISIBLE);
@@ -166,11 +166,6 @@ public class RouteDetailActivity extends BaseActivity {
 
     @Override
     protected void permissionRequestResult() {
-
-    }
-
-    @Override
-    protected void endOperation() {
 
     }
 }

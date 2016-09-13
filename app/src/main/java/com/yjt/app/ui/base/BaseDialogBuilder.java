@@ -13,8 +13,7 @@ import com.yjt.app.constant.Temp;
 public abstract class BaseDialogBuilder<T extends BaseDialogBuilder<T>> {
 
     private String mTag = Constant.View.CUSTOM_DIALOG;
-    public final static int DEFAULT_REQUEST_CODE = Constant.RequestCode.DIALOG;
-    private int mRequestCode = DEFAULT_REQUEST_CODE;
+    private int mRequestCode = Constant.RequestCode.DIALOG;
     protected final FragmentManager mFragmentManager;
     protected final Class<? extends BaseDialogFragment> mClass;
     private Fragment mTargetFragment;

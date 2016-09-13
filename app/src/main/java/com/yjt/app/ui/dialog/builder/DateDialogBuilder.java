@@ -7,7 +7,7 @@ import android.text.format.DateFormat;
 import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Temp;
 import com.yjt.app.ui.base.BaseDialogBuilder;
-import com.yjt.app.ui.dialog.DatePickerDialog;
+import com.yjt.app.ui.dialog.DateDialog;
 
 import java.util.Date;
 import java.util.TimeZone;
@@ -24,7 +24,7 @@ public class DateDialogBuilder extends BaseDialogBuilder<DateDialogBuilder> {
 
     private boolean is24Hours;
 
-    public DateDialogBuilder(FragmentManager fragmentManager, Class<? extends DatePickerDialog> clazz) {
+    public DateDialogBuilder(FragmentManager fragmentManager, Class<? extends DateDialog> clazz) {
         super(fragmentManager, clazz);
         is24Hours = DateFormat.is24HourFormat(BaseApplication.getInstance());
     }

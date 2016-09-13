@@ -48,7 +48,7 @@ public class ListDialog extends BaseDialogFragment {
             builder.setTitle(title);
         }
         if (!TextUtils.isEmpty(negative)) {
-            builder.setPositiveButton(negative, new View.OnClickListener() {
+            builder.setNegativeButton(negative, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     for (OnDialogCancelListener listener : getDialogListeners(OnDialogCancelListener.class)) {

@@ -69,7 +69,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_5"
             android:layout_marginStart="@dimen/dp_5"
-            android:text="@string/nickname"
+            android:text="@string/height"
             android:textColor="@android:color/black"
             android:textSize="@dimen/sp_15"/>
 
