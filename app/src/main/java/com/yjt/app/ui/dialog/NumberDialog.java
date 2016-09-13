@@ -10,6 +10,7 @@ import com.yjt.app.constant.Temp;
 import com.yjt.app.ui.base.BaseDialogFragment;
 import com.yjt.app.ui.dialog.builder.NumberDialogBuilder;
 import com.yjt.app.ui.listener.OnNumberDialogListener;
+import com.yjt.app.utils.IntentDataUtil;
 
 
 public class NumberDialog extends BaseDialogFragment {
@@ -18,9 +19,9 @@ public class NumberDialog extends BaseDialogFragment {
 
     @Override
     protected Builder build(Builder builder) {
-        CharSequence title = getArguments().getCharSequence(Temp.DIALOG_TITLE.getContent());
-        CharSequence positive = getArguments().getCharSequence(Temp.DIALOG_BUTTON_POSITIVE.getContent());
-        CharSequence negative = getArguments().getCharSequence(Temp.DIALOG_BUTTON_NEGATIVE.getContent());
+        CharSequence title = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_TITLE.getContent());
+        CharSequence positive = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_POSITIVE.getContent());
+        CharSequence negative = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_NEGATIVE.getContent());
         if (!TextUtils.isEmpty(title)) {
             builder.setTitle(title);
         }
@@ -48,8 +49,8 @@ public class NumberDialog extends BaseDialogFragment {
         }
         npNumber = (NumberPicker) builder.getLayoutInflater().inflate(R.layout.view_number, null);
         builder.setView(npNumber);
-        npNumber.setMinValue(getArguments().getInt(Temp.MINIMUM_NUMBER.getContent()));
-        npNumber.setMaxValue(getArguments().getInt(Temp.MAXIMUM_NUMBER.getContent()));
+        npNumber.setMinValue(IntentDataUtil.getInstance().getIntData(getArguments(), Temp.MINIMUM_NUMBER.getContent()));
+        npNumber.setMaxValue(IntentDataUtil.getInstance().getIntData(getArguments(), Temp.MAXIMUM_NUMBER.getContent()));
         return builder;
     }
 

@@ -2,6 +2,7 @@ package com.yjt.app.utils;
 
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.os.Parcelable;
 
 public class IntentDataUtil {
@@ -40,12 +41,41 @@ public class IntentDataUtil {
         return 0;
     }
 
+    public int getIntData(Bundle bundle, String key) {
+        if (bundle != null) {
+            return bundle.getInt(key);
+        }
+        return 0;
+    }
+
     public double getDoubleData(Activity activity, String key) {
         if (activity.getIntent() != null) {
             return activity.getIntent().getExtras().getDouble(key);
         }
         return 0.0;
     }
+
+    public CharSequence getCharSequenceData(Bundle bundle, String key) {
+        if (bundle != null) {
+            return bundle.getCharSequence(key);
+        }
+        return null;
+    }
+
+    public CharSequence[] getCharSequenceArrayData(Bundle bundle, String key) {
+        if (bundle != null) {
+            return bundle.getCharSequenceArray(key);
+        }
+        return null;
+    }
+
+    public String getStringData(Bundle bundle, String key) {
+        if (bundle != null) {
+            return bundle.getString(key);
+        }
+        return null;
+    }
+
 
     public String getStringData(Activity activity, String key) {
         if (activity.getIntent() != null) {
@@ -54,9 +84,30 @@ public class IntentDataUtil {
         return null;
     }
 
-    public Parcelable getParcelableData(Activity activity, String key) {
+    public long getLongData(Bundle bundle, String key, long defaultValue) {
+        if (bundle != null) {
+            return bundle.getLong(key, defaultValue);
+        }
+        return 0;
+    }
+
+    public boolean getBooleanData(Bundle bundle, String key) {
+        if (bundle != null) {
+            return bundle.getBoolean(key);
+        }
+        return false;
+    }
+
+    public <T extends Parcelable> T getParcelableData(Activity activity, String key) {
         if (activity.getIntent() != null) {
-            return activity.getIntent().getExtras().getParcelable(key);
+            return (T) activity.getIntent().getExtras().getParcelable(key);
+        }
+        return null;
+    }
+
+    public <T extends Parcelable> T getParcelableData(Bundle bundle, String key) {
+        if (bundle != null) {
+            return (T) bundle.getParcelable(key);
         }
         return null;
     }

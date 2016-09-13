@@ -10,16 +10,17 @@ import com.yjt.app.ui.dialog.builder.PromptDialogBuilder;
 import com.yjt.app.ui.listener.OnDialogNegativeListener;
 import com.yjt.app.ui.listener.OnDialogNeutralListener;
 import com.yjt.app.ui.listener.OnDialogPositiveListener;
+import com.yjt.app.utils.IntentDataUtil;
 
 public class PromptDialog extends BaseDialogFragment {
 
     @Override
     protected Builder build(Builder builder) {
-        CharSequence title = getArguments().getCharSequence(Temp.DIALOG_TITLE.getContent());
-        CharSequence prompt = getArguments().getCharSequence(Temp.DIALOG_PROMPT.getContent());
-        CharSequence positive = getArguments().getCharSequence(Temp.DIALOG_BUTTON_POSITIVE.getContent());
-        CharSequence negative = getArguments().getCharSequence(Temp.DIALOG_BUTTON_NEGATIVE.getContent());
-        CharSequence neutral = getArguments().getCharSequence(Temp.DIALOG_BUTTON_NEUTRAL.getContent());
+        CharSequence title = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_TITLE.getContent());
+        CharSequence prompt = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_PROMPT.getContent());
+        CharSequence positive = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_POSITIVE.getContent());
+        CharSequence negative = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_NEGATIVE.getContent());
+        CharSequence neutral = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_NEUTRAL.getContent());
         if (!TextUtils.isEmpty(title)) {
             builder.setTitle(title);
         }

@@ -1,6 +1,5 @@
 package com.yjt.app.utils;
 
-import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.view.View;
@@ -82,10 +81,10 @@ public class SnackBarUtil {
         }
 
         if (textSize != Constant.View.SIZE_DEFAULT) {
-            ((TextView) mSnackbar.getView().findViewById(R.id.snackbar_text)).setTextSize(textSize);
+            ((TextView) ViewUtil.getInstance().findView(mSnackbar.getView(), R.id.snackbar_text)).setTextSize(textSize);
         }
         if (color != Constant.View.COLOR_DEFAULT) {
-            ((TextView) mSnackbar.getView().findViewById(R.id.snackbar_text)).setTextColor(color);
+            ((TextView) ViewUtil.getInstance().findView(mSnackbar.getView(), R.id.snackbar_text)).setTextColor(color);
         }
         mSnackbar.show();
     }

@@ -10,6 +10,7 @@ import com.yjt.app.constant.Temp;
 import com.yjt.app.ui.base.BaseDialogFragment;
 import com.yjt.app.ui.dialog.builder.DateDialogBuilder;
 import com.yjt.app.ui.listener.OnDateDialogListener;
+import com.yjt.app.utils.IntentDataUtil;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -23,9 +24,9 @@ public class DateDialog extends BaseDialogFragment {
 
     @Override
     protected Builder build(Builder builder) {
-        CharSequence title = getArguments().getCharSequence(Temp.DIALOG_TITLE.getContent());
-        CharSequence positive = getArguments().getCharSequence(Temp.DIALOG_BUTTON_POSITIVE.getContent());
-        CharSequence negative = getArguments().getCharSequence(Temp.DIALOG_BUTTON_NEGATIVE.getContent());
+        CharSequence title = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_TITLE.getContent());
+        CharSequence positive = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_POSITIVE.getContent());
+        CharSequence negative = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_NEGATIVE.getContent());
         if (!TextUtils.isEmpty(title)) {
             builder.setTitle(title);
         }
@@ -53,8 +54,8 @@ public class DateDialog extends BaseDialogFragment {
         }
         dpDate = (DatePicker) builder.getLayoutInflater().inflate(R.layout.view_date, null);
         builder.setView(dpDate);
-        mCalendar = Calendar.getInstance(TimeZone.getTimeZone(getArguments().getString(Temp.TIME_ZONE.getContent())));
-        mCalendar.setTimeInMillis(getArguments().getLong(Temp.DATE.getContent(), System.currentTimeMillis()));
+        mCalendar = Calendar.getInstance(TimeZone.getTimeZone(IntentDataUtil.getInstance().getStringData(getArguments(), Temp.TIME_ZONE.getContent())));
+        mCalendar.setTimeInMillis(IntentDataUtil.getInstance().getLongData(getArguments(), Temp.DATE.getContent(), System.currentTimeMillis()));
         dpDate.updateDate(mCalendar.get(Calendar.YEAR)
                 , mCalendar.get(Calendar.MONTH)
                 , mCalendar.get(Calendar.DAY_OF_MONTH));

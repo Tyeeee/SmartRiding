@@ -25,6 +25,7 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 
 import com.yjt.app.R;
+import com.yjt.app.utils.ViewUtil;
 
 public class FloatingActionMenu extends ViewGroup {
 
@@ -225,11 +226,9 @@ public class FloatingActionMenu extends ViewGroup {
 
         for (int i = 0; i < mButtonsCount; i++) {
             View child = getChildAt(i);
-
-            if (child.getVisibility() == GONE) {
+            if (ViewUtil.getInstance().isGone(child)) {
                 continue;
             }
-
             switch (mExpandDirection) {
                 case EXPAND_UP:
                 case EXPAND_DOWN:
@@ -307,9 +306,9 @@ public class FloatingActionMenu extends ViewGroup {
 
                 for (int i = mButtonsCount - 1; i >= 0; i--) {
                     final View child = getChildAt(i);
-
-                    if (child == mAddButton || child.getVisibility() == GONE) continue;
-
+                    if (child == mAddButton || ViewUtil.getInstance().isGone(child)) {
+                        continue;
+                    }
                     int childX = buttonsHorizontalCenter - child.getMeasuredWidth() / 2;
                     int childY = expandUp ? nextY - child.getMeasuredHeight() : nextY;
                     child.layout(childX, childY, childX + child.getMeasuredWidth(), childY + child.getMeasuredHeight());
@@ -380,9 +379,9 @@ public class FloatingActionMenu extends ViewGroup {
 
                 for (int i = mButtonsCount - 1; i >= 0; i--) {
                     final View child = getChildAt(i);
-
-                    if (child == mAddButton || child.getVisibility() == GONE) continue;
-
+                    if (child == mAddButton || ViewUtil.getInstance().isGone(child)) {
+                        continue;
+                    }
                     int childX = expandLeft ? nextX - child.getMeasuredWidth() : nextX;
                     int childY = addButtonTop + (mAddButton.getMeasuredHeight() - child.getMeasuredHeight()) / 2;
                     child.layout(childX, childY, childX + child.getMeasuredWidth(), childY + child.getMeasuredHeight());

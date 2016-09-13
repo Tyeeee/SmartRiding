@@ -108,7 +108,7 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
     protected void initialize(Bundle savedInstanceState) {
         nvMap.onCreate(savedInstanceState);
         if (IntentDataUtil.getInstance().hasIntentExtraValue(this, Temp.ROUTE_INFO.getContent())) {
-            mResult = (RouteResult) IntentDataUtil.getInstance().getParcelableData(this, Temp.ROUTE_INFO.getContent());
+            mResult = IntentDataUtil.getInstance().getParcelableData(this, Temp.ROUTE_INFO.getContent());
             mStartLatLngs.add(MapUtil.getInstance().parseCoordinate(mResult.getStartPos().toString()));
             mEndLatLngs.add(MapUtil.getInstance().parseCoordinate(mResult.getTargetPos().toString()));
         } else {

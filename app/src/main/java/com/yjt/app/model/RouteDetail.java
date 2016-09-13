@@ -5,10 +5,10 @@ import com.yjt.app.ui.sticky.OnGroupListener;
 
 public class RouteDetail implements OnGroupListener {
 
-    private int    isLineVisible;
-    private int    mDirection;
-    private int    isDirectionUpVisible;
-    private int    isDirectionDownVisible;
+    private int isLineVisible;
+    private int mDirection;
+    private int isDirectionUpVisible;
+    private int isDirectionDownVisible;
     private String mRoutDetail;
 
     public int isLineVisible() {
