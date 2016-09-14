@@ -37,6 +37,8 @@ public class Constant {
         public static final int FEEDBACK = 3;
         public static final int VERSION_UPDATE = 4;
         public static final int ABOUT_US = 5;
+        public static final int FROM_ALBUM = 0;
+        public static final int FROM_CAMERA = 1;
     }
 
     public static class ItemType {
@@ -67,10 +69,14 @@ public class Constant {
         public static final int POINT = 0x5001;
         public static final int DIALOG = 0x5002;
         public static final int DIALOG_EXIT = 0x5003;
-        public static final int DIALOG_RADIO = 0x5004;
-        public static final int DIALOG_NUMBER_HEIGHT = 0x5005;
-        public static final int DIALOG_NUMBER_WEIGHT = 0x5006;
-        public static final int DIALOG_DATE = 0x5007;
+        public static final int DIALOG_RADIO_PICTURE = 0x5004;
+        public static final int DIALOG_RADIO_GEDER = 0x5005;
+        public static final int DIALOG_NUMBER_HEIGHT = 0x5006;
+        public static final int DIALOG_NUMBER_WEIGHT = 0x5007;
+        public static final int DIALOG_DATE = 0x5008;
+        public static final int DIALOG_PROGRESS = 0x5009;
+        public static final int ALBUM = 0x5010;
+        public static final int CAMERA = 0x5011;
     }
 
     public static class Map {

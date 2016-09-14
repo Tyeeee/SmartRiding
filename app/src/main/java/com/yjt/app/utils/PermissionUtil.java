@@ -3,8 +3,11 @@ package com.yjt.app.utils;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -58,9 +61,6 @@ public class PermissionUtil {
         initializePermissionsMap();
     }
 
-    /**
-     * 遍历当前版本下清单.class中所有的有效权限
-     */
     private synchronized void initializePermissionsMap() {
         Field[] fields = Manifest.permission.class.getFields();
         for (Field field : fields) {
@@ -74,13 +74,6 @@ public class PermissionUtil {
         }
     }
 
-    /**
-     * 检测清单文件中声明的权限
-     *
-     * @param activity
-     *
-     * @return
-     */
     @NonNull
     public synchronized String[] getManifestPermissions(@NonNull final Activity activity) {
         PackageInfo packageInfo = null;
@@ -103,12 +96,6 @@ public class PermissionUtil {
         return list.toArray(new String[list.size()]);
     }
 
-    /**
-     * 添加权限到当前权限列表
-     *
-     * @param permissions
-     * @param action
-     */
     private synchronized void addPendingAction(@NonNull String[] permissions,
                                                @Nullable PermissionsResultAction action) {
         if (action == null) {
@@ -118,11 +105,6 @@ public class PermissionUtil {
         mPendingActions.add(new WeakReference<>(action));
     }
 
-    /**
-     * 删除当前待定的权限
-     *
-     * @param action
-     */
     private synchronized void removePendingAction(@Nullable PermissionsResultAction action) {
         for (Iterator<WeakReference<PermissionsResultAction>> iterator = mPendingActions.iterator();
              iterator.hasNext(); ) {
@@ -133,27 +115,11 @@ public class PermissionUtil {
         }
     }
 
-    /**
-     * 检查是否具有某个特定权限
-     *
-     * @param context
-     * @param permission
-     *
-     * @return
-     */
     public synchronized boolean hasPermission(@Nullable Context context, @NonNull String permission) {
         return context != null && (ActivityCompat.checkSelfPermission(context, permission)
                 == PackageManager.PERMISSION_GRANTED || !mPermissions.contains(permission));
     }
 
-    /**
-     * 检查是否具有某些特定权限
-     *
-     * @param context
-     * @param permissions
-     *
-     * @return
-     */
     public synchronized boolean hasAllPermissions(@Nullable Context context, @NonNull String... permissions) {
         if (context == null) {
             return false;
@@ -165,12 +131,6 @@ public class PermissionUtil {
         return hasAllPermissions;
     }
 
-    /**
-     * 请求清单文件中声明的所有权限
-     *
-     * @param activity
-     * @param action
-     */
     public synchronized void requestAllManifestPermissionsIfNecessary(final @Nullable Activity activity,
                                                                       final @Nullable PermissionsResultAction action) {
         if (activity == null) {
@@ -225,12 +185,6 @@ public class PermissionUtil {
         }
     }
 
-    /**
-     * 通知权限修改
-     *
-     * @param permissions
-     * @param results
-     */
     public synchronized void notifyPermissionsChange(@NonNull String[] permissions, @NonNull int[] results) {
         int size = permissions.length;
         if (results.length < size) {
@@ -251,13 +205,6 @@ public class PermissionUtil {
         }
     }
 
-    /**
-     * Android M 版本前的权限处理
-     *
-     * @param activity
-     * @param permissions
-     * @param action
-     */
     private void doPermissionWorkBeforeAndroidM(@NonNull Activity activity,
                                                 @NonNull String[] permissions,
                                                 @Nullable PermissionsResultAction action) {
@@ -275,15 +222,6 @@ public class PermissionUtil {
         }
     }
 
-    /**
-     * 权限列表过滤
-     *
-     * @param activity
-     * @param permissions
-     * @param action
-     *
-     * @return
-     */
     @NonNull
     private List<String> getPermissionsListToRequest(@NonNull Activity activity,
                                                      @NonNull String[] permissions,
@@ -309,22 +247,10 @@ public class PermissionUtil {
 
     /*********************************/
 
-    /**
-     * 版本校验
-     *
-     * @return
-     */
     public boolean isCheckPermission() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
 
-    /**
-     * 校验权限
-     *
-     * @param activity
-     * @param requestCode
-     * @param permissions
-     */
     public void checkPermissions(final Activity activity, final int requestCode, final String... permissions) {
         if (activity == null) {
             return;
@@ -348,24 +274,10 @@ public class PermissionUtil {
         }
     }
 
-    /**
-     * 检查权限
-     *
-     * @param activity
-     * @param requestCode
-     * @param permission
-     */
     public void checkPermission(final Activity activity, final int requestCode, final String... permission) {
         checkPermissions(activity, requestCode, permission);
     }
 
-    /**
-     * 验证权限
-     *
-     * @param grantResults
-     *
-     * @return
-     */
     public boolean verifyPermissions(int[] grantResults) {
         if (grantResults.length < 1) {
             return false;
@@ -376,5 +288,20 @@ public class PermissionUtil {
             }
         }
         return true;
+    }
+
+    public void grantWritePermission(Activity activity, Intent intent, Uri uri) {
+        if (uri != null) {
+            List<ResolveInfo> resInfoList = activity.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+            for (ResolveInfo resolveInfo : resInfoList) {
+                activity.grantUriPermission(resolveInfo.activityInfo.packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
+        }
+    }
+
+    public void revokeWritePermission(Activity activity, Uri uri) {
+        if (uri != null) {
+            activity.revokeUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
     }
 }

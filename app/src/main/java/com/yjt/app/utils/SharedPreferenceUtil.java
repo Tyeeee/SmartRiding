@@ -1,8 +1,9 @@
 package com.yjt.app.utils;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
+
+import com.yjt.app.base.BaseApplication;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -12,104 +13,103 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 文件持久化工具
- *
- * @author yjt
- */
 public class SharedPreferenceUtil {
 
-    private static SharedPreferences mPreferences;
+    private static SharedPreferenceUtil mSharedPreferenceUtil;
+    private SharedPreferences mPreferences;
 
     private SharedPreferenceUtil() {
         // cannot be instantiated
     }
 
-    public static void init(Context context, String fileName, int mode) {
-        if (mPreferences == null) {
-            mPreferences = context.getSharedPreferences(fileName, mode);
+    public static synchronized SharedPreferenceUtil getInstance() {
+        if (mSharedPreferenceUtil == null) {
+            mSharedPreferenceUtil = new SharedPreferenceUtil();
         }
+        return mSharedPreferenceUtil;
     }
 
     public static void releaseInstance() {
-        if (mPreferences != null) {
-            mPreferences = null;
+        if (mSharedPreferenceUtil != null) {
+            mSharedPreferenceUtil = null;
         }
     }
 
-    /**
-     * 存储数据(Long)
-     */
-    public static void putLong(String key, long value) {
+    public void putLong(String fileName, int mode, String key, long value) {
+        if (mPreferences == null) {
+            mPreferences = BaseApplication.getInstance().getSharedPreferences(fileName, mode);
+        }
         mPreferences.edit().putLong(key, value).apply();
     }
 
-    /**
-     * 存储数据(Int)
-     */
-    public static void putInt(String key, int value) {
+    public void putInt(String fileName, int mode, String key, int value) {
+        if (mPreferences == null) {
+            mPreferences = BaseApplication.getInstance().getSharedPreferences(fileName, mode);
+        }
         mPreferences.edit().putInt(key, value).apply();
     }
 
-    /**
-     * 存储数据(String)
-     */
-    public static void putString(String key, String value) {
+    public void putString(String fileName, int mode, String key, String value) {
+        if (mPreferences == null) {
+            mPreferences = BaseApplication.getInstance().getSharedPreferences(fileName, mode);
+        }
         mPreferences.edit().putString(key, value).apply();
     }
 
-    /**
-     * 存储数据(boolean)
-     */
-    public static void putBoolean(String key, boolean value) {
+    public void putBoolean(String fileName, int mode, String key, boolean value) {
+        if (mPreferences == null) {
+            mPreferences = BaseApplication.getInstance().getSharedPreferences(fileName, mode);
+        }
         mPreferences.edit().putBoolean(key, value).apply();
     }
 
-    /**
-     * 取出数据(Long)
-     */
-    public static long getLong(String key, long defValue) {
+    public long getLong(String fileName, int mode, String key, long defValue) {
+        if (mPreferences == null) {
+            mPreferences = BaseApplication.getInstance().getSharedPreferences(fileName, mode);
+        }
         return mPreferences.getLong(key, defValue);
     }
 
-    /**
-     * 取出数据(int)
-     */
-    public static int getInt(String key, int defValue) {
+    public int getInt(String fileName, int mode, String key, int defValue) {
+        if (mPreferences == null) {
+            mPreferences = BaseApplication.getInstance().getSharedPreferences(fileName, mode);
+        }
         return mPreferences.getInt(key, defValue);
     }
 
-    /**
-     * 取出数据(String)
-     */
-    public static String getString(String key, String defValue) {
+    public String getString(String fileName, int mode, String key, String defValue) {
+        if (mPreferences == null) {
+            mPreferences = BaseApplication.getInstance().getSharedPreferences(fileName, mode);
+        }
         return mPreferences.getString(key, defValue);
     }
 
-    /**
-     * 取出数据(boolean)
-     */
-    public static boolean getBoolean(String key, boolean defValue) {
+    public boolean getBoolean(String fileName, int mode, String key, boolean defValue) {
+        if (mPreferences == null) {
+            mPreferences = BaseApplication.getInstance().getSharedPreferences(fileName, mode);
+        }
         return mPreferences.getBoolean(key, defValue);
     }
 
-    /**
-     * 移除指定数据
-     */
-    public static void remove(String key) {
+    public void remove(String fileName, int mode, String key) {
+        if (mPreferences == null) {
+            mPreferences = BaseApplication.getInstance().getSharedPreferences(fileName, mode);
+        }
         mPreferences.edit().remove(key).apply();
     }
 
-    /**
-     * 清空�?有数�?
-     */
-    public static void clear() {
+    public void clear(String fileName, int mode) {
+        if (mPreferences == null) {
+            mPreferences = BaseApplication.getInstance().getSharedPreferences(fileName, mode);
+        }
         mPreferences.edit().clear().apply();
     }
 
     @SuppressWarnings("unchecked")
-    public static List<Map<String, String>> getObject(String key,
-                                                      String defValue) {
+    public List<Map<String, String>> getObject(String fileName, int mode, String key, String defValue) {
+        if (mPreferences == null) {
+            mPreferences = BaseApplication.getInstance().getSharedPreferences(fileName, mode);
+        }
         byte[] data = Base64.decode(mPreferences.getString(key, defValue),
                                     Base64.DEFAULT);
         List<Map<String, String>> value = null;
@@ -123,8 +123,11 @@ public class SharedPreferenceUtil {
         return value;
     }
 
-    public static void putObject(String key, List<?> value) {
+    public void putObject(String fileName, int mode, String key, List<?> value) {
         try {
+            if (mPreferences == null) {
+                mPreferences = BaseApplication.getInstance().getSharedPreferences(fileName, mode);
+            }
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
             objectOutputStream.writeObject(value);

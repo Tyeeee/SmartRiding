@@ -14,8 +14,8 @@ import com.yjt.app.utils.ViewUtil;
 public class SearchTextView extends RelativeLayout {
 
     private ImageView ivPoint;
-    private TextView  tvPoint;
-    private View      vLine;
+    private TextView tvPoint;
+    private View vLine;
 
     public SearchTextView(Context context) {
         super(context);

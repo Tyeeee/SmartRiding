@@ -48,9 +48,10 @@
                     android:clickable="false"
                     android:contentDescription="@null"
                     app:border_color="@android:color/white"
-                    app:border_width="@dimen/dp_1"
-                    app:text_color="@android:color/white"
-                    app:text_padding="@dimen/dp_10"/>
+                    app:border_width="@dimen/dp_0.5"
+                    app:text="@string/head_portrait"
+                    android:padding="@dimen/dp_10"
+                    app:text_color="@android:color/white"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"

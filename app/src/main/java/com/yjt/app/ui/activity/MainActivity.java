@@ -157,7 +157,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             BluetoothUtil.getInstance().turnOnBluetooth();
         }
         mHandler = new MainHandler(this);
-        civHeadPortrait.setText(getString(R.string.head_portrait));
         mHelper = new FragmentHelper(getSupportFragmentManager(), R.id.flContent);
         mHelper.addItem(new FragmentHelper.OperationInfo(this, Constant.ItemPosition.HOME, HomeFragment.class));
         mHelper.addItem(new FragmentHelper.OperationInfo(this, Constant.ItemPosition.DEVICE, DeviceFragment.class));

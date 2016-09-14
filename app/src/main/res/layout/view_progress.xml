@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/yjt.Light.Dialog.Progress1">
+
+    <ProgressBar
+        android:id="@+id/pbLoading"
+        style="@style/yjt.Light.Dialog.Progress2"/>
+
+    <TextView
+        android:id="@+id/tvPrompt"
+        style="@style/yjt.Light.Dialog.TextView.Message.Progress"/>
+</LinearLayout>

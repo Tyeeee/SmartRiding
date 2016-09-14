@@ -62,6 +62,7 @@
     public static <fields>;
 }
 
+-dontwarn com.squareup.okhttp.**
 -keep class com.amap.api.**{*;} 
 -keep class com.autonavi.**{*;} 
 -keep class com.loc.**{*;} 

@@ -1,12 +1,16 @@
 package com.yjt.app.ui.activity;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Regex;
@@ -17,23 +21,26 @@ import com.yjt.app.ui.dialog.NumberDialog;
 import com.yjt.app.ui.listener.OnDateDialogListener;
 import com.yjt.app.ui.listener.OnDialogCancelListener;
 import com.yjt.app.ui.listener.OnListDialogListener;
-import com.yjt.app.ui.listener.OnMultiChoiceListDialogListener;
 import com.yjt.app.ui.listener.OnNumberDialogListener;
 import com.yjt.app.ui.widget.CircleImageView;
 import com.yjt.app.utils.DateUtil;
+import com.yjt.app.utils.FileUtil;
 import com.yjt.app.utils.LogUtil;
+import com.yjt.app.utils.PermissionUtil;
+import com.yjt.app.utils.SharedPreferenceUtil;
 import com.yjt.app.utils.ViewUtil;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Date;
 
-public class AccountActivity extends BaseActivity implements View.OnClickListener, OnDialogCancelListener, OnNumberDialogListener, OnDateDialogListener, OnListDialogListener, OnMultiChoiceListDialogListener {
+public class AccountActivity extends BaseActivity implements View.OnClickListener, OnDialogCancelListener, OnNumberDialogListener, OnDateDialogListener, OnListDialogListener {
 
     private RelativeLayout rlHeadPortrait;
     private CircleImageView civHeadPortrait;
 
-    private RelativeLayout rlNickname;
     private TextView tvNickname;
-
     private TextView tvPhoneNumber;
 
     private RelativeLayout rlGender;
@@ -63,7 +70,6 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
         ViewUtil.getInstance().setToolBar(this, R.id.tbTitle, true);
         rlHeadPortrait = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.rlHeadPortrait, this);
         civHeadPortrait = ViewUtil.getInstance().findView(this, R.id.civHeadPortrait);
-        rlNickname = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.rlNickname, this);
         tvNickname = ViewUtil.getInstance().findView(this, R.id.tvNickname);
         tvPhoneNumber = ViewUtil.getInstance().findView(this, R.id.tvPhoneNumber);
         rlGender = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.rlGender, this);
@@ -83,7 +89,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        civHeadPortrait.setText(getString(R.string.head_portrait));
+
     }
 
     @Override
@@ -115,8 +121,14 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rlHeadPortrait:
-                break;
-            case R.id.rlNickname:
+                ListDialog.createBuilder(getSupportFragmentManager())
+                        .setTitle(getString(R.string.gender))
+                        .setPositiveButtonText(R.string.enter)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setItems(getString(R.string.from_album), getString(R.string.from_camera))
+                        .setRequestCode(Constant.RequestCode.DIALOG_RADIO_PICTURE)
+                        .setChoiceMode(AbsListView.CHOICE_MODE_SINGLE)
+                        .show();
                 break;
             case R.id.rlGender:
                 ListDialog.createBuilder(getSupportFragmentManager())
@@ -124,7 +136,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
                         .setPositiveButtonText(R.string.enter)
                         .setNegativeButtonText(R.string.cancel)
                         .setItems(getString(R.string.male), getString(R.string.female), getString(R.string.secrecy))
-                        .setRequestCode(Constant.RequestCode.DIALOG_RADIO)
+                        .setRequestCode(Constant.RequestCode.DIALOG_RADIO_GEDER)
                         .setChoiceMode(AbsListView.CHOICE_MODE_SINGLE)
                         .show();
                 break;
@@ -158,6 +170,59 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case Constant.RequestCode.ALBUM:
+                    if (data != null) {
+                        try {
+                            File file = FileUtil.getInstance().takenAlbumPicture(data.getData());
+                            if (file != null) {
+                                civHeadPortrait.setText(null);
+                                Picasso.with(this)
+                                        .load(file)
+                                        .fit()
+                                        .centerCrop()
+                                        .into(civHeadPortrait);
+                            }
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+                case Constant.RequestCode.CAMERA:
+                    PermissionUtil.getInstance().revokeWritePermission(this, Uri.parse(SharedPreferenceUtil.getInstance().getString(com.yjt.app.constant.File.FILE_NAME.getContent()
+                            , Context.MODE_PRIVATE
+                            , com.yjt.app.constant.File.PICTURE_URI.getContent()
+                            , Regex.NONE.getRegext())));
+                    File file = FileUtil.getInstance().takenCameraPicture();
+                    if (file != null) {
+                        civHeadPortrait.setText(null);
+                        Picasso.with(this)
+                                .load(file)
+                                .fit()
+                                .centerCrop()
+                                .into(civHeadPortrait);
+                    }
+                    SharedPreferenceUtil.getInstance().remove(com.yjt.app.constant.File.FILE_NAME.getContent()
+                            , Context.MODE_PRIVATE
+                            , com.yjt.app.constant.File.PICTURE_URI.getContent());
+                    SharedPreferenceUtil.getInstance().remove(com.yjt.app.constant.File.FILE_NAME.getContent()
+                            , Context.MODE_PRIVATE
+                            , com.yjt.app.constant.File.PICTURE_PATH.getContent());
+                    break;
+                default:
+                    break;
+            }
+        } else {
+
         }
     }
 
@@ -206,8 +271,11 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onCanceled(int requestCode) {
         switch (requestCode) {
-            case Constant.RequestCode.DIALOG_RADIO:
-                LogUtil.print("---->DIALOG_RADIO onCanceled");
+            case Constant.RequestCode.DIALOG_RADIO_GEDER:
+                LogUtil.print("---->DIALOG_RADIO_GEDER onCanceled");
+                break;
+            case Constant.RequestCode.DIALOG_RADIO_PICTURE:
+                LogUtil.print("---->DIALOG_RADIO_PICTURE onCanceled");
                 break;
             default:
                 break;
@@ -217,20 +285,30 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onListItemSelected(CharSequence value, int number, int requestCode) {
         switch (requestCode) {
-            case Constant.RequestCode.DIALOG_RADIO:
-                LogUtil.print("---->DIALOG_RADIO onListItemSelected");
+            case Constant.RequestCode.DIALOG_RADIO_GEDER:
                 tvGender.setText(value);
                 break;
-            default:
-                break;
-        }
-    }
-
-    @Override
-    public void onMultiChoiceListItemsSelected(CharSequence[] values, int[] selectedPositions, int requestCode) {
-        switch (requestCode) {
-            case Constant.RequestCode.DIALOG_DATE:
-                LogUtil.print("---->DIALOG_DATE onMultiChoiceListItemsSelected");
+            case Constant.RequestCode.DIALOG_RADIO_PICTURE:
+                switch (number) {
+                    case Constant.ItemPosition.FROM_ALBUM:
+                        Intent albumIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                        albumIntent.setType("image/*");
+                        startActivityForResult(albumIntent, Constant.RequestCode.ALBUM);
+                        break;
+                    case Constant.ItemPosition.FROM_CAMERA:
+                        try {
+                            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            Uri uri = FileUtil.getInstance().createCameraPictureFile();
+                            PermissionUtil.getInstance().grantWritePermission(this, cameraIntent, uri);
+                            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                            startActivityForResult(cameraIntent, Constant.RequestCode.CAMERA);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    default:
+                        break;
+                }
                 break;
             default:
                 break;

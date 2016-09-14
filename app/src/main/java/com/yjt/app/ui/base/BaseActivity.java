@@ -118,6 +118,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         return false;
     }
 
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        onFinish("onBackPressed");
+    }
+
     public void onFinish(String message) {
         super.finish();
         overridePendingTransition(R.anim.slide_left_in, R.anim.slide_right_out);

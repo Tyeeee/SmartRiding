@@ -1,8 +1,18 @@
 package com.yjt.app.utils;
 
+import android.content.ContentResolver;
+import android.content.Context;
+import android.net.Uri;
 import android.os.Environment;
+import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
+import android.webkit.MimeTypeMap;
 
+import com.yjt.app.BuildConfig;
 import com.yjt.app.base.BaseApplication;
+import com.yjt.app.constant.Regex;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -14,9 +24,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class FileUtil {
 
@@ -135,6 +147,33 @@ public class FileUtil {
             return false;
         }
         return true;
+    }
+
+    private void writeToFile(InputStream in, File file) {
+        OutputStream out = null;
+        try {
+            out = new FileOutputStream(file);
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public boolean saveFile(String message, boolean isAppend) {
@@ -265,5 +304,67 @@ public class FileUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Uri createCameraPictureFile() throws IOException {
+        File cacheDir;
+        if (isSDCardExsist()) {
+            cacheDir = BaseApplication.getInstance().getExternalCacheDir();
+        } else {
+            cacheDir = BaseApplication.getInstance().getCacheDir();
+        }
+        File folder = new File(cacheDir, com.yjt.app.constant.File.TEMP_FOLDER_NAME.getContent());
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+        File file = File.createTempFile(UUID.randomUUID().toString(), Regex.IMAGE_JPG.getRegext(), folder);
+        Uri uri = FileProvider.getUriForFile(BaseApplication.getInstance()
+                , BuildConfig.APPLICATION_ID + com.yjt.app.constant.File.FILE_AUTHORITY.getContent()
+                , file);
+        SharedPreferenceUtil.getInstance().putString(com.yjt.app.constant.File.FILE_NAME.getContent()
+                , Context.MODE_PRIVATE
+                , com.yjt.app.constant.File.PICTURE_URI.getContent()
+                , uri.toString());
+        SharedPreferenceUtil.getInstance().putString(com.yjt.app.constant.File.FILE_NAME.getContent()
+                , Context.MODE_PRIVATE
+                , com.yjt.app.constant.File.PICTURE_PATH.getContent()
+                , file.getAbsolutePath());
+        return uri;
+    }
+
+    @Nullable
+    public File takenCameraPicture() {
+        String path = SharedPreferenceUtil.getInstance().getString(com.yjt.app.constant.File.FILE_NAME.getContent()
+                , Context.MODE_PRIVATE
+                , com.yjt.app.constant.File.PICTURE_PATH.getContent()
+                , Regex.NONE.getRegext());
+        if (!TextUtils.isEmpty(path)) {
+            return new File(path);
+        } else {
+            return null;
+        }
+    }
+
+    @Nullable
+    public File takenAlbumPicture(Uri uri) throws IOException {
+        InputStream inputStream = BaseApplication.getInstance().getContentResolver().openInputStream(uri);
+        File folder = new File(BaseApplication.getInstance().getCacheDir(), com.yjt.app.constant.File.TEMP_FOLDER_NAME.getContent());
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+        File file = new File(folder, UUID.randomUUID().toString() + "." + getMimeType(uri));
+        file.createNewFile();
+        writeToFile(inputStream, file);
+        return file;
+    }
+
+    private String getMimeType(Uri uri) {
+        String extension;
+        if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
+            extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(BaseApplication.getInstance().getContentResolver().getType(uri));
+        } else {
+            extension = MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(new File(uri.getPath())).toString());
+        }
+        return extension;
     }
 }

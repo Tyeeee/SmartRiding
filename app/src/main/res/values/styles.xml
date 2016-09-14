@@ -219,7 +219,8 @@
         <item name="android:divider">@null</item>
         <item name="android:scrollbars">none</item>
         <item name="android:dividerHeight">@dimen/dp_0</item>
-        <item name="android:listSelector">?listSelector</item>
+        <item name="android:listSelector">@android:color/transparent</item>
+        <!--<item name="android:listSelector">?listSelector</item>-->
     </style>
 
     <style name="yjt.Light.Dialog.ListItemControl">
@@ -229,6 +230,18 @@
         <item name="android:focusableInTouchMode">false</item>
         <item name="android:clickable">false</item>
         <item name="android:minHeight">@dimen/dp_52</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">@dimen/dp_24</item>
+        <item name="android:paddingRight">@dimen/dp_0</item>
+    </style>
+
+    <style name="yjt.Light.Dialog.RadioButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:clickable">false</item>
+        <item name="android:background">@android:color/transparent</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:paddingLeft">@dimen/dp_24</item>
         <item name="android:paddingRight">@dimen/dp_0</item>

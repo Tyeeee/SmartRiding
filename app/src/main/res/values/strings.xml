@@ -18,6 +18,8 @@
     <string name="message">消息</string>
     <string name="setting">设置</string>
     <string name="head_portrait">头像</string>
+    <string name="from_album">从相册选择</string>
+    <string name="from_camera">从相机获取</string>
     <string name="nickname">昵称</string>
     <string name="gender">性别</string>
     <string name="male">男</string>

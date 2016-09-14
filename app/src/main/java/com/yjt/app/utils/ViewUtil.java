@@ -127,22 +127,18 @@ public class ViewUtil {
     }
 
     public <V> V findView(View rootView, @IdRes int resId) {
-        //noinspection unchecked
         return (V) rootView.findViewById(resId);
     }
 
     public <V> V findViewAttachOnclick(Activity activity, @IdRes int resId, View.OnClickListener onClickListener) {
         View view = activity.findViewById(resId);
         view.setOnClickListener(onClickListener);
-        //noinspection unchecked
         return (V) view;
     }
 
     public <V> V findViewAttachOnclick(View rootView, @IdRes int resId, View.OnClickListener onClickListener) {
-        //noinspection unchecked
         View view = rootView.findViewById(resId);
         view.setOnClickListener(onClickListener);
-        //noinspection unchecked
         return (V) view;
     }
 

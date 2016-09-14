@@ -4,7 +4,7 @@
     style="@style/yjt.Light.Dialog.ListItem">
 
     <RadioButton
-        style="@style/yjt.Light.Dialog.ListItemControl"/>
+        style="@style/yjt.Light.Dialog.RadioButton"/>
 
     <TextView
         android:id="@+id/tvItem"
