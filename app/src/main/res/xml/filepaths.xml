@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
-    <external-cache-path name="picturesext" path="temp/"/>
-    <cache-path name="picturesint" path="temp/"/>
+    <external-cache-path name="extfiles" path="temp/"/>
+    <cache-path name="intfiles" path="temp/"/>
 </paths>
