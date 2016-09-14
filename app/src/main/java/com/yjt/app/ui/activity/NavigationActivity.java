@@ -363,7 +363,7 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
     @Override
     public boolean onNaviBackClick() {
         LogUtil.print("---->onNaviBackClick");
-        return false;
+        return true;
     }
 
     @Override
