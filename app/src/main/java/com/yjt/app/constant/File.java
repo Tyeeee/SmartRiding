@@ -6,13 +6,7 @@ public enum File {
     TEMP_FOLDER_NAME("temp"),
     FILE_AUTHORITY(".content.fileprovider"),
     PICTURE_URI("picture_uri"),
-    PICTURE_PATH("picture_path"),
-    EMP_ID("emp_id"),
-    EMP_ACCOUNT("emp_account"),
-    ACCOUNT_NAME("account_name"),
-    LOGIN_TICKET("login_ticket"),
-    TICKET_TAG("ticket_tag"),
-    HYCACHIER("hycachier");
+    PICTURE_PATH("picture_path");
 
     private String mContent;
 
