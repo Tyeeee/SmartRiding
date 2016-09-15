@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.yjt.app.R;
-import com.yjt.app.model.RouteDetail;
+import com.yjt.app.entity.RouteDetail;
 import com.yjt.app.ui.adapter.holder.RouteDetailHolder;
 import com.yjt.app.ui.base.BaseViewBinder;
 import com.yjt.app.utils.ViewUtil;

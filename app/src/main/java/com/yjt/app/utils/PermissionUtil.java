@@ -17,9 +17,11 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 
+import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.PermissionStatus;
 import com.yjt.app.permission.PermissionsResultAction;
+import com.yjt.app.ui.base.BaseActivity;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
@@ -38,9 +40,9 @@ public class PermissionUtil {
 
     private static final String TAG = PermissionUtil.class.getSimpleName();
 
-    private final Set<String> mPendingRequests = new HashSet<>(1);
-    private final Set<String> mPermissions = new HashSet<>(1);
-    private final List<WeakReference<PermissionsResultAction>> mPendingActions = new ArrayList<>(1);
+    private final Set<String>                                  mPendingRequests = new HashSet<>(1);
+    private final Set<String>                                  mPermissions     = new HashSet<>(1);
+    private final List<WeakReference<PermissionsResultAction>> mPendingActions  = new ArrayList<>(1);
 
     private static PermissionUtil mPermissionUtil = null;
 
@@ -76,8 +78,8 @@ public class PermissionUtil {
 
     @NonNull
     public synchronized String[] getManifestPermissions(@NonNull final Activity activity) {
-        PackageInfo packageInfo = null;
-        List<String> list = new ArrayList<>(1);
+        PackageInfo  packageInfo = null;
+        List<String> list        = new ArrayList<>(1);
         try {
             Log.d(TAG, activity.getPackageName());
             packageInfo = activity.getPackageManager().getPackageInfo(activity.getPackageName(), PackageManager.GET_PERMISSIONS);
@@ -251,7 +253,7 @@ public class PermissionUtil {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
 
-    public void checkPermissions(final Activity activity, final int requestCode, final String... permissions) {
+    public void checkPermissions(final BaseActivity activity, final int requestCode, final String... permissions) {
         if (activity == null) {
             return;
         }
@@ -259,13 +261,17 @@ public class PermissionUtil {
             for (String permission : permissions) {
                 if (ActivityCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED) {
                     if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
-                        Snackbar.make(activity.getWindow().getDecorView(), "请检查所需权限是否全部接受", Snackbar.LENGTH_INDEFINITE).setAction("查看", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                ActivityCompat
-                                        .requestPermissions(activity, permissions, requestCode);
-                            }
-                        }).show();
+                        SnackBarUtil.getInstance().showSnackBar(activity.getWindow().getDecorView()
+                                , activity.getString(R.string.prompt_permission)
+                                , Snackbar.LENGTH_INDEFINITE
+                                , activity.getString(R.string.see)
+                                , new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        ActivityCompat
+                                                .requestPermissions(activity, permissions, requestCode);
+                                    }
+                                });
                     } else {
                         ActivityCompat.requestPermissions(activity, permissions, requestCode);
                     }
@@ -274,7 +280,7 @@ public class PermissionUtil {
         }
     }
 
-    public void checkPermission(final Activity activity, final int requestCode, final String... permission) {
+    public void checkPermission(final BaseActivity activity, final int requestCode, final String... permission) {
         checkPermissions(activity, requestCode, permission);
     }
 

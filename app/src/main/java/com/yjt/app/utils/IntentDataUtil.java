@@ -5,6 +5,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Parcelable;
 
+import java.util.AbstractList;
+import java.util.Collection;
+import java.util.List;
+
 public class IntentDataUtil {
 
     private static IntentDataUtil mIntentDataUtil;
@@ -108,6 +112,13 @@ public class IntentDataUtil {
     public <T extends Parcelable> T getParcelableData(Bundle bundle, String key) {
         if (bundle != null) {
             return (T) bundle.getParcelable(key);
+        }
+        return null;
+    }
+
+    public <T extends Collection<? extends Parcelable>> T getParcelableArrayListData(Bundle bundle, String key) {
+        if (bundle != null) {
+            return (T) bundle.getParcelableArrayList(key);
         }
         return null;
     }

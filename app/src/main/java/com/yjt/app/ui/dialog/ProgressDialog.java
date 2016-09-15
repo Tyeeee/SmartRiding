@@ -17,9 +17,10 @@ public class ProgressDialog extends BaseDialogFragment {
 
     @Override
     protected Builder build(Builder builder) {
-        CharSequence title = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_TITLE.getContent());
-        CharSequence prompt = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_PROMPT.getContent());
-        TextView tvPrompt = ViewUtil.getInstance().findView(builder.getLayoutInflater().inflate(R.layout.view_progress, null), R.id.tvPrompt);
+        CharSequence title    = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_TITLE.getContent());
+        CharSequence prompt   = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_PROMPT.getContent());
+        View         view     = builder.getLayoutInflater().inflate(R.layout.view_progress, null);
+        TextView     tvPrompt = ViewUtil.getInstance().findView(view, R.id.tvPrompt);
         if (!TextUtils.isEmpty(title)) {
             builder.setTitle(title);
         }
@@ -35,6 +36,7 @@ public class ProgressDialog extends BaseDialogFragment {
                 dismiss();
             }
         });
+        builder.setView(view);
         return builder;
     }
 

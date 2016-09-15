@@ -14,6 +14,8 @@ public enum Temp {
     DIALOG_CHOICE_ITEMS("dialog_choice_items"),
     DIALOG_CHOICE_ITEM("dialog_choice_item"),
     DIALOG_CHOICE_MODE("dialog_choice_mode"),
+    DIALOG_ITEMS("dialog_items"),
+    DIALOG_ITEM("dialog_item"),
     TIME_ZONE("time_zone"),
     DATE("date"),
     MINIMUM_NUMBER("minimum_number"),

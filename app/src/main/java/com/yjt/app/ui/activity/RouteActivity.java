@@ -33,7 +33,7 @@ import com.amap.api.services.route.DrivePath;
 import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Temp;
-import com.yjt.app.model.RecommendPosition;
+import com.yjt.app.entity.RecommendPosition;
 import com.yjt.app.ui.adapter.RecommendPositionAdapter;
 import com.yjt.app.ui.adapter.binder.RecommendPositionBinder;
 import com.yjt.app.ui.base.BaseActivity;

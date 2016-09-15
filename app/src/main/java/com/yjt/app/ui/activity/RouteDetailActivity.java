@@ -15,7 +15,7 @@ import com.amap.api.services.route.DriveStep;
 import com.yjt.app.R;
 import com.yjt.app.constant.Regex;
 import com.yjt.app.constant.Temp;
-import com.yjt.app.model.RouteDetail;
+import com.yjt.app.entity.RouteDetail;
 import com.yjt.app.ui.adapter.RouteDetailAdapter;
 import com.yjt.app.ui.adapter.binder.RouteDetailBinder;
 import com.yjt.app.ui.base.BaseActivity;

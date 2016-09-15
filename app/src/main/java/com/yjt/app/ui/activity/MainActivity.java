@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.yjt.app.R;
 import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Constant;
-import com.yjt.app.model.Menu;
+import com.yjt.app.entity.Menu;
 import com.yjt.app.receiver.BluetoothReceiver;
 import com.yjt.app.ui.adapter.MenuAdapter;
 import com.yjt.app.ui.adapter.binder.MenuBinder;

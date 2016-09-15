@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.yjt.app.R;
 import com.yjt.app.constant.ChoiceMode;
 import com.yjt.app.constant.Temp;
-import com.yjt.app.model.ParcelableSparseBooleanArray;
+import com.yjt.app.entity.ParcelableSparseBooleanArray;
 import com.yjt.app.ui.base.BaseDialogFragment;
 import com.yjt.app.ui.dialog.builder.ListDialogBuilder;
 import com.yjt.app.ui.listener.OnDialogCancelListener;
@@ -42,7 +42,7 @@ public class ListDialog extends BaseDialogFragment {
 
     @Override
     protected Builder build(Builder builder) {
-        CharSequence title = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_TITLE.getContent());
+        CharSequence title    = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_TITLE.getContent());
         CharSequence positive = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_POSITIVE.getContent());
         CharSequence negative = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_NEGATIVE.getContent());
         if (!TextUtils.isEmpty(title)) {
@@ -67,10 +67,10 @@ public class ListDialog extends BaseDialogFragment {
                     listener = new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            final int[] checkedPositions = asIntArray(getCheckedItems());
-                            final CharSequence[] items = getItems();
-                            final CharSequence[] checkedItems = new CharSequence[checkedPositions.length];
-                            int i = 0;
+                            final int[]          checkedPositions = asIntArray(getCheckedItems());
+                            final CharSequence[] items            = getItems();
+                            final CharSequence[] checkedItems     = new CharSequence[checkedPositions.length];
+                            int                  i                = 0;
                             for (int checkedPosition : checkedPositions) {
                                 if (checkedPosition >= 0 && checkedPosition < items.length) {
                                     checkedItems[i++] = items[checkedPosition];
@@ -87,9 +87,9 @@ public class ListDialog extends BaseDialogFragment {
                     listener = new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            int selectedPosition = -1;
-                            final int[] checkedPositions = asIntArray(getCheckedItems());
-                            final CharSequence[] items = getItems();
+                            int                  selectedPosition = -1;
+                            final int[]          checkedPositions = asIntArray(getCheckedItems());
+                            final CharSequence[] items            = getItems();
                             for (int i : checkedPositions) {
                                 if (i >= 0 && i < items.length) {
                                     selectedPosition = i;

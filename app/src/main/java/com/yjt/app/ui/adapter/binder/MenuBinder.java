@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 
 import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
-import com.yjt.app.model.Menu;
+import com.yjt.app.entity.Menu;
 import com.yjt.app.ui.adapter.holder.MenuHolder;
 import com.yjt.app.ui.base.BaseViewBinder;
 import com.yjt.app.utils.DensityUtil;

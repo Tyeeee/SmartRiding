@@ -15,7 +15,7 @@ import android.widget.Button;
 
 import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
-import com.yjt.app.model.Menu;
+import com.yjt.app.entity.Menu;
 import com.yjt.app.ui.adapter.MenuAdapter;
 import com.yjt.app.ui.adapter.binder.MenuBinder;
 import com.yjt.app.ui.base.BaseFragment;

@@ -5,8 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 
 import com.yjt.app.R;
-import com.yjt.app.model.RecommendPosition;
-import com.yjt.app.ui.adapter.holder.MenuHolder;
+import com.yjt.app.entity.RecommendPosition;
 import com.yjt.app.ui.adapter.holder.RecommendPositionHolder;
 import com.yjt.app.ui.base.BaseViewBinder;
 

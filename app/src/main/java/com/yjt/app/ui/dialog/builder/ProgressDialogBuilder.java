@@ -58,4 +58,5 @@ public class ProgressDialogBuilder extends BaseDialogBuilder<ProgressDialogBuild
     protected ProgressDialogBuilder self() {
         return this;
     }
+
 }

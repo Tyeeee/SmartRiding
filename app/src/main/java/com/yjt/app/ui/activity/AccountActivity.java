@@ -10,7 +10,7 @@ import android.widget.AbsListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Regex;
@@ -37,23 +37,23 @@ import java.util.Date;
 
 public class AccountActivity extends BaseActivity implements View.OnClickListener, OnDialogCancelListener, OnNumberDialogListener, OnDateDialogListener, OnListDialogListener {
 
-    private RelativeLayout rlHeadPortrait;
+    private RelativeLayout  rlHeadPortrait;
     private CircleImageView civHeadPortrait;
 
     private TextView tvNickname;
     private TextView tvPhoneNumber;
 
     private RelativeLayout rlGender;
-    private TextView tvGender;
+    private TextView       tvGender;
 
     private RelativeLayout rlHeight;
-    private TextView tvHeight;
+    private TextView       tvHeight;
 
     private RelativeLayout rlWeight;
-    private TextView tvWeight;
+    private TextView       tvWeight;
 
     private RelativeLayout rlBirthday;
-    private TextView tvBirthday;
+    private TextView       tvBirthday;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,13 +182,10 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
                     if (data != null) {
                         try {
                             File file = FileUtil.getInstance().takenAlbumPicture(data.getData());
+                            LogUtil.print("---->" + file);
                             if (file != null) {
                                 civHeadPortrait.setText(null);
-                                Picasso.with(this)
-                                        .load(file)
-                                        .fit()
-                                        .centerCrop()
-                                        .into(civHeadPortrait);
+                                Glide.with(this).load(file).centerCrop().fitCenter().into(civHeadPortrait);
                             }
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
@@ -203,13 +200,10 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
                             , com.yjt.app.constant.File.PICTURE_URI.getContent()
                             , Regex.NONE.getRegext())));
                     File file = FileUtil.getInstance().takenCameraPicture();
+                    LogUtil.print("---->" + file);
                     if (file != null) {
                         civHeadPortrait.setText(null);
-                        Picasso.with(this)
-                                .load(file)
-                                .fit()
-                                .centerCrop()
-                                .into(civHeadPortrait);
+                        Glide.with(this).load(file).centerCrop().fitCenter().into(civHeadPortrait);
                     }
                     SharedPreferenceUtil.getInstance().remove(com.yjt.app.constant.File.FILE_NAME.getContent()
                             , Context.MODE_PRIVATE
@@ -298,7 +292,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
                     case Constant.ItemPosition.FROM_CAMERA:
                         try {
                             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            Uri uri = FileUtil.getInstance().createCameraPictureFile();
+                            Uri    uri          = FileUtil.getInstance().createCameraPictureFile();
                             PermissionUtil.getInstance().grantWritePermission(this, cameraIntent, uri);
                             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                             startActivityForResult(cameraIntent, Constant.RequestCode.CAMERA);
@@ -313,5 +307,10 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onListItemSelected(Object value, int number, int requestCode) {
+        
     }
 }

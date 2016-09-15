@@ -1,4 +1,4 @@
-package com.yjt.app.model;
+package com.yjt.app.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;

@@ -8,13 +8,6 @@ import android.widget.TextView;
 import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
 
-/**
- * 消息提示工具
- * <p/>
- * //TODO 暂时未完善,故先使用Toast
- *
- * @author yjt
- */
 public class SnackBarUtil {
 
     private Snackbar mSnackbar;
@@ -54,19 +47,11 @@ public class SnackBarUtil {
         showSnackBar(view, message, length, null, null, textSize, color);
     }
 
-    /**
-     * Snackbar 样式集中处理
-     * <p/>
-     * //TODO 后续可添加动画、button颜色、显示位置等
-     *
-     * @param view
-     * @param message1
-     * @param length
-     * @param message2
-     * @param listener
-     * @param textSize
-     * @param color
-     */
+    public void showSnackBar(View view, CharSequence message1, int length, CharSequence message2, View.OnClickListener listener) {
+        showSnackBar(view, message1, length, message2, listener, Constant.View.SIZE_DEFAULT, Constant.View.COLOR_DEFAULT);
+    }
+
+
     public void showSnackBar(View view, CharSequence message1, int length, CharSequence message2, View.OnClickListener listener, float textSize, int color) {
         if (mSnackbar == null) {
             mSnackbar = Snackbar.make(view, message1, length);

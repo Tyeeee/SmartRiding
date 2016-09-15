@@ -1,7 +1,13 @@
 package com.yjt.app.ui.fragment;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
+import android.bluetooth.le.BluetoothLeScanner;
+import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,27 +20,40 @@ import android.view.ViewGroup;
 
 import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
-import com.yjt.app.model.Menu;
+import com.yjt.app.entity.Menu;
 import com.yjt.app.ui.adapter.MenuAdapter;
 import com.yjt.app.ui.adapter.binder.MenuBinder;
 import com.yjt.app.ui.base.BaseFragment;
+import com.yjt.app.ui.dialog.DeviceListDialog;
+import com.yjt.app.ui.dialog.ProgressDialog;
+import com.yjt.app.ui.listener.implement.CustomLeScanCallback;
+import com.yjt.app.ui.listener.implement.CustomScanCallback;
 import com.yjt.app.ui.sticky.FixedStickyViewAdapter;
 import com.yjt.app.ui.widget.CircleImageView;
 import com.yjt.app.ui.widget.LinearLayoutDividerItemDecoration;
+import com.yjt.app.utils.BluetoothUtil;
+import com.yjt.app.utils.MessageUtil;
 import com.yjt.app.utils.SnackBarUtil;
 import com.yjt.app.utils.ViewUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapter.OnItemClickListener {
 
-    private CircleImageView civDevice;
-    private RecyclerView rvMenu;
-    private LinearLayoutManager mLayoutManager;
+    private CircleImageView        civDevice;
+    private RecyclerView           rvMenu;
+    private LinearLayoutManager    mLayoutManager;
     private FixedStickyViewAdapter mAdapter;
-    private DeviceHandler mHandler;
+    private DeviceHandler          mHandler;
+    private ProgressDialog         mDialog;
+
+    private BluetoothAdapter     mBluetoothAdapter;
+    private BluetoothLeScanner   mScanner;
+    private CustomLeScanCallback mLeScanCallback;
+    private CustomScanCallback   mScanCallback;
 
     private static class DeviceHandler extends Handler {
 
@@ -50,6 +69,26 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
             DeviceFragment fragment = mFragments.get();
             if (fragment != null) {
                 switch (msg.what) {
+                    case Constant.Bluetooth.GET_DEVICE_LIST_SUCCESS:
+                        fragment.mDialog.dismiss();
+                        ArrayList<BluetoothDevice> devices = (ArrayList<BluetoothDevice>) msg.obj;
+                        if (devices != null && devices.size() > 0) {
+                            DeviceListDialog.createBuilder(fragment.getFragmentManager())
+                                    .setItems(devices)
+                                    .setRequestCode(Constant.RequestCode.DIALOG_LIST)
+                                    .show();
+                        } else {
+                            SnackBarUtil.getInstance().showSnackBar(fragment.mRootView, fragment.getString(R.string.search_device_prompt1), Snackbar.LENGTH_SHORT, Color.WHITE);
+                        }
+                        break;
+                    case Constant.Bluetooth.GET_DEVICE_LIST_FAILED:
+                        fragment.mDialog.dismiss();
+                        SnackBarUtil.getInstance().showSnackBar(fragment.mRootView, fragment.getString(R.string.search_device_prompt2), Snackbar.LENGTH_SHORT, Color.WHITE);
+                        break;
+                    case Constant.Bluetooth.GET_DEVICE_LIST_ERROR:
+                        fragment.mDialog.dismiss();
+                        SnackBarUtil.getInstance().showSnackBar(fragment.mRootView, fragment.getString(R.string.search_device_prompt3), Snackbar.LENGTH_SHORT, Color.WHITE);
+                        break;
                     default:
                         break;
                 }
@@ -86,7 +125,7 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        mHandler = new DeviceFragment.DeviceHandler(this);
+        mHandler = new DeviceHandler(this);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvMenu.setHasFixedSize(true);
@@ -97,7 +136,7 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
             @Override
             public void run() {
                 List<Menu> menus = new ArrayList<>();
-                Menu menu1 = new Menu();
+                Menu       menu1 = new Menu();
                 menu1.setIcon(R.mipmap.dir1);
                 menu1.setTitle(getResources().getString(R.string.search_device));
                 menus.add(menu1);
@@ -143,6 +182,12 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        BluetoothUtil.getInstance().stopScanner(mBluetoothAdapter, mScanner, mScanCallback, mLeScanCallback);
+    }
+
+    @Override
     public boolean onBackPressed() {
         return false;
     }
@@ -156,7 +201,29 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
     public void onItemClick(int position) {
         switch (position) {
             case Constant.ItemPosition.SEARCH_DEVICE:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "SEARCH_DEVICE", Snackbar.LENGTH_SHORT, Color.WHITE);
+                mDialog = (ProgressDialog) ProgressDialog.createBuilder(getFragmentManager())
+                        .setPrompt(getString(R.string.device_searching))
+                        .setCancelableOnTouchOutside(false)
+                        .show();
+                Executors.newSingleThreadExecutor().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (BluetoothUtil.getInstance().isBluetoothEnabled()) {
+                            BluetoothManager manager = (BluetoothManager) getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
+                            mBluetoothAdapter = manager.getAdapter();
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                mScanCallback = new CustomScanCallback(mHandler);
+                                mScanner = mBluetoothAdapter.getBluetoothLeScanner();
+                                mScanner.startScan(mScanCallback);
+                            } else {
+                                mLeScanCallback = new CustomLeScanCallback();
+                                mBluetoothAdapter.startLeScan(mLeScanCallback);
+                            }
+                        } else {
+                            mHandler.sendMessage(MessageUtil.getMessage(Constant.Bluetooth.GET_DEVICE_LIST_ERROR));
+                        }
+                    }
+                });
                 break;
             case Constant.ItemPosition.GENERAL_SETTING:
                 SnackBarUtil.getInstance().showSnackBar(mRootView, "GENERAL_Device", Snackbar.LENGTH_SHORT, Color.WHITE);

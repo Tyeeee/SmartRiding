@@ -10,9 +10,13 @@
     <string name="home_page">首页</string>
     <string name="device_management">设备管理</string>
     <string name="search_device">搜索设备</string>
+    <string name="device_searching">蓝牙设备搜索中…</string>
+    <string name="search_device_prompt1">未发现蓝牙设备</string>
+    <string name="search_device_prompt2">蓝牙设备搜索失败</string>
+    <string name="search_device_prompt3">请检查您的设备是否支持Ble服务</string>
     <string name="general_setting">通用设置</string>
     <string name="check_update">检查更新</string>
-    <string name="clear_data">清楚数据</string>
+    <string name="clear_data">清除数据</string>
     <string name="break_link">断开连接</string>
     <string name="about_device">关于设备</string>
     <string name="message">消息</string>
@@ -39,6 +43,8 @@
     <string name="about_us">关于我们</string>
     <string name="logout">退出登陆</string>
     <string name="prompt_title">提示</string>
+    <string name="prompt_permission">请检查应用所需权限是否全部接受</string>
+    <string name="see">查看</string>
     <string name="prompt_exit_application">确定退出应用?</string>
     <string name="prompt_exit_navigation">确定退出导航?</string>
     <string name="search">搜索</string>

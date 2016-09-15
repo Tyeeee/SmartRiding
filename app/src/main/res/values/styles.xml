@@ -204,12 +204,15 @@
 
     <style name="yjt.Light.Dialog.TextView.Message">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">@dimen/sp_18</item>
         <item name="android:textColor">?textSecondaryColor</item>
     </style>
 
     <style name="yjt.Light.Dialog.TextView.Message.Progress">
-        <item name="android:paddingRight">@dimen/dp_16</item>
+        <item name="android:padding">@dimen/dp_10</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/sp_15</item>
+        <item name="android:layout_gravity">center_vertical</item>
     </style>
 
     <style name="yjt.Light.Dialog.ListView">
