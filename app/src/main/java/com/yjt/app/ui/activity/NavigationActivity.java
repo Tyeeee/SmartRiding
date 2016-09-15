@@ -46,10 +46,18 @@ import java.util.List;
 public class NavigationActivity extends FragmentActivity implements AMapNaviListener, AMapNaviViewListener, OnPromptDialogListener {
 
     private AMapNaviView nvMap;
-    private RouteResult mResult;
+    private RouteResult  mResult;
     private List<NaviLatLng> mStartLatLngs = new ArrayList<>();
-    private List<NaviLatLng> mPassLatLngs = new ArrayList<>();
-    private List<NaviLatLng> mEndLatLngs = new ArrayList<>();
+    private List<NaviLatLng> mPassLatLngs  = new ArrayList<>();
+    private List<NaviLatLng> mEndLatLngs   = new ArrayList<>();
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (SnackBarUtil.getInstance().isShown()) {
+            ViewUtil.getInstance().setSystemUiVisibility(this);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +120,7 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
             mStartLatLngs.add(MapUtil.getInstance().parseCoordinate(mResult.getStartPos().toString()));
             mEndLatLngs.add(MapUtil.getInstance().parseCoordinate(mResult.getTargetPos().toString()));
         } else {
-            SnackBarUtil.getInstance().showSnackBar(nvMap, getString(R.string.route_prompt3), Snackbar.LENGTH_SHORT);
+            SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.route_prompt3), Snackbar.LENGTH_SHORT);
         }
         setMapOptions();
         TTSUtil.getInstance().initializeSpeechSynthesizer();
@@ -263,7 +271,7 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
     public void onGpsOpenStatus(boolean b) {
         LogUtil.print("---->onGpsOpenStatus");
         if (!b) {
-            SnackBarUtil.getInstance().showSnackBar(nvMap, getString(R.string.gps_prompt), Snackbar.LENGTH_SHORT);
+            SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.gps_prompt), Snackbar.LENGTH_SHORT);
         }
     }
 

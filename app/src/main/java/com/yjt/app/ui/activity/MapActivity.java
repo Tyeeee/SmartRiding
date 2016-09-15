@@ -37,8 +37,8 @@ import java.util.List;
 
 public class MapActivity extends BaseActivity implements View.OnClickListener, AMap.OnMapClickListener, AMap.OnMarkerClickListener, AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter, RouteSearch.OnRouteSearchListener, AMap.OnMapLoadedListener {
 
-    private MapView mvMap;
-    private FloatingActionMenu fabMenu;
+    private MapView              mvMap;
+    private FloatingActionMenu   fabMenu;
     private FloatingActionButton fabDetail;
     private FloatingActionButton fabNavigation;
 
@@ -46,7 +46,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
     private LatLonPoint mPassPoint;
     private LatLonPoint mEndPoint;
 
-    private AMap mAmap;
+    private AMap        mAmap;
     private RouteSearch mSearch;
     private RouteResult mResult;
 
@@ -147,7 +147,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
             mSearch.calculateDriveRouteAsyn(new RouteSearch.DriveRouteQuery(new RouteSearch.FromAndTo(mStartPoint, mEndPoint), RouteSearch.DrivingNoHighAvoidCongestionSaveMoney, points, null, null));
 //            mSearch.calculateWalkRouteAsyn(new RouteSearch.WalkRouteQuery(new RouteSearch.FromAndTo(mStartPoint, mEndPoint), RouteSearch.WalkMultipath));
         } else {
-            SnackBarUtil.getInstance().showSnackBar(mvMap, getString(R.string.route_prompt1), Snackbar.LENGTH_SHORT);
+            SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.route_prompt1), Snackbar.LENGTH_SHORT);
         }
     }
 
@@ -254,7 +254,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
                 overLay.addRouteToMap();
                 overLay.zoomToSpan();
             } else {
-                SnackBarUtil.getInstance().showSnackBar(mvMap, getString(R.string.route_prompt2), Snackbar.LENGTH_SHORT);
+                SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.route_prompt2), Snackbar.LENGTH_SHORT);
             }
         } else {
             MapUtil.getInstance().showMapException(this, resultCode);
@@ -278,7 +278,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
                 overlay.addToMap();
                 overlay.zoomToSpan();
             } else {
-                SnackBarUtil.getInstance().showSnackBar(mvMap, getString(R.string.route_prompt2), Snackbar.LENGTH_SHORT);
+                SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.route_prompt2), Snackbar.LENGTH_SHORT);
             }
         } else {
             MapUtil.getInstance().showMapException(this, resultCode);

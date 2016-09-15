@@ -31,11 +31,11 @@ import java.util.List;
 
 public class SettingFragment extends BaseFragment implements View.OnClickListener, FixedStickyViewAdapter.OnItemClickListener {
 
-    private RecyclerView rvMenu;
-    private LinearLayoutManager mLayoutManager;
+    private RecyclerView           rvMenu;
+    private LinearLayoutManager    mLayoutManager;
     private FixedStickyViewAdapter mAdapter;
-    private SettingHandler mHandler;
-    private Button btnLogout;
+    private SettingHandler         mHandler;
+    private Button                 btnLogout;
 
     private static class SettingHandler extends Handler {
 
@@ -98,7 +98,7 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
             @Override
             public void run() {
                 List<Menu> menus = new ArrayList<>();
-                Menu menu1 = new Menu();
+                Menu       menu1 = new Menu();
                 menu1.setIcon(R.mipmap.dir1);
                 menu1.setTitle(getResources().getString(R.string.password_management));
                 menus.add(menu1);
@@ -158,7 +158,7 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnLogout:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "btnLogout", Snackbar.LENGTH_SHORT);
+                SnackBarUtil.getInstance().showSnackBar(getActivity(), "btnLogout", Snackbar.LENGTH_SHORT);
                 break;
             default:
                 break;
@@ -169,22 +169,22 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
     public void onItemClick(int position) {
         switch (position) {
             case Constant.ItemPosition.PASSWORD_MANAGEMENT:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "PASSWORD_MANAGEMENT", Snackbar.LENGTH_SHORT, Color.WHITE);
+                SnackBarUtil.getInstance().showSnackBar(getActivity(), "PASSWORD_MANAGEMENT", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
             case Constant.ItemPosition.DEVICE_LABEL:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "DEVICE_LABEL", Snackbar.LENGTH_SHORT, Color.WHITE);
+                SnackBarUtil.getInstance().showSnackBar(getActivity(), "DEVICE_LABEL", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
             case Constant.ItemPosition.USE_HELP:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "USE_HELP", Snackbar.LENGTH_SHORT, Color.WHITE);
+                SnackBarUtil.getInstance().showSnackBar(getActivity(), "USE_HELP", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
             case Constant.ItemPosition.FEEDBACK:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "FEEDBACK", Snackbar.LENGTH_SHORT, Color.WHITE);
+                SnackBarUtil.getInstance().showSnackBar(getActivity(), "FEEDBACK", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
             case Constant.ItemPosition.VERSION_UPDATE:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "VERSION_UPDATE", Snackbar.LENGTH_SHORT, Color.WHITE);
+                SnackBarUtil.getInstance().showSnackBar(getActivity(), "VERSION_UPDATE", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
             case Constant.ItemPosition.ABOUT_US:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "ABOUT_US", Snackbar.LENGTH_SHORT, Color.WHITE);
+                SnackBarUtil.getInstance().showSnackBar(getActivity(), "ABOUT_US", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
         }
     }

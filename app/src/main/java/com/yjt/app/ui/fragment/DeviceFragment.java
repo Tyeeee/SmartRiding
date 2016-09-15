@@ -26,6 +26,7 @@ import com.yjt.app.ui.adapter.binder.MenuBinder;
 import com.yjt.app.ui.base.BaseFragment;
 import com.yjt.app.ui.dialog.DeviceListDialog;
 import com.yjt.app.ui.dialog.ProgressDialog;
+import com.yjt.app.ui.listener.OnDialogCancelListener;
 import com.yjt.app.ui.listener.implement.CustomLeScanCallback;
 import com.yjt.app.ui.listener.implement.CustomScanCallback;
 import com.yjt.app.ui.sticky.FixedStickyViewAdapter;
@@ -41,7 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 
-public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapter.OnItemClickListener {
+public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapter.OnItemClickListener, OnDialogCancelListener {
 
     private CircleImageView        civDevice;
     private RecyclerView           rvMenu;
@@ -78,16 +79,16 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
                                     .setRequestCode(Constant.RequestCode.DIALOG_LIST)
                                     .show();
                         } else {
-                            SnackBarUtil.getInstance().showSnackBar(fragment.mRootView, fragment.getString(R.string.search_device_prompt1), Snackbar.LENGTH_SHORT, Color.WHITE);
+                            SnackBarUtil.getInstance().showSnackBar(fragment.getActivity(), fragment.getString(R.string.search_device_prompt1), Snackbar.LENGTH_SHORT, Color.WHITE);
                         }
                         break;
                     case Constant.Bluetooth.GET_DEVICE_LIST_FAILED:
                         fragment.mDialog.dismiss();
-                        SnackBarUtil.getInstance().showSnackBar(fragment.mRootView, fragment.getString(R.string.search_device_prompt2), Snackbar.LENGTH_SHORT, Color.WHITE);
+                        SnackBarUtil.getInstance().showSnackBar(fragment.getActivity(), fragment.getString(R.string.search_device_prompt2), Snackbar.LENGTH_SHORT, Color.WHITE);
                         break;
                     case Constant.Bluetooth.GET_DEVICE_LIST_ERROR:
                         fragment.mDialog.dismiss();
-                        SnackBarUtil.getInstance().showSnackBar(fragment.mRootView, fragment.getString(R.string.search_device_prompt3), Snackbar.LENGTH_SHORT, Color.WHITE);
+                        SnackBarUtil.getInstance().showSnackBar(fragment.getActivity(), fragment.getString(R.string.search_device_prompt3), Snackbar.LENGTH_SHORT, Color.WHITE);
                         break;
                     default:
                         break;
@@ -203,6 +204,7 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
             case Constant.ItemPosition.SEARCH_DEVICE:
                 mDialog = (ProgressDialog) ProgressDialog.createBuilder(getFragmentManager())
                         .setPrompt(getString(R.string.device_searching))
+                        .setRequestCode(Constant.RequestCode.DIALOG_PROGRESS_DEVICE_SEARCH)
                         .setCancelableOnTouchOutside(false)
                         .show();
                 Executors.newSingleThreadExecutor().execute(new Runnable() {
@@ -226,19 +228,30 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
                 });
                 break;
             case Constant.ItemPosition.GENERAL_SETTING:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "GENERAL_Device", Snackbar.LENGTH_SHORT, Color.WHITE);
+                SnackBarUtil.getInstance().showSnackBar(getActivity(), "GENERAL_Device", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
             case Constant.ItemPosition.CHECK_UPDATE:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "CHECK_UPDATE", Snackbar.LENGTH_SHORT, Color.WHITE);
+                SnackBarUtil.getInstance().showSnackBar(getActivity(), "CHECK_UPDATE", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
             case Constant.ItemPosition.CLEAR_DATA:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "CLEAR_DATA", Snackbar.LENGTH_SHORT, Color.WHITE);
+                SnackBarUtil.getInstance().showSnackBar(getActivity(), "CLEAR_DATA", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
             case Constant.ItemPosition.BREAK_LINK:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "BREAK_LINK", Snackbar.LENGTH_SHORT, Color.WHITE);
+                SnackBarUtil.getInstance().showSnackBar(getActivity(), "BREAK_LINK", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
             case Constant.ItemPosition.ABOUT_DEVICE:
-                SnackBarUtil.getInstance().showSnackBar(mRootView, "ABOUT_DEVICE", Snackbar.LENGTH_SHORT, Color.WHITE);
+                SnackBarUtil.getInstance().showSnackBar(getActivity(), "ABOUT_DEVICE", Snackbar.LENGTH_SHORT, Color.WHITE);
+                break;
+        }
+    }
+
+    @Override
+    public void onCanceled(int requestCode) {
+        switch (requestCode) {
+            case Constant.RequestCode.DIALOG_PROGRESS_DEVICE_SEARCH:
+                BluetoothUtil.getInstance().stopScanner(mBluetoothAdapter, mScanner, mScanCallback, mLeScanCallback);
+                break;
+            default:
                 break;
         }
     }

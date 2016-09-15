@@ -14,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 
@@ -253,7 +254,7 @@ public class PermissionUtil {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
 
-    public void checkPermissions(final BaseActivity activity, final int requestCode, final String... permissions) {
+    public void checkPermissions(final FragmentActivity activity, final int requestCode, final String... permissions) {
         if (activity == null) {
             return;
         }
@@ -261,7 +262,7 @@ public class PermissionUtil {
             for (String permission : permissions) {
                 if (ActivityCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED) {
                     if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
-                        SnackBarUtil.getInstance().showSnackBar(activity.getWindow().getDecorView()
+                        SnackBarUtil.getInstance().showSnackBar(activity
                                 , activity.getString(R.string.prompt_permission)
                                 , Snackbar.LENGTH_INDEFINITE
                                 , activity.getString(R.string.see)

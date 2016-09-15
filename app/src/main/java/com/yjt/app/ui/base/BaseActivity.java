@@ -14,6 +14,8 @@ import com.yjt.app.utils.ActivityUtil;
 import com.yjt.app.utils.InputUtil;
 import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.PermissionUtil;
+import com.yjt.app.utils.SnackBarUtil;
+import com.yjt.app.utils.ViewUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onWindowFocusChanged(hasFocus);
         LogUtil.d(getClass().getName(), this.getClass().getSimpleName()
                 + " onWindowFocusChanged() invoked!!");
+        if (SnackBarUtil.getInstance().isShown()) {
+            ViewUtil.getInstance().setSystemUiVisibility(this);
+        }
     }
 
     @Override

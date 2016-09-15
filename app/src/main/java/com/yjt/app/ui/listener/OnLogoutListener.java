@@ -4,5 +4,5 @@ import android.os.Handler;
 
 public interface OnLogoutListener {
 
-    void setOnLogoutListener(Handler handler);
+    void onLogoutListener(Handler handler);
 }

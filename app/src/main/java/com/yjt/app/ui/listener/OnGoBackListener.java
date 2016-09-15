@@ -6,9 +6,9 @@ import com.yjt.app.ui.base.BaseFragment;
 
 public interface OnGoBackListener {
 
-    void setOnGoBackListener(boolean isWebView, WebView view,
+    void onGoBackListener(boolean isWebView, WebView view,
                              String msg);
 
-    void setSelectedFragment(BaseFragment fragment);
+    void onSelectedFragment(BaseFragment fragment);
 
 }

@@ -303,6 +303,18 @@ public class ViewUtil {
         }
     }
 
+    public void setSystemUiVisibility(Activity activity) {
+        activity.getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+//                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+//                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+//                        View.SYSTEM_UI_FLAG_FULLSCREEN |
+//                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_IMMERSIVE);
+
+    }
+
     public void lockScreenOrientation(Activity activity) {
         Configuration newConfig = activity.getResources().getConfiguration();
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {

@@ -55,30 +55,30 @@ import java.util.List;
 public class RouteActivity extends BaseActivity implements View.OnClickListener, TextWatcher, AMapLocationListener, GeocodeSearch.OnGeocodeSearchListener, Inputtips.InputtipsListener, FixedStickyViewAdapter.OnItemClickListener, OnDictationListener {
 
     private ImageView ivBack;
-    private EditText etSearch;
+    private EditText  etSearch;
     private ImageView ivDelete;
     private ImageView ivVoice;
-    private TextView tvEnter;
+    private TextView  tvEnter;
 
     private TextView tvLocation;
     private TextView tvCollection;
 
     private RecyclerView rvRecommendPosition;
 
-    private AMapLocationClient mClient;
+    private AMapLocationClient       mClient;
     private AMapLocationClientOption mOption;
 
-    private int mPointType;
-    private AMapLocation mLocation;
+    private int           mPointType;
+    private AMapLocation  mLocation;
     private GeocodeSearch mSearch;
-    private String mCityCode;
+    private String        mCityCode;
 
     private ProgressDialog mDialog;
 
-    private LinearLayoutManager mLayoutManager;
+    private LinearLayoutManager    mLayoutManager;
     private FixedStickyViewAdapter mAdapter;
-    private DrivePath mPath;
-    private RouteHandler mHandler;
+    private DrivePath              mPath;
+    private RouteHandler           mHandler;
 
     private Inputtips mTips;
 
@@ -238,10 +238,10 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
                         setResult(Constant.Common.RESULT_CODE, intent);
                         onFinish("LOCATION_SUCCESS");
                     } else {
-                        SnackBarUtil.getInstance().showSnackBar(view, getString(R.string.search_failed), Snackbar.LENGTH_SHORT, Color.WHITE);
+                        SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.search_failed), Snackbar.LENGTH_SHORT, Color.WHITE);
                     }
                 } else if (TextUtils.isEmpty(mCityCode)) {
-                    SnackBarUtil.getInstance().showSnackBar(view, getString(R.string.location_prompt2), Snackbar.LENGTH_SHORT, Color.WHITE);
+                    SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.location_prompt2), Snackbar.LENGTH_SHORT, Color.WHITE);
                 } else if (!TextUtils.isEmpty(etSearch.getText())
                         && !TextUtils.equals(etSearch.getText(), getString(R.string.start_point))
                         && !TextUtils.equals(etSearch.getText(), getString(R.string.end_point))) {
@@ -250,13 +250,13 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
                 } else {
                     switch (mPointType) {
                         case Constant.PointType.START:
-                            SnackBarUtil.getInstance().showSnackBar(view, getString(R.string.start_point), Snackbar.LENGTH_SHORT, Color.WHITE);
+                            SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.start_point), Snackbar.LENGTH_SHORT, Color.WHITE);
                             break;
                         case Constant.PointType.PASS:
-                            SnackBarUtil.getInstance().showSnackBar(view, getString(R.string.pass_point), Snackbar.LENGTH_SHORT, Color.WHITE);
+                            SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.pass_point), Snackbar.LENGTH_SHORT, Color.WHITE);
                             break;
                         case Constant.PointType.END:
-                            SnackBarUtil.getInstance().showSnackBar(view, getString(R.string.end_point), Snackbar.LENGTH_SHORT, Color.WHITE);
+                            SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.end_point), Snackbar.LENGTH_SHORT, Color.WHITE);
                             break;
                     }
                 }
@@ -271,11 +271,11 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
                     setResult(Constant.Common.RESULT_CODE, intent);
                     onFinish("LOCATION_SUCCESS");
                 } else {
-                    SnackBarUtil.getInstance().showSnackBar(view, getString(R.string.location_prompt1), Snackbar.LENGTH_SHORT, Color.WHITE);
+                    SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.location_prompt1), Snackbar.LENGTH_SHORT, Color.WHITE);
                 }
                 break;
             case R.id.tvCollection:
-                SnackBarUtil.getInstance().showSnackBar(view, "tvCollection", Snackbar.LENGTH_SHORT);
+                SnackBarUtil.getInstance().showSnackBar(this, "tvCollection", Snackbar.LENGTH_SHORT);
                 //TODO 服务器返回收藏列表
                 break;
             default:
@@ -361,7 +361,7 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
                     && geocodeResult.getGeocodeAddressList() != null
                     && geocodeResult.getGeocodeAddressList().size() > 0) {
                 LatLonPoint coordinate = geocodeResult.getGeocodeAddressList().get(0).getLatLonPoint();
-                Intent intent = new Intent();
+                Intent      intent     = new Intent();
                 intent.putExtra(Temp.POINT_TYPE.getContent(), mPointType);
                 intent.putExtra(Temp.POINT_CONTENT.getContent(), etSearch.getText().toString());
                 intent.putExtra(Temp.LOCATION_LATITUDE.getContent(), coordinate.getLatitude());
@@ -369,7 +369,7 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
                 setResult(Constant.Common.RESULT_CODE, intent);
                 onFinish("tvEnter");
             } else {
-                SnackBarUtil.getInstance().showSnackBar(tvEnter, getString(R.string.route_prompt2), Snackbar.LENGTH_SHORT, Color.WHITE);
+                SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.route_prompt2), Snackbar.LENGTH_SHORT, Color.WHITE);
                 setResult(Constant.Common.RESULT_CODE);
                 onFinish("LOCATION_FAILED");
             }

@@ -118,7 +118,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
         switch (item.getItemId()) {
             case R.id.menuLogout:
-                SnackBarUtil.getInstance().showSnackBar(tbTitle, "menuLogout", Snackbar.LENGTH_SHORT);
+                SnackBarUtil.getInstance().showSnackBar(this, "menuLogout", Snackbar.LENGTH_SHORT);
                 return true;
         }
         return super.onOptionsItemSelected(item);
