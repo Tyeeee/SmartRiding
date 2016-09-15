@@ -9,10 +9,12 @@ import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ScrollView;
 
+import com.yjt.app.constant.Constant;
+
 public class InputUtil {
 
     private static InputMethodManager imm;
-    private static long mLastClickTime;
+    private static long               mLastClickTime;
 
     private static InputUtil mInputUtil;
 
@@ -83,12 +85,11 @@ public class InputUtil {
 
     public boolean isDoubleClick() {
         long timeS = System.currentTimeMillis();
-        long timeE = timeS - mLastClickTime;
-        if (0 < timeE && timeE < 50) {
+        long timeE = mLastClickTime - timeS;
+        if (timeE > Constant.View.CLICK_PERIOD) {
             return true;
         }
         mLastClickTime = timeS;
         return false;
     }
-
 }

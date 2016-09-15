@@ -7,15 +7,11 @@ import android.view.ViewGroup;
 
 import com.yjt.app.constant.Constant;
 import com.yjt.app.ui.base.BaseViewBinder;
+import com.yjt.app.utils.InputUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 适配器基类
- *
- * @author yjt
- */
 public abstract class FixedStickyViewAdapter<T, V extends RecyclerView.ViewHolder> extends RecyclerView.Adapter {
 
     protected ArrayList<FixedStickyView> mHeaderViews = new ArrayList<>();
@@ -25,7 +21,7 @@ public abstract class FixedStickyViewAdapter<T, V extends RecyclerView.ViewHolde
     private BaseViewBinder mViewBinder;
 
     protected List<T> mItems = new ArrayList<>();
-    protected OnItemClickListener mItemClickListener;
+    protected OnItemClickListener  mItemClickListener;
     protected OnErrorClickListener mErrorClickListener;
 
     public FixedStickyViewAdapter() { }
@@ -230,8 +226,10 @@ public abstract class FixedStickyViewAdapter<T, V extends RecyclerView.ViewHolde
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mItemClickListener != null) {
-                        mItemClickListener.onItemClick(itemPosition);
+                    if (!InputUtil.getInstance().isDoubleClick()) {
+                        if (mItemClickListener != null) {
+                            mItemClickListener.onItemClick(itemPosition);
+                        }
                     }
                 }
             });
@@ -276,10 +274,10 @@ public abstract class FixedStickyViewAdapter<T, V extends RecyclerView.ViewHolde
     protected abstract void onBindHeaderOrFooter(RecyclerView.ViewHolder holder, Object object);
 
     public static class FixedStickyView {
-        public int mId;
-        public int mViewType;
-        public int mFixedStickyViewType;
-        public int mLayoutId;
+        public int    mId;
+        public int    mViewType;
+        public int    mFixedStickyViewType;
+        public int    mLayoutId;
         public Object mObject;
     }
 

@@ -47,12 +47,12 @@ public class BluetoothUtil {
     }
 
     public void stopScanner(BluetoothAdapter adapter, BluetoothLeScanner scanner, ScanCallback scanCallback, BluetoothAdapter.LeScanCallback leScanCallback) {
-        if (adapter != null && leScanCallback != null) {
-            if (scanner != null && scanCallback != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    scanner.stopScan(scanCallback);
-                }
-            } else {
+        if (scanner != null && scanCallback != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                scanner.stopScan(scanCallback);
+            }
+        } else {
+            if (adapter != null && leScanCallback != null) {
                 adapter.stopLeScan(leScanCallback);
             }
         }

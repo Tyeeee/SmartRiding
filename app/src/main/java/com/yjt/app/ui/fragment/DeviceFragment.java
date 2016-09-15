@@ -27,12 +27,14 @@ import com.yjt.app.ui.base.BaseFragment;
 import com.yjt.app.ui.dialog.DeviceListDialog;
 import com.yjt.app.ui.dialog.ProgressDialog;
 import com.yjt.app.ui.listener.OnDialogCancelListener;
+import com.yjt.app.ui.listener.OnListDialogListener;
 import com.yjt.app.ui.listener.implement.CustomLeScanCallback;
 import com.yjt.app.ui.listener.implement.CustomScanCallback;
 import com.yjt.app.ui.sticky.FixedStickyViewAdapter;
 import com.yjt.app.ui.widget.CircleImageView;
 import com.yjt.app.ui.widget.LinearLayoutDividerItemDecoration;
 import com.yjt.app.utils.BluetoothUtil;
+import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.MessageUtil;
 import com.yjt.app.utils.SnackBarUtil;
 import com.yjt.app.utils.ViewUtil;
@@ -42,7 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 
-public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapter.OnItemClickListener, OnDialogCancelListener {
+public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapter.OnItemClickListener, OnDialogCancelListener, OnListDialogListener {
 
     private CircleImageView        civDevice;
     private RecyclerView           rvMenu;
@@ -71,22 +73,28 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
             if (fragment != null) {
                 switch (msg.what) {
                     case Constant.Bluetooth.GET_DEVICE_LIST_SUCCESS:
+                        BluetoothUtil.getInstance().stopScanner(fragment.mBluetoothAdapter, fragment.mScanner, fragment.mScanCallback, fragment.mLeScanCallback);
                         fragment.mDialog.dismiss();
                         ArrayList<BluetoothDevice> devices = (ArrayList<BluetoothDevice>) msg.obj;
                         if (devices != null && devices.size() > 0) {
                             DeviceListDialog.createBuilder(fragment.getFragmentManager())
                                     .setItems(devices)
-                                    .setRequestCode(Constant.RequestCode.DIALOG_LIST)
+                                    .setTitle(fragment.getString(R.string.search_device))
+                                    .setNegativeButtonText(R.string.cancel)
+                                    .setTargetFragment(fragment, Constant.RequestCode.DIALOG_LIST)
+                                    .setCancelableOnTouchOutside(false)
                                     .show();
                         } else {
                             SnackBarUtil.getInstance().showSnackBar(fragment.getActivity(), fragment.getString(R.string.search_device_prompt1), Snackbar.LENGTH_SHORT, Color.WHITE);
                         }
                         break;
                     case Constant.Bluetooth.GET_DEVICE_LIST_FAILED:
+                        BluetoothUtil.getInstance().stopScanner(fragment.mBluetoothAdapter, fragment.mScanner, fragment.mScanCallback, fragment.mLeScanCallback);
                         fragment.mDialog.dismiss();
                         SnackBarUtil.getInstance().showSnackBar(fragment.getActivity(), fragment.getString(R.string.search_device_prompt2), Snackbar.LENGTH_SHORT, Color.WHITE);
                         break;
                     case Constant.Bluetooth.GET_DEVICE_LIST_ERROR:
+                        BluetoothUtil.getInstance().stopScanner(fragment.mBluetoothAdapter, fragment.mScanner, fragment.mScanCallback, fragment.mLeScanCallback);
                         fragment.mDialog.dismiss();
                         SnackBarUtil.getInstance().showSnackBar(fragment.getActivity(), fragment.getString(R.string.search_device_prompt3), Snackbar.LENGTH_SHORT, Color.WHITE);
                         break;
@@ -204,8 +212,8 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
             case Constant.ItemPosition.SEARCH_DEVICE:
                 mDialog = (ProgressDialog) ProgressDialog.createBuilder(getFragmentManager())
                         .setPrompt(getString(R.string.device_searching))
-                        .setRequestCode(Constant.RequestCode.DIALOG_PROGRESS_DEVICE_SEARCH)
                         .setCancelableOnTouchOutside(false)
+                        .setTargetFragment(this, Constant.RequestCode.DIALOG_PROGRESS_DEVICE_SEARCH)
                         .show();
                 Executors.newSingleThreadExecutor().execute(new Runnable() {
                     @Override
@@ -251,8 +259,29 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
             case Constant.RequestCode.DIALOG_PROGRESS_DEVICE_SEARCH:
                 BluetoothUtil.getInstance().stopScanner(mBluetoothAdapter, mScanner, mScanCallback, mLeScanCallback);
                 break;
+            case Constant.RequestCode.DIALOG_LIST:
+                BluetoothUtil.getInstance().stopScanner(mBluetoothAdapter, mScanner, mScanCallback, mLeScanCallback);
+                break;
             default:
                 break;
         }
     }
+
+    @Override
+    public void onListItemSelected(CharSequence value, int number, int requestCode) {
+
+    }
+
+    @Override
+    public void onListItemSelected(Object value, int number, int requestCode) {
+        switch (requestCode) {
+            case Constant.RequestCode.DIALOG_LIST:
+                BluetoothDevice device = (BluetoothDevice) value;
+                LogUtil.print("--------------->" + device.getName());
+                break;
+            default:
+                break;
+        }
+    }
+
 }

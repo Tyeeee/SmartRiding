@@ -9,7 +9,6 @@ import com.yjt.app.R;
 import com.yjt.app.constant.Temp;
 import com.yjt.app.ui.base.BaseDialogFragment;
 import com.yjt.app.ui.dialog.builder.ProgressDialogBuilder;
-import com.yjt.app.ui.listener.OnDialogCancelListener;
 import com.yjt.app.utils.IntentDataUtil;
 import com.yjt.app.utils.ViewUtil;
 
@@ -27,15 +26,6 @@ public class ProgressDialog extends BaseDialogFragment {
         if (!TextUtils.isEmpty(prompt)) {
             tvPrompt.setText(prompt);
         }
-        builder.setNegativeButton(null, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (OnDialogCancelListener listener : getDialogListeners(OnDialogCancelListener.class)) {
-                    listener.onCanceled(mRequestCode);
-                }
-                dismiss();
-            }
-        });
         builder.setView(view);
         return builder;
     }

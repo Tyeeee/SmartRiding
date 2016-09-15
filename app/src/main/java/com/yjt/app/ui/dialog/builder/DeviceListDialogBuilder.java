@@ -72,7 +72,7 @@ public class DeviceListDialogBuilder extends ListDialogBuilder {
 
     @Override
     public ListDialog show() {
-        return (ListDialog) super.show();
+        return super.show();
     }
 
     @Override
@@ -81,7 +81,7 @@ public class DeviceListDialogBuilder extends ListDialogBuilder {
         bundle.putCharSequence(Temp.DIALOG_TITLE.getContent(), mTitle);
         bundle.putCharSequence(Temp.DIALOG_BUTTON_POSITIVE.getContent(), mPositiveButtonText);
         bundle.putCharSequence(Temp.DIALOG_BUTTON_NEGATIVE.getContent(), mNegativeButtonText);
-        bundle.putParcelableArrayList(Temp.DIALOG_CHOICE_ITEMS.getContent(), mItems);
+        bundle.putParcelableArrayList(Temp.DIALOG_ITEMS.getContent(), mItems);
         ParcelableSparseBooleanArray array = new ParcelableSparseBooleanArray();
         for (int index = 0; mChoiceItems != null && index < mChoiceItems.length; index++) {
             array.put(mChoiceItems[index], true);

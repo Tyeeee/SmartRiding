@@ -13,8 +13,7 @@ import com.yjt.app.utils.ViewUtil;
 
 
 public class FixedStickyHeaderAdapter<T extends OnGroupListener, V extends RecyclerView.ViewHolder>
-        extends FixedStickyViewAdapter<T, V>
-        implements StickyRecyclerHeadersAdapter {
+        extends FixedStickyViewAdapter<T, V> implements StickyRecyclerHeadersAdapter {
 
     private Context mContext;
     private boolean groupable;
@@ -40,7 +39,7 @@ public class FixedStickyHeaderAdapter<T extends OnGroupListener, V extends Recyc
         Object obj = getItem(position);
         if (obj != null) {
             int numHeaders = mHeaderViews.size();
-            int numItems = mItems.size();
+            int numItems   = mItems.size();
             if (position < numHeaders ||
                     position >= numHeaders + numItems) {
                 return GROUP_ID_UNAVAILABLE;

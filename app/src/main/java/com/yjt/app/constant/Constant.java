@@ -18,6 +18,7 @@ public class Constant {
         public static final String CUSTOM_DIALOG    = "custom_dialog";
         public static final String ROBOTO_REGULAR   = "Roboto-Regular";
         public static final String ROBOTO_MEDIUM    = "Roboto-Medium";
+        public static final long   CLICK_PERIOD     = -500;
     }
 
     public static class ItemPosition {
@@ -136,9 +137,11 @@ public class Constant {
     }
 
     public static class Bluetooth {
-        public static final int GET_DEVICE_LIST_SUCCESS = 0x6001;
-        public static final int GET_DEVICE_LIST_FAILED  = 0x6002;
-        public static final int GET_DEVICE_LIST_ERROR   = 0x6003;
+        public static final long SCAN_PERIOD             = 5000;
+        public static final int  GET_DEVICE_LIST_RESULT  = 0x6001;
+        public static final int  GET_DEVICE_LIST_SUCCESS = 0x6001;
+        public static final int  GET_DEVICE_LIST_FAILED  = 0x6002;
+        public static final int  GET_DEVICE_LIST_ERROR   = 0x6003;
     }
 
 }
