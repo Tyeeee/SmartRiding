@@ -29,7 +29,7 @@ import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.yjt.app.R;
 import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Constant;
-import com.yjt.app.ui.listener.OnDictationListener;
+import com.yjt.app.ui.listener.ttl.OnDictationListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;

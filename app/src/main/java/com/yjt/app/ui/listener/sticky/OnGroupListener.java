@@ -1,4 +1,4 @@
-package com.yjt.app.ui.sticky;
+package com.yjt.app.ui.listener.sticky;
 
 public interface OnGroupListener {
 

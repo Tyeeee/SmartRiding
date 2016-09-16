@@ -29,27 +29,27 @@ import com.yjt.app.R;
 public class CircleImageView extends ImageView {
 
     private final RectF mDrawableRect = new RectF();
-    private final RectF mBorderRect = new RectF();
+    private final RectF mBorderRect   = new RectF();
 
     private final Matrix mShaderMatrix = new Matrix();
-    private final Paint mBitmapPaint = new Paint();
-    private final Paint mBorderPaint = new Paint();
-    private final Paint mFillPaint = new Paint();
-    private final Paint mTextPaint = new Paint();
+    private final Paint  mBitmapPaint  = new Paint();
+    private final Paint  mBorderPaint  = new Paint();
+    private final Paint  mFillPaint    = new Paint();
+    private final Paint  mTextPaint    = new Paint();
 
-    private int mBorderColor;
-    private int mBorderWidth;
+    private int     mBorderColor;
+    private int     mBorderWidth;
     private boolean isBorderOverlay;
-    private int mFillColor;
-    private String mText;
-    private int mTextColor;
-    private int mTextSize;
-    private int mTextPadding;
+    private int     mFillColor;
+    private String  mText;
+    private int     mTextColor;
+    private int     mTextSize;
+    private int     mTextPadding;
 
-    private Bitmap mBitmap;
+    private Bitmap       mBitmap;
     private BitmapShader mBitmapShader;
-    private int mBitmapWidth;
-    private int mBitmapHeight;
+    private int          mBitmapWidth;
+    private int          mBitmapHeight;
 
     private float mDrawableRadius;
     private float mBorderRadius;
@@ -285,8 +285,8 @@ public class CircleImageView extends ImageView {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int widthMeasureSpecMode = MeasureSpec.getMode(widthMeasureSpec);
-        int widthMeasureSpecSize = MeasureSpec.getSize(widthMeasureSpec);
+        int widthMeasureSpecMode  = MeasureSpec.getMode(widthMeasureSpec);
+        int widthMeasureSpecSize  = MeasureSpec.getSize(widthMeasureSpec);
         int heightMeasureSpecMode = MeasureSpec.getMode(heightMeasureSpec);
         int heightMeasureSpecSize = MeasureSpec.getSize(heightMeasureSpec);
         if (!TextUtils.isEmpty(mText)) {

@@ -23,7 +23,7 @@
             app:border_color="@android:color/white"
             app:border_width="@dimen/dp_1"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:text="设备未连接"
+            app:text="@string/bluetooth_status7"
             app:text_color="@android:color/white"
             app:text_padding="@dimen/dp_10"
             app:text_size="@dimen/sp_15"/>

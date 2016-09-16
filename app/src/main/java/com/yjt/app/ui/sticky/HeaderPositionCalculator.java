@@ -6,6 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.yjt.app.ui.listener.sticky.HeaderProvider;
+import com.yjt.app.ui.listener.sticky.OrientationProvider;
+import com.yjt.app.ui.listener.sticky.StickyRecyclerHeadersAdapter;
+
 
 /**
  * Calculates the position and location of header views
@@ -13,9 +17,9 @@ import android.widget.LinearLayout;
 public class HeaderPositionCalculator {
 
     private final StickyRecyclerHeadersAdapter mAdapter;
-    private final OrientationProvider mOrientationProvider;
-    private final HeaderProvider mHeaderProvider;
-    private final DimensionCalculator mDimensionCalculator;
+    private final OrientationProvider          mOrientationProvider;
+    private final HeaderProvider               mHeaderProvider;
+    private final DimensionCalculator          mDimensionCalculator;
 
     /**
      * The following fields are used as buffers for internal calculations. Their sole purpose is to avoid

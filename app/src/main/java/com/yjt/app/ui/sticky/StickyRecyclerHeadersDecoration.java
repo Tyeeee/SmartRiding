@@ -7,16 +7,20 @@ import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
 
+import com.yjt.app.ui.listener.sticky.HeaderProvider;
+import com.yjt.app.ui.listener.sticky.OrientationProvider;
+import com.yjt.app.ui.listener.sticky.StickyRecyclerHeadersAdapter;
+
 
 public class StickyRecyclerHeadersDecoration extends RecyclerView.ItemDecoration {
 
     private final StickyRecyclerHeadersAdapter mAdapter;
     private final SparseArray<Rect> mHeaderRects = new SparseArray<>();
-    private final HeaderProvider mHeaderProvider;
-    private final OrientationProvider mOrientationProvider;
+    private final HeaderProvider           mHeaderProvider;
+    private final OrientationProvider      mOrientationProvider;
     private final HeaderPositionCalculator mHeaderPositionCalculator;
-    private final HeaderRenderer mRenderer;
-    private final DimensionCalculator mDimensionCalculator;
+    private final HeaderRenderer           mRenderer;
+    private final DimensionCalculator      mDimensionCalculator;
 
     /**
      * The following field is used as a buffer for internal calculations. Its sole purpose is to avoid

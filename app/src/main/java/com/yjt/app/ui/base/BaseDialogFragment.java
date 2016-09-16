@@ -31,8 +31,8 @@ import com.yjt.app.R;
 import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Temp;
-import com.yjt.app.ui.listener.OnDialogCancelListener;
-import com.yjt.app.utils.IntentDataUtil;
+import com.yjt.app.ui.listener.dialog.OnDialogCancelListener;
+import com.yjt.app.utils.BundleUtil;
 import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.TypefaceUtil;
 import com.yjt.app.utils.ViewUtil;
@@ -52,7 +52,7 @@ public abstract class BaseDialogFragment extends DialogFragment implements Dialo
         LogUtil.d(getClass().getName(), this.getClass().getSimpleName()
                 + " onCreateDialog() invoked!!");
         Dialog dialog = new Dialog(getActivity(), resolveTheme());
-        dialog.setCanceledOnTouchOutside(IntentDataUtil.getInstance().getBooleanData(getArguments(), Temp.CANCELABLE_ON_TOUCH_OUTSIDE.getContent()));
+        dialog.setCanceledOnTouchOutside(BundleUtil.getInstance().getBooleanData(getArguments(), Temp.CANCELABLE_ON_TOUCH_OUTSIDE.getContent()));
         dialog.setOnShowListener(this);
         return dialog;
     }
@@ -74,7 +74,7 @@ public abstract class BaseDialogFragment extends DialogFragment implements Dialo
         if (targetFragment != null) {
             mRequestCode = getTargetRequestCode();
         } else {
-            mRequestCode = IntentDataUtil.getInstance().getIntData(getArguments(), Temp.REQUEST_CODE.getContent());
+            mRequestCode = BundleUtil.getInstance().getIntData(getArguments(), Temp.REQUEST_CODE.getContent());
         }
     }
 

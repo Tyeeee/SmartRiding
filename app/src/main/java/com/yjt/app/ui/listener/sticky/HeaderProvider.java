@@ -1,4 +1,4 @@
-package com.yjt.app.ui.sticky;
+package com.yjt.app.ui.listener.sticky;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

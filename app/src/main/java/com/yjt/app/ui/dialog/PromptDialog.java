@@ -7,20 +7,20 @@ import android.view.View;
 import com.yjt.app.constant.Temp;
 import com.yjt.app.ui.base.BaseDialogFragment;
 import com.yjt.app.ui.dialog.builder.PromptDialogBuilder;
-import com.yjt.app.ui.listener.OnDialogNegativeListener;
-import com.yjt.app.ui.listener.OnDialogNeutralListener;
-import com.yjt.app.ui.listener.OnDialogPositiveListener;
-import com.yjt.app.utils.IntentDataUtil;
+import com.yjt.app.ui.listener.dialog.OnDialogNegativeListener;
+import com.yjt.app.ui.listener.dialog.OnDialogNeutralListener;
+import com.yjt.app.ui.listener.dialog.OnDialogPositiveListener;
+import com.yjt.app.utils.BundleUtil;
 
 public class PromptDialog extends BaseDialogFragment {
 
     @Override
     protected Builder build(Builder builder) {
-        CharSequence title = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_TITLE.getContent());
-        CharSequence prompt = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_PROMPT.getContent());
-        CharSequence positive = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_POSITIVE.getContent());
-        CharSequence negative = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_NEGATIVE.getContent());
-        CharSequence neutral = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_NEUTRAL.getContent());
+        CharSequence title = BundleUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_TITLE.getContent());
+        CharSequence prompt = BundleUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_PROMPT.getContent());
+        CharSequence positive = BundleUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_POSITIVE.getContent());
+        CharSequence negative = BundleUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_NEGATIVE.getContent());
+        CharSequence neutral = BundleUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_NEUTRAL.getContent());
         if (!TextUtils.isEmpty(title)) {
             builder.setTitle(title);
         }

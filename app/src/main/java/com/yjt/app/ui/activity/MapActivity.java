@@ -25,7 +25,7 @@ import com.yjt.app.ui.base.BaseActivity;
 import com.yjt.app.ui.widget.CustomOverlay;
 import com.yjt.app.ui.widget.fab.FloatingActionButton;
 import com.yjt.app.ui.widget.fab.FloatingActionMenu;
-import com.yjt.app.utils.IntentDataUtil;
+import com.yjt.app.utils.BundleUtil;
 import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.MapUtil;
 import com.yjt.app.utils.SnackBarUtil;
@@ -114,20 +114,20 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
     protected void initialize(Bundle savedInstanceState) {
         mvMap.onCreate(savedInstanceState);
         mDialog = ViewUtil.getInstance().showProgressDialog(this, null, getString(R.string.location_prompt), null, false);
-        if (IntentDataUtil.getInstance().hasBundleExtraValue(this, Temp.START_LOCATION_LONGITUDE.getContent()) && IntentDataUtil.getInstance().hasBundleExtraValue(this, Temp.START_LOCATION_LATITUDE.getContent())) {
-            LogUtil.print("---->显示 StartLongitude:" + IntentDataUtil.getInstance().getDoubleData(this, Temp.START_LOCATION_LONGITUDE.getContent()));
-            LogUtil.print("---->显示 StartLatitude:" + IntentDataUtil.getInstance().getDoubleData(this, Temp.START_LOCATION_LATITUDE.getContent()));
-            mStartPoint = new LatLonPoint(IntentDataUtil.getInstance().getDoubleData(this, Temp.START_LOCATION_LATITUDE.getContent()), IntentDataUtil.getInstance().getDoubleData(this, Temp.START_LOCATION_LONGITUDE.getContent()));
+        if (BundleUtil.getInstance().hasBundleExtraValue(this, Temp.START_LOCATION_LONGITUDE.getContent()) && BundleUtil.getInstance().hasBundleExtraValue(this, Temp.START_LOCATION_LATITUDE.getContent())) {
+            LogUtil.print("---->显示 StartLongitude:" + BundleUtil.getInstance().getDoubleData(this, Temp.START_LOCATION_LONGITUDE.getContent()));
+            LogUtil.print("---->显示 StartLatitude:" + BundleUtil.getInstance().getDoubleData(this, Temp.START_LOCATION_LATITUDE.getContent()));
+            mStartPoint = new LatLonPoint(BundleUtil.getInstance().getDoubleData(this, Temp.START_LOCATION_LATITUDE.getContent()), BundleUtil.getInstance().getDoubleData(this, Temp.START_LOCATION_LONGITUDE.getContent()));
         }
-        if (IntentDataUtil.getInstance().hasBundleExtraValue(this, Temp.PASS_LOCATION_LONGITUDE.getContent()) && IntentDataUtil.getInstance().hasBundleExtraValue(this, Temp.PASS_LOCATION_LATITUDE.getContent())) {
-            LogUtil.print("---->显示 PassLongitude:" + IntentDataUtil.getInstance().getDoubleData(this, Temp.PASS_LOCATION_LONGITUDE.getContent()));
-            LogUtil.print("---->显示 PassLatitude:" + IntentDataUtil.getInstance().getDoubleData(this, Temp.PASS_LOCATION_LATITUDE.getContent()));
-            mPassPoint = new LatLonPoint(IntentDataUtil.getInstance().getDoubleData(this, Temp.PASS_LOCATION_LATITUDE.getContent()), IntentDataUtil.getInstance().getDoubleData(this, Temp.PASS_LOCATION_LONGITUDE.getContent()));
+        if (BundleUtil.getInstance().hasBundleExtraValue(this, Temp.PASS_LOCATION_LONGITUDE.getContent()) && BundleUtil.getInstance().hasBundleExtraValue(this, Temp.PASS_LOCATION_LATITUDE.getContent())) {
+            LogUtil.print("---->显示 PassLongitude:" + BundleUtil.getInstance().getDoubleData(this, Temp.PASS_LOCATION_LONGITUDE.getContent()));
+            LogUtil.print("---->显示 PassLatitude:" + BundleUtil.getInstance().getDoubleData(this, Temp.PASS_LOCATION_LATITUDE.getContent()));
+            mPassPoint = new LatLonPoint(BundleUtil.getInstance().getDoubleData(this, Temp.PASS_LOCATION_LATITUDE.getContent()), BundleUtil.getInstance().getDoubleData(this, Temp.PASS_LOCATION_LONGITUDE.getContent()));
         }
-        if (IntentDataUtil.getInstance().hasBundleExtraValue(this, Temp.END_LOCATION_LONGITUDE.getContent()) && IntentDataUtil.getInstance().hasBundleExtraValue(this, Temp.END_LOCATION_LATITUDE.getContent())) {
-            LogUtil.print("---->显示 EndLongitude:" + IntentDataUtil.getInstance().getDoubleData(this, Temp.END_LOCATION_LONGITUDE.getContent()));
-            LogUtil.print("---->显示 EndLatitude:" + IntentDataUtil.getInstance().getDoubleData(this, Temp.END_LOCATION_LATITUDE.getContent()));
-            mEndPoint = new LatLonPoint(IntentDataUtil.getInstance().getDoubleData(this, Temp.END_LOCATION_LATITUDE.getContent()), IntentDataUtil.getInstance().getDoubleData(this, Temp.END_LOCATION_LONGITUDE.getContent()));
+        if (BundleUtil.getInstance().hasBundleExtraValue(this, Temp.END_LOCATION_LONGITUDE.getContent()) && BundleUtil.getInstance().hasBundleExtraValue(this, Temp.END_LOCATION_LATITUDE.getContent())) {
+            LogUtil.print("---->显示 EndLongitude:" + BundleUtil.getInstance().getDoubleData(this, Temp.END_LOCATION_LONGITUDE.getContent()));
+            LogUtil.print("---->显示 EndLatitude:" + BundleUtil.getInstance().getDoubleData(this, Temp.END_LOCATION_LATITUDE.getContent()));
+            mEndPoint = new LatLonPoint(BundleUtil.getInstance().getDoubleData(this, Temp.END_LOCATION_LATITUDE.getContent()), BundleUtil.getInstance().getDoubleData(this, Temp.END_LOCATION_LONGITUDE.getContent()));
         }
 
         if (mAmap == null) {

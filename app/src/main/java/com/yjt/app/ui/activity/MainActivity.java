@@ -30,7 +30,7 @@ import com.yjt.app.ui.fragment.DeviceFragment;
 import com.yjt.app.ui.fragment.HomeFragment;
 import com.yjt.app.ui.fragment.MessageFragment;
 import com.yjt.app.ui.fragment.SettingFragment;
-import com.yjt.app.ui.listener.OnPromptDialogListener;
+import com.yjt.app.ui.listener.dialog.OnPromptDialogListener;
 import com.yjt.app.ui.sticky.FixedStickyViewAdapter;
 import com.yjt.app.ui.widget.CircleImageView;
 import com.yjt.app.ui.widget.LinearLayoutDividerItemDecoration;
@@ -48,23 +48,21 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener, FixedStickyViewAdapter.OnItemClickListener, OnPromptDialogListener {
 
-    private DrawerLayout drawerLayout;
+    private DrawerLayout          drawerLayout;
     private ActionBarDrawerToggle mToggle;
 
-    private RelativeLayout rlAccount;
+    private RelativeLayout  rlAccount;
     private CircleImageView civHeadPortrait;
-    private TextView tvAccountName;
-    private TextView tvTelphoneNumber;
+    private TextView        tvAccountName;
+    private TextView        tvTelphoneNumber;
 
-    private RecyclerView rvMenu;
-    private LinearLayoutManager mLayoutManager;
+    private RecyclerView           rvMenu;
+    private LinearLayoutManager    mLayoutManager;
     private FixedStickyViewAdapter mAdapter;
 
     private FragmentHelper mHelper;
 
-    private BluetoothReceiver mReceiver;
-
-    private Handler mFragmentHandler;
+    private Handler     mFragmentHandler;
     private MainHandler mHandler;
 
     protected static class MainHandler extends Handler {
@@ -151,8 +149,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void initialize(Bundle savedInstanceState) {
         LogUtil.print("---->" + ApplicationUtil.getInstance().getSha1());
         mHandler = new MainHandler(this);
-        mReceiver = new BluetoothReceiver();
-        registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+        BluetoothReceiver.getInstance().registerReceiver(filter);
         if (BluetoothUtil.getInstance().isBluetoothSupported() && !BluetoothUtil.getInstance().isBluetoothEnabled()) {
             BluetoothUtil.getInstance().turnOnBluetooth();
         }
@@ -174,7 +173,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             @Override
             public void run() {
                 List<Menu> menus = new ArrayList<>();
-                Menu menu1 = new Menu();
+                Menu       menu1 = new Menu();
                 menu1.setIcon(R.mipmap.dir1);
                 menu1.setTitle(getResources().getString(R.string.home_page));
                 menus.add(menu1);
@@ -312,7 +311,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 if (BluetoothUtil.getInstance().isBluetoothSupported() && BluetoothUtil.getInstance().isBluetoothEnabled()) {
                     BluetoothUtil.getInstance().turnOffBluetooth();
                 }
-                unregisterReceiver(mReceiver);
+                BluetoothReceiver.getInstance().unRegisterReceiver();
                 BaseApplication.getInstance().releaseReference();
                 break;
             default:

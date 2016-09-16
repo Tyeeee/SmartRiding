@@ -3,6 +3,8 @@ package com.yjt.app.ui.sticky;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.yjt.app.ui.listener.sticky.OrientationProvider;
+
 /**
  * OrientationProvider for RecyclerViews who use a LinearLayoutManager
  */

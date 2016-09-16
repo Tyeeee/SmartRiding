@@ -27,7 +27,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        LogUtil.d(getClass().getName(), this.getClass().getSimpleName()
+        LogUtil.d("---->" + getClass().getName(), this.getClass().getSimpleName()
                 + " onWindowFocusChanged() invoked!!");
         if (SnackBarUtil.getInstance().isShown()) {
             ViewUtil.getInstance().setSystemUiVisibility(this);
@@ -37,7 +37,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogUtil.d(getClass().getName(), this.getClass().getSimpleName()
+        LogUtil.d("---->" + getClass().getName(), this.getClass().getSimpleName()
                 + " onCreate() invoked!!");
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         ActivityUtil.add(this);
@@ -47,13 +47,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        LogUtil.d(getClass().getName(), this.getClass().getSimpleName() + " onStart() invoked!!");
+        LogUtil.d("---->" + getClass().getName(), this.getClass().getSimpleName() + " onStart() invoked!!");
     }
 
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        LogUtil.d(getClass().getName(), this.getClass().getSimpleName() + " onPostCreate() invoked!!");
+        LogUtil.d("---->" + getClass().getName(), this.getClass().getSimpleName() + " onPostCreate() invoked!!");
     }
 
     @Override
@@ -66,14 +66,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        LogUtil.d(getClass().getName(), this.getClass().getSimpleName()
+        LogUtil.d("---->" + getClass().getName(), this.getClass().getSimpleName()
                 + " onResume() invoked!!");
     }
 
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        LogUtil.d(getClass().getName(), this.getClass().getSimpleName()
+        LogUtil.d("---->" + getClass().getName(), this.getClass().getSimpleName()
                 + " onPostResume() invoked!!");
     }
 
@@ -81,33 +81,33 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         setSavedInstanceState(outState);
         super.onSaveInstanceState(outState);
-        LogUtil.d(getClass().getName(), this.getClass().getSimpleName()
+        LogUtil.d("---->" + getClass().getName(), this.getClass().getSimpleName()
                 + " onSaveInstanceState() invoked!!");
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        LogUtil.d(getClass().getName(), this.getClass().getSimpleName()
+        LogUtil.d("---->" + getClass().getName(), this.getClass().getSimpleName()
                 + " onRestoreInstanceState() invoked!!");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        LogUtil.d(getClass().getName(), this.getClass().getSimpleName() + " onPause() invoked!!");
+        LogUtil.d("---->" + getClass().getName(), this.getClass().getSimpleName() + " onPause() invoked!!");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        LogUtil.d(getClass().getName(), this.getClass().getSimpleName() + " onStop() invoked!!");
+        LogUtil.d("---->" + getClass().getName(), this.getClass().getSimpleName() + " onStop() invoked!!");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        LogUtil.d(getClass().getName(), this.getClass().getSimpleName()
+        LogUtil.d("---->" + getClass().getName(), this.getClass().getSimpleName()
                 + " onDestroy() invoked!!");
     }
 
@@ -132,7 +132,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void onFinish(String message) {
         super.finish();
         overridePendingTransition(R.anim.slide_left_in, R.anim.slide_right_out);
-        LogUtil.print("onFinish is called: " + message);
+        LogUtil.print("---->onFinish is called: " + message);
     }
 
     protected abstract void findViewById();

@@ -37,11 +37,11 @@ import com.yjt.app.entity.RecommendPosition;
 import com.yjt.app.ui.adapter.RecommendPositionAdapter;
 import com.yjt.app.ui.adapter.binder.RecommendPositionBinder;
 import com.yjt.app.ui.base.BaseActivity;
-import com.yjt.app.ui.listener.OnDictationListener;
+import com.yjt.app.ui.listener.ttl.OnDictationListener;
 import com.yjt.app.ui.sticky.FixedStickyViewAdapter;
 import com.yjt.app.ui.widget.LinearLayoutDividerItemDecoration;
 import com.yjt.app.utils.InputUtil;
-import com.yjt.app.utils.IntentDataUtil;
+import com.yjt.app.utils.BundleUtil;
 import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.MapUtil;
 import com.yjt.app.utils.SnackBarUtil;
@@ -133,11 +133,11 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        if (IntentDataUtil.getInstance().hasIntentExtraValue(this, Temp.POINT_TYPE.getContent())) {
-            mPointType = IntentDataUtil.getInstance().getIntData(this, Temp.POINT_TYPE.getContent());
+        if (BundleUtil.getInstance().hasIntentExtraValue(this, Temp.POINT_TYPE.getContent())) {
+            mPointType = BundleUtil.getInstance().getIntData(this, Temp.POINT_TYPE.getContent());
         }
-        if (IntentDataUtil.getInstance().hasIntentExtraValue(this, Temp.POINT_CONTENT.getContent())) {
-            String content = IntentDataUtil.getInstance().getStringData(this, Temp.POINT_CONTENT.getContent());
+        if (BundleUtil.getInstance().hasIntentExtraValue(this, Temp.POINT_CONTENT.getContent())) {
+            String content = BundleUtil.getInstance().getStringData(this, Temp.POINT_CONTENT.getContent());
             if (TextUtils.isEmpty(content)) {
                 etSearch.setText(getString(R.string.my_location));
             } else {

@@ -26,28 +26,28 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        LogUtil.d(getClass().getName(), getClass().getSimpleName()
+        LogUtil.d("---->" + getClass().getName(), getClass().getSimpleName()
                 + " onAttach() invoked!!");
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogUtil.d(getClass().getName(), getClass().getSimpleName()
+        LogUtil.d("---->" + getClass().getName(), getClass().getSimpleName()
                 + " onCreate() invoked!!");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        LogUtil.d(getClass().getName(), getClass().getSimpleName()
+        LogUtil.d("---->" + getClass().getName(), getClass().getSimpleName()
                 + " onCreateView() invoked!!");
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        LogUtil.d(getClass().getName(), getClass().getSimpleName()
+        LogUtil.d("---->" + getClass().getName(), getClass().getSimpleName()
                 + " onViewCreated() invoked!!");
         super.onViewCreated(view, savedInstanceState);
     }
@@ -55,20 +55,20 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        LogUtil.d(getClass().getName(), getClass().getSimpleName()
+        LogUtil.d("---->" + getClass().getName(), getClass().getSimpleName()
                 + " onActivityCreated() invoked!!");
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        LogUtil.d(getClass().getName(), getClass().getSimpleName() + " onStart() invoked!!");
+        LogUtil.d("---->" + getClass().getName(), getClass().getSimpleName() + " onStart() invoked!!");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        LogUtil.d(getClass().getName(), getClass().getSimpleName()
+        LogUtil.d("---->" + getClass().getName(), getClass().getSimpleName()
                 + " onResume() invoked!!");
     }
 
@@ -76,40 +76,40 @@ public abstract class BaseFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         setSavedInstanceState(outState);
         super.onSaveInstanceState(outState);
-        LogUtil.d(getClass().getName(), getClass().getSimpleName()
+        LogUtil.d("---->" + getClass().getName(), getClass().getSimpleName()
                 + " onSaveInstanceState() invoked!!");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        LogUtil.d(getClass().getName(), getClass().getSimpleName() + " onPause() invoked!!");
+        LogUtil.d("---->" + getClass().getName(), getClass().getSimpleName() + " onPause() invoked!!");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        LogUtil.d(getClass().getName(), this.getClass().getSimpleName() + " onStop() invoked!!");
+        LogUtil.d("---->" + getClass().getName(), this.getClass().getSimpleName() + " onStop() invoked!!");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        LogUtil.d(getClass().getName(), getClass().getSimpleName()
+        LogUtil.d("---->" + getClass().getName(), getClass().getSimpleName()
                 + " onDestroyView() invoked!!");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        LogUtil.d(getClass().getName(), getClass().getSimpleName()
+        LogUtil.d("---->" + getClass().getName(), getClass().getSimpleName()
                 + " onDestroy() invoked!!");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        LogUtil.d(getClass().getName(), getClass().getSimpleName()
+        LogUtil.d("---->" + getClass().getName(), getClass().getSimpleName()
                 + " onDetach() invoked!!");
         try {
             Field field = Fragment.class
@@ -124,7 +124,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        LogUtil.d(getClass().getName(), this.getClass().getSimpleName()
+        LogUtil.d("---->" + getClass().getName(), this.getClass().getSimpleName()
                 + " onHiddenChanged() invoked!!--" + hidden);
     }
 

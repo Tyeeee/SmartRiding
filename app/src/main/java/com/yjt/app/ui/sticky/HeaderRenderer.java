@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.yjt.app.ui.listener.sticky.OrientationProvider;
+
 /**
  * Responsible for drawing headers to the canvas provided by the item decoration
  */

@@ -21,7 +21,7 @@ import com.yjt.app.ui.adapter.binder.RouteDetailBinder;
 import com.yjt.app.ui.base.BaseActivity;
 import com.yjt.app.ui.sticky.FixedStickyViewAdapter;
 import com.yjt.app.ui.widget.LinearLayoutDividerItemDecoration;
-import com.yjt.app.utils.IntentDataUtil;
+import com.yjt.app.utils.BundleUtil;
 import com.yjt.app.utils.MapUtil;
 import com.yjt.app.utils.ToastUtil;
 import com.yjt.app.utils.ViewUtil;
@@ -89,9 +89,9 @@ public class RouteDetailActivity extends BaseActivity {
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        if (IntentDataUtil.getInstance().hasIntentExtraValue(this, Temp.ROUTE_INFO.getContent())) {
+        if (BundleUtil.getInstance().hasIntentExtraValue(this, Temp.ROUTE_INFO.getContent())) {
             mHandler = new RouteDetailHandler(this);
-            mResult = IntentDataUtil.getInstance().getParcelableData(this, Temp.ROUTE_INFO.getContent());
+            mResult = BundleUtil.getInstance().getParcelableData(this, Temp.ROUTE_INFO.getContent());
             mPath = mResult.getPaths().get(0);
             tvDistance.setText(MapUtil.getInstance().getFriendlyTime((int) mPath.getDuration()) + Regex.LEFT_PARENTHESIS.getRegext() + MapUtil.getInstance().getFriendlyLength((int) mPath.getDistance()) + Regex.RIGHT_PARENTHESIS.getRegext());
             tvCost.setText("乘出租车约:" + new BigDecimal(mResult.getTaxiCost()).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue() + "元");

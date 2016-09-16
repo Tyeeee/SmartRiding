@@ -1,4 +1,4 @@
-package com.yjt.app.ui.listener.implement;
+package com.yjt.app.ui.listener.bluetooth.implement;
 
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.le.ScanCallback;
@@ -6,7 +6,6 @@ import android.bluetooth.le.ScanResult;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
-import android.support.v4.text.TextUtilsCompat;
 import android.text.TextUtils;
 
 import com.yjt.app.constant.Constant;
@@ -14,7 +13,6 @@ import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.MessageUtil;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -43,17 +41,19 @@ public class CustomScanCallback extends ScanCallback {
         if (!mDevices.contains(device) && !TextUtils.isEmpty(device.getName())) {
             mDevices.add(device);
         }
-
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (!isScan) {
-                    isScan = !isScan;
-                    mHandler.sendMessage(MessageUtil.getMessage(Constant.Bluetooth.GET_DEVICE_LIST_SUCCESS, mDevices));
+        if (mHandler != null) {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (!isScan) {
+                        isScan = !isScan;
+                        if (mHandler != null) {
+                            mHandler.sendMessage(MessageUtil.getMessage(Constant.Bluetooth.GET_DEVICE_LIST_SUCCESS, mDevices));
+                        }
+                    }
                 }
-            }
-        }, Constant.Bluetooth.SCAN_PERIOD);
-
+            }, Constant.Bluetooth.SCAN_PERIOD);
+        }
     }
 
     @Override
@@ -65,5 +65,12 @@ public class CustomScanCallback extends ScanCallback {
     @Override
     public void onBatchScanResults(List<ScanResult> results) {
         super.onBatchScanResults(results);
+    }
+
+    public void cancelCallback() {
+        if (mHandler != null) {
+            mHandler = null;
+            mDevices.clear();
+        }
     }
 }

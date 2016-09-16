@@ -2,31 +2,30 @@ package com.yjt.app.utils;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 
-import java.util.AbstractList;
 import java.util.Collection;
-import java.util.List;
 
-public class IntentDataUtil {
+public class BundleUtil {
 
-    private static IntentDataUtil mIntentDataUtil;
+    private static BundleUtil mBundleUtil;
 
-    private IntentDataUtil() {
+    private BundleUtil() {
         // cannot be instantiated
     }
 
-    public static synchronized IntentDataUtil getInstance() {
-        if (mIntentDataUtil == null) {
-            mIntentDataUtil = new IntentDataUtil();
+    public static synchronized BundleUtil getInstance() {
+        if (mBundleUtil == null) {
+            mBundleUtil = new BundleUtil();
         }
-        return mIntentDataUtil;
+        return mBundleUtil;
     }
 
     public static void releaseInstance() {
-        if (mIntentDataUtil != null) {
-            mIntentDataUtil = null;
+        if (mBundleUtil != null) {
+            mBundleUtil = null;
         }
     }
 
@@ -42,22 +41,38 @@ public class IntentDataUtil {
         if (activity.getIntent() != null) {
             return activity.getIntent().getExtras().getInt(key);
         }
-        return 0;
+        return -1;
     }
 
     public int getIntData(Bundle bundle, String key) {
         if (bundle != null) {
             return bundle.getInt(key);
         }
-        return 0;
+        return -1;
+    }
+
+    public int getIntData(Intent intent, String key) {
+        if (intent != null) {
+            return intent.getIntExtra(key, -1);
+        }
+        return -1;
     }
 
     public double getDoubleData(Activity activity, String key) {
         if (activity.getIntent() != null) {
             return activity.getIntent().getExtras().getDouble(key);
         }
-        return 0.0;
+        return -1.0;
     }
+
+
+    public long getLongData(Bundle bundle, String key, long defaultValue) {
+        if (bundle != null) {
+            return bundle.getLong(key, defaultValue);
+        }
+        return -1;
+    }
+
 
     public CharSequence getCharSequenceData(Bundle bundle, String key) {
         if (bundle != null) {
@@ -86,13 +101,6 @@ public class IntentDataUtil {
             return activity.getIntent().getExtras().getString(key);
         }
         return null;
-    }
-
-    public long getLongData(Bundle bundle, String key, long defaultValue) {
-        if (bundle != null) {
-            return bundle.getLong(key, defaultValue);
-        }
-        return 0;
     }
 
     public boolean getBooleanData(Bundle bundle, String key) {

@@ -1,7 +1,7 @@
 package com.yjt.app.entity;
 
 
-import com.yjt.app.ui.sticky.OnGroupListener;
+import com.yjt.app.ui.listener.sticky.OnGroupListener;
 
 public class RouteDetail implements OnGroupListener {
 

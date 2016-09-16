@@ -1,5 +1,7 @@
 package com.yjt.app.constant;
 
+import java.util.UUID;
+
 public class Constant {
 
     public static final String CHANNEL_NAME            = "CHANNEL_NAME";
@@ -137,11 +139,27 @@ public class Constant {
     }
 
     public static class Bluetooth {
-        public static final long SCAN_PERIOD             = 5000;
-        public static final int  GET_DEVICE_LIST_RESULT  = 0x6001;
-        public static final int  GET_DEVICE_LIST_SUCCESS = 0x6001;
-        public static final int  GET_DEVICE_LIST_FAILED  = 0x6002;
-        public static final int  GET_DEVICE_LIST_ERROR   = 0x6003;
+        public static final UUID   CLIENT_UUID             = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
+        public static final String UUID1                   = "0000fff1-0000-1000-8000-00805f9b34fb";
+        public static final String UUID2                   = "0000fff2-0000-1000-8000-00805f9b34fb";
+        public static final String UUID3                   = "0000fff3-0000-1000-8000-00805f9b34fb";
+        public static final String UUID4                   = "0000fff4-0000-1000-8000-00805f9b34fb";
+        public static final String UUID5                   = "0000fff5-0000-1000-8000-00805f9b34fb";
+        public static final String UUID6                   = "0000fff6-0000-1000-8000-00805f9b34fb";
+        public static final String UUID7                   = "0000fff7-0000-1000-8000-00805f9b34fb";
+        public static final String UUID8                   = "0000fff8-0000-1000-8000-00805f9b34fb";
+        public static final String UUID9                   = "0000fff9-0000-1000-8000-00805f9b34fb";
+        public static final String UUIDA                   = "0000fffa-0000-1000-8000-00805f9b34fb";
+        public static final long   SCAN_PERIOD             = 5000;
+        public static final long   RSSI_PERIOD             = 1000;
+        public static final long   RSSI_DELAY              = 1000;
+        public static final String ACTION_RSSI             = "action_rssi";
+        public static final String ACTION_CONNECT          = "action_connect";
+        public static final int    DEVICE_CONNECTED        = 1;
+        public static final int    DEVICE_DISCONNECTED     = 0;
+        public static final int    GET_DEVICE_LIST_SUCCESS = 0x6001;
+        public static final int    GET_DEVICE_LIST_FAILED  = 0x6002;
+        public static final int    GET_DEVICE_LIST_ERROR   = 0x6003;
     }
 
 }

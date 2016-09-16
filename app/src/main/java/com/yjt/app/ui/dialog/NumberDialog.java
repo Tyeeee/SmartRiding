@@ -9,8 +9,8 @@ import com.yjt.app.R;
 import com.yjt.app.constant.Temp;
 import com.yjt.app.ui.base.BaseDialogFragment;
 import com.yjt.app.ui.dialog.builder.NumberDialogBuilder;
-import com.yjt.app.ui.listener.OnNumberDialogListener;
-import com.yjt.app.utils.IntentDataUtil;
+import com.yjt.app.ui.listener.dialog.OnNumberDialogListener;
+import com.yjt.app.utils.BundleUtil;
 
 
 public class NumberDialog extends BaseDialogFragment {
@@ -19,9 +19,9 @@ public class NumberDialog extends BaseDialogFragment {
 
     @Override
     protected Builder build(Builder builder) {
-        CharSequence title = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_TITLE.getContent());
-        CharSequence positive = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_POSITIVE.getContent());
-        CharSequence negative = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_NEGATIVE.getContent());
+        CharSequence title = BundleUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_TITLE.getContent());
+        CharSequence positive = BundleUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_POSITIVE.getContent());
+        CharSequence negative = BundleUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_NEGATIVE.getContent());
         if (!TextUtils.isEmpty(title)) {
             builder.setTitle(title);
         }
@@ -49,8 +49,8 @@ public class NumberDialog extends BaseDialogFragment {
         }
         npNumber = (NumberPicker) builder.getLayoutInflater().inflate(R.layout.view_number, null);
         builder.setView(npNumber);
-        npNumber.setMinValue(IntentDataUtil.getInstance().getIntData(getArguments(), Temp.MINIMUM_NUMBER.getContent()));
-        npNumber.setMaxValue(IntentDataUtil.getInstance().getIntData(getArguments(), Temp.MAXIMUM_NUMBER.getContent()));
+        npNumber.setMinValue(BundleUtil.getInstance().getIntData(getArguments(), Temp.MINIMUM_NUMBER.getContent()));
+        npNumber.setMaxValue(BundleUtil.getInstance().getIntData(getArguments(), Temp.MAXIMUM_NUMBER.getContent()));
         return builder;
     }
 

@@ -6,6 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.yjt.app.ui.listener.sticky.HeaderProvider;
+import com.yjt.app.ui.listener.sticky.OrientationProvider;
+import com.yjt.app.ui.listener.sticky.StickyRecyclerHeadersAdapter;
+
 /**
  * An implementation of {@link HeaderProvider} that creates and caches header views
  */

@@ -12,6 +12,7 @@ public enum Regex {
     LEFT_PARENTHESIS("("),
     RIGHT_PARENTHESIS(")"),
     SLASH("/"),
+    VERTICAL("|"),
     SUPERSCRIPT("#"),
     ENTER("[\r\n]+|[\n]+|[\r]+"),
     DATE_FORMAT_ALL("yyyy-MM-dd HH:mm:ss"),

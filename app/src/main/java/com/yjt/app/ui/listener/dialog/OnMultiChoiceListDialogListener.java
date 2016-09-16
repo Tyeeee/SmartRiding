@@ -1,4 +1,4 @@
-package com.yjt.app.ui.listener;
+package com.yjt.app.ui.listener.dialog;
 
 public interface OnMultiChoiceListDialogListener {
 

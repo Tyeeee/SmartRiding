@@ -16,9 +16,9 @@ import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Temp;
 import com.yjt.app.ui.dialog.builder.DeviceListDialogBuilder;
-import com.yjt.app.ui.listener.OnDialogCancelListener;
-import com.yjt.app.ui.listener.OnListDialogListener;
-import com.yjt.app.utils.IntentDataUtil;
+import com.yjt.app.ui.listener.dialog.OnDialogCancelListener;
+import com.yjt.app.ui.listener.dialog.OnListDialogListener;
+import com.yjt.app.utils.BundleUtil;
 import com.yjt.app.utils.ViewUtil;
 
 import java.util.ArrayList;
@@ -36,9 +36,9 @@ public class DeviceListDialog extends ListDialog {
 
     @Override
     protected Builder build(Builder builder) {
-        CharSequence                     title    = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_TITLE.getContent());
-        CharSequence                     negative = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_NEGATIVE.getContent());
-        final ArrayList<BluetoothDevice> items    = IntentDataUtil.getInstance().getParcelableArrayListData(getArguments(), Temp.DIALOG_ITEMS.getContent());
+        CharSequence                     title    = BundleUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_TITLE.getContent());
+        CharSequence                     negative = BundleUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_NEGATIVE.getContent());
+        final ArrayList<BluetoothDevice> items    = BundleUtil.getInstance().getParcelableArrayListData(getArguments(), Temp.DIALOG_ITEMS.getContent());
         if (!TextUtils.isEmpty(title)) {
             builder.setTitle(title);
         }

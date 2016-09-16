@@ -30,8 +30,8 @@ import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Temp;
 import com.yjt.app.ui.dialog.PromptDialog;
-import com.yjt.app.ui.listener.OnPromptDialogListener;
-import com.yjt.app.utils.IntentDataUtil;
+import com.yjt.app.ui.listener.dialog.OnPromptDialogListener;
+import com.yjt.app.utils.BundleUtil;
 import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.MapUtil;
 import com.yjt.app.utils.SnackBarUtil;
@@ -115,8 +115,8 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
 
     protected void initialize(Bundle savedInstanceState) {
         nvMap.onCreate(savedInstanceState);
-        if (IntentDataUtil.getInstance().hasIntentExtraValue(this, Temp.ROUTE_INFO.getContent())) {
-            mResult = IntentDataUtil.getInstance().getParcelableData(this, Temp.ROUTE_INFO.getContent());
+        if (BundleUtil.getInstance().hasIntentExtraValue(this, Temp.ROUTE_INFO.getContent())) {
+            mResult = BundleUtil.getInstance().getParcelableData(this, Temp.ROUTE_INFO.getContent());
             mStartLatLngs.add(MapUtil.getInstance().parseCoordinate(mResult.getStartPos().toString()));
             mEndLatLngs.add(MapUtil.getInstance().parseCoordinate(mResult.getTargetPos().toString()));
         } else {

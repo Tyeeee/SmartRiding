@@ -2,7 +2,7 @@ package com.yjt.app.ui.base;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.yjt.app.ui.listener.OnViewBinderListener;
+import com.yjt.app.ui.listener.sticky.OnViewBinderListener;
 
 
 public abstract class BaseViewBinder implements OnViewBinderListener {

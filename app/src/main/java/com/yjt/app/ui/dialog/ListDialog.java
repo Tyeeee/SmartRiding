@@ -21,10 +21,10 @@ import com.yjt.app.constant.Temp;
 import com.yjt.app.entity.ParcelableSparseBooleanArray;
 import com.yjt.app.ui.base.BaseDialogFragment;
 import com.yjt.app.ui.dialog.builder.ListDialogBuilder;
-import com.yjt.app.ui.listener.OnDialogCancelListener;
-import com.yjt.app.ui.listener.OnListDialogListener;
-import com.yjt.app.ui.listener.OnMultiChoiceListDialogListener;
-import com.yjt.app.utils.IntentDataUtil;
+import com.yjt.app.ui.listener.dialog.OnDialogCancelListener;
+import com.yjt.app.ui.listener.dialog.OnListDialogListener;
+import com.yjt.app.ui.listener.dialog.OnMultiChoiceListDialogListener;
+import com.yjt.app.utils.BundleUtil;
 import com.yjt.app.utils.ViewUtil;
 
 import java.util.Arrays;
@@ -42,9 +42,9 @@ public class ListDialog extends BaseDialogFragment {
 
     @Override
     protected Builder build(Builder builder) {
-        CharSequence title    = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_TITLE.getContent());
-        CharSequence positive = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_POSITIVE.getContent());
-        CharSequence negative = IntentDataUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_NEGATIVE.getContent());
+        CharSequence title    = BundleUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_TITLE.getContent());
+        CharSequence positive = BundleUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_POSITIVE.getContent());
+        CharSequence negative = BundleUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_NEGATIVE.getContent());
         if (!TextUtils.isEmpty(title)) {
             builder.setTitle(title);
         }
@@ -215,16 +215,16 @@ public class ListDialog extends BaseDialogFragment {
     @SuppressWarnings("ResourceType")
     @ChoiceMode
     private int getChoiceMode() {
-        return IntentDataUtil.getInstance().getIntData(getArguments(), Temp.DIALOG_CHOICE_MODE.getContent());
+        return BundleUtil.getInstance().getIntData(getArguments(), Temp.DIALOG_CHOICE_MODE.getContent());
     }
 
     private CharSequence[] getItems() {
-        return IntentDataUtil.getInstance().getCharSequenceArrayData(getArguments(), Temp.DIALOG_CHOICE_ITEMS.getContent());
+        return BundleUtil.getInstance().getCharSequenceArrayData(getArguments(), Temp.DIALOG_CHOICE_ITEMS.getContent());
     }
 
     @NonNull
     private ParcelableSparseBooleanArray getCheckedItems() {
-        ParcelableSparseBooleanArray items = IntentDataUtil.getInstance().getParcelableData(getArguments(), Temp.DIALOG_CHOICE_ITEM.getContent());
+        ParcelableSparseBooleanArray items = BundleUtil.getInstance().getParcelableData(getArguments(), Temp.DIALOG_CHOICE_ITEM.getContent());
         if (items == null) {
             items = new ParcelableSparseBooleanArray();
         }

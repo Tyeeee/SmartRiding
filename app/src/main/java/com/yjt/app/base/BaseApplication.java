@@ -1,5 +1,6 @@
 package com.yjt.app.base;
 
+import android.bluetooth.BluetoothGattCharacteristic;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
@@ -26,7 +27,8 @@ import com.yjt.app.utils.ViewUtil;
 
 public class BaseApplication extends MultiDexApplication {
 
-    private static BaseApplication mApplication;
+    private static BaseApplication             mApplication;
+    private        BluetoothGattCharacteristic mCharacteristic;
 
     public static BaseApplication getInstance() {
         return mApplication;
@@ -69,5 +71,13 @@ public class BaseApplication extends MultiDexApplication {
         TypefaceUtil.releaseInstance();
         ActivityUtil.removeAll();
         mApplication = null;
+    }
+
+    public BluetoothGattCharacteristic getCharacteristic() {
+        return mCharacteristic;
+    }
+
+    public void setCharacteristic(BluetoothGattCharacteristic characteristic) {
+        this.mCharacteristic = characteristic;
     }
 }

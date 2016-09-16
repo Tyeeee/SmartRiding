@@ -6,6 +6,8 @@ import android.view.MotionEvent;
 import android.view.SoundEffectConstants;
 import android.view.View;
 
+import com.yjt.app.ui.listener.sticky.StickyRecyclerHeadersAdapter;
+
 public class StickyRecyclerHeadersTouchListener implements RecyclerView.OnItemTouchListener {
     private final GestureDetector mTapDetector;
     private final RecyclerView mRecyclerView;

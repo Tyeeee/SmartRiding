@@ -13,7 +13,7 @@
     <string name="device_searching">蓝牙设备搜索中…</string>
     <string name="search_device_prompt1">未发现蓝牙设备</string>
     <string name="search_device_prompt2">蓝牙设备搜索失败</string>
-    <string name="search_device_prompt3">请检查您的设备是否支持Ble服务</string>
+    <string name="search_device_prompt3">请检查您的设备是否开启或支持Ble服务</string>
     <string name="general_setting">通用设置</string>
     <string name="check_update">检查更新</string>
     <string name="clear_data">清除数据</string>
@@ -81,9 +81,11 @@
     <string name="bluetooth_status1_1">蓝牙正在关闭</string>
     <string name="bluetooth_status2">蓝牙已开启</string>
     <string name="bluetooth_status2_1">蓝牙正在开启</string>
-    <string name="bluetooth_status3">蓝牙已断开</string>
-    <string name="bluetooth_status4">蓝牙已连接</string>
+    <string name="bluetooth_status3">设备已断开连接</string>
+    <string name="bluetooth_status4">设备已连接</string>
     <string name="bluetooth_status5">您的设备不支持蓝牙</string>
+    <string name="bluetooth_status6">设备无法连接</string>
+    <string name="bluetooth_status7">设备未连接</string>
     <string name="bluetooth_connection">连接蓝牙设备</string>
     <string name="bluetooth_disconnection">断开蓝牙设备</string>
     <string name="open_bluetooth">打开蓝牙</string>
