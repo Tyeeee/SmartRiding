@@ -12,6 +12,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.IdRes;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -300,6 +301,12 @@ public class ViewUtil {
         if (dialog != null && dialog.isShowing() && activity != null && !activity.isFinishing()) {
             dialog.dismiss();
             unLockScreenOrientation(activity);
+        }
+    }
+
+    public void hideDialog(DialogFragment dialog) {
+        if (dialog != null) {
+            dialog.dismiss();
         }
     }
 

@@ -136,26 +136,19 @@ public class BluetoothUtil {
     }
 
     public String getGattCharacteristicInfo(int value, boolean flag) {
-        String result;
-        if (flag) {
-            result = getGattCharacteristicPermission(value);
-        } else {
-            result = getGattCharacteristicProperty(value);
-        }
-        if (!TextUtils.isEmpty(result)) {
-            List<Integer> values = new ArrayList<>();
-            for (int i = 0; i < 32; i++) {
-                int b = 1 << i;
-                if ((value & b) > 0) {
-                    values.add(b);
-                }
+        String        result = Regex.NONE.getRegext();
+        List<Integer> values = new ArrayList<>();
+        for (int i = 0; i < 32; i++) {
+            int b = 1 << i;
+            if ((value & b) > 0) {
+                values.add(b);
             }
-            for (int i = 0; i < values.size(); i++) {
-                if (flag) {
-                    result += getGattCharacteristicPermission(values.get(i)) + Regex.VERTICAL.getRegext();
-                } else {
-                    result += getGattCharacteristicProperty(values.get(i)) + Regex.VERTICAL.getRegext();
-                }
+        }
+        for (int i = 0; i < values.size(); i++) {
+            if (flag) {
+                result += getGattCharacteristicPermission(values.get(i)) + Regex.VERTICAL.getRegext();
+            } else {
+                result += getGattCharacteristicProperty(values.get(i)) + Regex.VERTICAL.getRegext();
             }
         }
         return result;

@@ -16,9 +16,11 @@ import android.widget.Toast;
 import com.yjt.app.R;
 import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Constant;
-import com.yjt.app.ui.listener.bluetooth.OnConnectListener;
+import com.yjt.app.ui.listener.bluetooth.OnConnectedListener;
+import com.yjt.app.ui.listener.bluetooth.OnConnectingListener;
 import com.yjt.app.ui.listener.bluetooth.OnDataAvailableListener;
-import com.yjt.app.ui.listener.bluetooth.OnDisconnectListener;
+import com.yjt.app.ui.listener.bluetooth.OnDisconnectedListener;
+import com.yjt.app.ui.listener.bluetooth.OnDisconnectingListener;
 import com.yjt.app.ui.listener.bluetooth.OnReadRemoteRssiListener;
 import com.yjt.app.ui.listener.bluetooth.OnServiceDiscoverListener;
 import com.yjt.app.ui.listener.bluetooth.implement.CustomBluetoothGattCallback;
@@ -34,8 +36,10 @@ public class BluetoothService extends Service {
     private BluetoothGatt    mGatt;
     //    private String           mAddress;
 
-    private OnConnectListener         mConnectListener;
-    private OnDisconnectListener      mDisconnectListener;
+    private OnConnectingListener      mConnectingListener;
+    private OnConnectedListener       mConnectedListener;
+    private OnDisconnectingListener   mDisconnectingListener;
+    private OnDisconnectedListener    mDisconnectedListener;
     private OnReadRemoteRssiListener  onRssiListener;
     private OnServiceDiscoverListener mDiscoverListener;
     private OnDataAvailableListener   mDataListener;
@@ -44,12 +48,20 @@ public class BluetoothService extends Service {
         this.mAdapter = adapter;
     }
 
-    public void setOnConnectListener(OnConnectListener listener) {
-        this.mConnectListener = listener;
+    public void setOnConnectingListener(OnConnectingListener listener) {
+        this.mConnectingListener = listener;
     }
 
-    public void setOnDisconnectListener(OnDisconnectListener listener) {
-        this.mDisconnectListener = listener;
+    public void setOnConnectedListener(OnConnectedListener listener) {
+        this.mConnectedListener = listener;
+    }
+
+    public void setOnDisconnectingListener(OnDisconnectingListener listener) {
+        this.mDisconnectingListener = listener;
+    }
+
+    public void setOnDisconnectedListener(OnDisconnectedListener listener) {
+        this.mDisconnectedListener = listener;
     }
 
     public void setOnReadRemoteRssiListener(OnReadRemoteRssiListener listener) {
@@ -82,8 +94,10 @@ public class BluetoothService extends Service {
         if (device != null) {
             mGatt = device.connectGatt(BaseApplication.getInstance()
                     , false
-                    , new CustomBluetoothGattCallback(mConnectListener
-                            , mDisconnectListener
+                    , new CustomBluetoothGattCallback(mConnectingListener
+                            , mConnectedListener
+                            , mDisconnectingListener
+                            , mDisconnectedListener
                             , mDiscoverListener
                             , mDataListener));
 //            mAddress = address;

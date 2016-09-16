@@ -10,25 +10,33 @@ import android.content.Intent;
 import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Temp;
-import com.yjt.app.ui.listener.bluetooth.OnConnectListener;
+import com.yjt.app.ui.listener.bluetooth.OnConnectedListener;
+import com.yjt.app.ui.listener.bluetooth.OnConnectingListener;
 import com.yjt.app.ui.listener.bluetooth.OnDataAvailableListener;
-import com.yjt.app.ui.listener.bluetooth.OnDisconnectListener;
+import com.yjt.app.ui.listener.bluetooth.OnDisconnectedListener;
+import com.yjt.app.ui.listener.bluetooth.OnDisconnectingListener;
 import com.yjt.app.ui.listener.bluetooth.OnServiceDiscoverListener;
 import com.yjt.app.utils.LogUtil;
 
 public class CustomBluetoothGattCallback extends BluetoothGattCallback {
 
-    private OnConnectListener         mConnectListener;
-    private OnDisconnectListener      mDisconnectListener;
+    private OnConnectingListener      mConnectingListener;
+    private OnConnectedListener       mConnectedListener;
+    private OnDisconnectingListener   mDisconnectingListener;
+    private OnDisconnectedListener    mDisconnectedListener;
     private OnServiceDiscoverListener mDiscoverListener;
     private OnDataAvailableListener   mDataListener;
 
-    public CustomBluetoothGattCallback(OnConnectListener connectListener
-            , OnDisconnectListener disconnectListener
+    public CustomBluetoothGattCallback(OnConnectingListener connectingListener
+            , OnConnectedListener connectedListener
+            , OnDisconnectingListener disconnectingListener
+            , OnDisconnectedListener disconnectedListener
             , OnServiceDiscoverListener discoverListener
             , OnDataAvailableListener dataListener) {
-        this.mConnectListener = connectListener;
-        this.mDisconnectListener = disconnectListener;
+        this.mConnectingListener = connectingListener;
+        this.mConnectedListener = connectedListener;
+        this.mDisconnectingListener = disconnectingListener;
+        this.mDisconnectedListener = disconnectedListener;
         this.mDiscoverListener = discoverListener;
         this.mDataListener = dataListener;
     }
@@ -36,7 +44,18 @@ public class CustomBluetoothGattCallback extends BluetoothGattCallback {
     @Override
     public void onConnectionStateChange(BluetoothGatt gatt, int status,
                                         int newState) {
+        LogUtil.print("---->status:" + status);
+        LogUtil.print("---->newState:" + newState);
         switch (newState) {
+            case BluetoothProfile.STATE_CONNECTING:
+                LogUtil.print("---->Connecting to GATT server.");
+                BaseApplication.getInstance().sendBroadcast(
+                        new Intent(Constant.Bluetooth.ACTION_CONNECT)
+                                .putExtra(Temp.CONNECTION_STATUS.getContent(), BluetoothProfile.STATE_CONNECTING));
+                if (mConnectingListener != null) {
+                    mConnectingListener.onConnecting(gatt);
+                }
+                break;
             case BluetoothProfile.STATE_CONNECTED:
                 LogUtil.print("---->Connected to GATT server.");
                 if (gatt != null) {
@@ -50,18 +69,28 @@ public class CustomBluetoothGattCallback extends BluetoothGattCallback {
                 }
                 BaseApplication.getInstance().sendBroadcast(
                         new Intent(Constant.Bluetooth.ACTION_CONNECT)
-                                .putExtra(Temp.CONNECTION_STATUS.getContent(), Constant.Bluetooth.DEVICE_CONNECTED));
-                if (mConnectListener != null) {
-                    mConnectListener.onConnect(gatt);
+                                .putExtra(Temp.CONNECTION_STATUS.getContent(), BluetoothProfile.STATE_CONNECTED));
+                if (mConnectedListener != null) {
+                    mConnectedListener.onConnected(gatt);
                 }
+                break;
+            case BluetoothProfile.STATE_DISCONNECTING:
+                LogUtil.print("---->Disconnecting from GATT server.");
+                BaseApplication.getInstance().sendBroadcast(
+                        new Intent(Constant.Bluetooth.ACTION_CONNECT)
+                                .putExtra(Temp.CONNECTION_STATUS.getContent(), BluetoothProfile.STATE_DISCONNECTING));
+                if (mDisconnectingListener != null) {
+                    mDisconnectingListener.onDisconnecting(gatt);
+                }
+                gatt.close();
                 break;
             case BluetoothProfile.STATE_DISCONNECTED:
                 LogUtil.print("---->Disconnected from GATT server.");
                 BaseApplication.getInstance().sendBroadcast(
                         new Intent(Constant.Bluetooth.ACTION_CONNECT)
-                                .putExtra(Temp.CONNECTION_STATUS.getContent(), Constant.Bluetooth.DEVICE_DISCONNECTED));
-                if (mDisconnectListener != null) {
-                    mDisconnectListener.onDisconnect(gatt);
+                                .putExtra(Temp.CONNECTION_STATUS.getContent(), BluetoothProfile.STATE_DISCONNECTED));
+                if (mDisconnectedListener != null) {
+                    mDisconnectedListener.onDisconnected(gatt);
                 }
                 gatt.close();
                 break;

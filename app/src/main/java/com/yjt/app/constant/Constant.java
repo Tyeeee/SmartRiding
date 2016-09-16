@@ -30,7 +30,7 @@ public class Constant {
         public static final int SETTING             = 3;
         public static final int SEARCH_DEVICE       = 0;
         public static final int GENERAL_SETTING     = 1;
-        public static final int CHECK_UPDATE        = 2;
+        public static final int DEVICE_DETECT       = 2;
         public static final int CLEAR_DATA          = 3;
         public static final int BREAK_LINK          = 4;
         public static final int ABOUT_DEVICE        = 5;
@@ -42,6 +42,10 @@ public class Constant {
         public static final int ABOUT_US            = 5;
         public static final int FROM_ALBUM          = 0;
         public static final int FROM_CAMERA         = 1;
+        public static final int LIGHT_LEFT          = 0;
+        public static final int LIGHT_RIGHT         = 1;
+        public static final int LIGHT_OPEN          = 2;
+        public static final int LIGHT_CLOSE         = 3;
     }
 
     public static class ItemType {
@@ -69,18 +73,20 @@ public class Constant {
     }
 
     public static class RequestCode {
-        public static final int POINT                         = 0x5001;
-        public static final int DIALOG                        = 0x5002;
-        public static final int DIALOG_EXIT                   = 0x5003;
-        public static final int DIALOG_RADIO_PICTURE          = 0x5004;
-        public static final int DIALOG_RADIO_GEDER            = 0x5005;
-        public static final int DIALOG_NUMBER_HEIGHT          = 0x5006;
-        public static final int DIALOG_NUMBER_WEIGHT          = 0x5007;
-        public static final int DIALOG_DATE                   = 0x5008;
-        public static final int DIALOG_PROGRESS_DEVICE_SEARCH = 0x5009;
-        public static final int DIALOG_LIST                   = 0x5011;
-        public static final int ALBUM                         = 0x5012;
-        public static final int CAMERA                        = 0x5013;
+        public static final int POINT                          = 0x5001;
+        public static final int DIALOG                         = 0x5002;
+        public static final int DIALOG_EXIT                    = 0x5003;
+        public static final int DIALOG_RADIO_PICTURE           = 0x5004;
+        public static final int DIALOG_RADIO_GEDER             = 0x5005;
+        public static final int DIALOG_NUMBER_HEIGHT           = 0x5006;
+        public static final int DIALOG_NUMBER_WEIGHT           = 0x5007;
+        public static final int DIALOG_DATE                    = 0x5008;
+        public static final int DIALOG_PROGRESS_DEVICE_SEARCH  = 0x5009;
+        public static final int DIALOG_PROGRESS_DEVICE_CONNECT = 0x5010;
+        public static final int DIALOG_LIST_DEVICE_SEARCH      = 0x5011;
+        public static final int DIALOG_LIST_DEVICE_DETECT      = 0x5012;
+        public static final int ALBUM                          = 0x5013;
+        public static final int CAMERA                         = 0x5014;
     }
 
     public static class Map {
@@ -150,16 +156,22 @@ public class Constant {
         public static final String UUID8                   = "0000fff8-0000-1000-8000-00805f9b34fb";
         public static final String UUID9                   = "0000fff9-0000-1000-8000-00805f9b34fb";
         public static final String UUIDA                   = "0000fffa-0000-1000-8000-00805f9b34fb";
+        public static final byte[] DATA_LIGHT_LEFT         = new byte[]{04, 01, 00, 00};
+        public static final byte[] DATA_LIGHT_RIGHT        = new byte[]{04, 00, 01, 00};
+        public static final byte[] DATA_LIGHT_OPEN         = new byte[]{04, 01, 01, 00};
+        public static final byte[] DATA_LIGHT_CLOSE        = new byte[]{04, 00, 00, 00};
         public static final long   SCAN_PERIOD             = 5000;
-        public static final long   RSSI_PERIOD             = 1000;
-        public static final long   RSSI_DELAY              = 1000;
+        //        public static final long   RSSI_PERIOD             = 1000;
+        //        public static final long   RSSI_DELAY              = 1000;
         public static final String ACTION_RSSI             = "action_rssi";
         public static final String ACTION_CONNECT          = "action_connect";
-        public static final int    DEVICE_CONNECTED        = 1;
-        public static final int    DEVICE_DISCONNECTED     = 0;
         public static final int    GET_DEVICE_LIST_SUCCESS = 0x6001;
         public static final int    GET_DEVICE_LIST_FAILED  = 0x6002;
         public static final int    GET_DEVICE_LIST_ERROR   = 0x6003;
+        public static final int    LIGHT_LEFT              = 0x6004;
+        public static final int    LIGHT_RIGHT             = 0x6005;
+        public static final int    LIGHT_OPEN              = 0x6006;
+        public static final int    LIGHT_CLOSE             = 0x6007;
     }
 
 }

@@ -7,6 +7,7 @@ import android.support.multidex.MultiDexApplication;
 
 import com.iflytek.cloud.SpeechUtility;
 import com.yjt.app.constant.Constant;
+import com.yjt.app.service.BluetoothService;
 import com.yjt.app.utils.ActivityUtil;
 import com.yjt.app.utils.AnimationUtil;
 import com.yjt.app.utils.BluetoothUtil;
@@ -14,6 +15,7 @@ import com.yjt.app.utils.CrashHandler;
 import com.yjt.app.utils.DensityUtil;
 import com.yjt.app.utils.FragmentUtil;
 import com.yjt.app.utils.InputUtil;
+import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.MapUtil;
 import com.yjt.app.utils.NetworkUtil;
 import com.yjt.app.utils.SharedPreferenceUtil;
@@ -28,6 +30,7 @@ import com.yjt.app.utils.ViewUtil;
 public class BaseApplication extends MultiDexApplication {
 
     private static BaseApplication             mApplication;
+    private        BluetoothService            mService;
     private        BluetoothGattCharacteristic mCharacteristic;
 
     public static BaseApplication getInstance() {
@@ -70,7 +73,18 @@ public class BaseApplication extends MultiDexApplication {
         FragmentUtil.releaseInstance();
         TypefaceUtil.releaseInstance();
         ActivityUtil.removeAll();
+        mService = null;
+        mCharacteristic = null;
         mApplication = null;
+    }
+
+    public BluetoothService getService() {
+        return mService;
+    }
+
+    public void setService(BluetoothService service) {
+        LogUtil.print("---->service:" + service);
+        this.mService = service;
     }
 
     public BluetoothGattCharacteristic getCharacteristic() {
@@ -78,6 +92,7 @@ public class BaseApplication extends MultiDexApplication {
     }
 
     public void setCharacteristic(BluetoothGattCharacteristic characteristic) {
+        LogUtil.print("---->characteristic:" + characteristic);
         this.mCharacteristic = characteristic;
     }
 }

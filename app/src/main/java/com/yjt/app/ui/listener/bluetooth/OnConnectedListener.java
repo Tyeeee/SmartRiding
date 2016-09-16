@@ -2,7 +2,7 @@ package com.yjt.app.ui.listener.bluetooth;
 
 import android.bluetooth.BluetoothGatt;
 
-public interface OnConnectListener {
+public interface OnConnectedListener {
 
-    void onConnect(BluetoothGatt gatt);
+    void onConnected(BluetoothGatt gatt);
 }

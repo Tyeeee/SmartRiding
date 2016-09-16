@@ -1,6 +1,7 @@
 package com.yjt.app.receiver;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothProfile;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -48,10 +49,16 @@ public class BluetoothReceiver extends BroadcastReceiver {
         switch (intent.getAction()) {
             case Constant.Bluetooth.ACTION_CONNECT:
                 switch (BundleUtil.getInstance().getIntData(intent, Temp.CONNECTION_STATUS.getContent())) {
-                    case Constant.Bluetooth.DEVICE_CONNECTED:
+                    case BluetoothProfile.STATE_CONNECTING:
+                        ToastUtil.getInstance().showToast(context, R.string.bluetooth_status4_1, Toast.LENGTH_SHORT);
+                        break;
+                    case BluetoothProfile.STATE_CONNECTED:
                         ToastUtil.getInstance().showToast(context, R.string.bluetooth_status4, Toast.LENGTH_SHORT);
                         break;
-                    case Constant.Bluetooth.DEVICE_DISCONNECTED:
+                    case BluetoothProfile.STATE_DISCONNECTING:
+                        ToastUtil.getInstance().showToast(context, R.string.bluetooth_status3_1, Toast.LENGTH_SHORT);
+                        break;
+                    case BluetoothProfile.STATE_DISCONNECTED:
                         ToastUtil.getInstance().showToast(context, R.string.bluetooth_status3, Toast.LENGTH_SHORT);
                         break;
                     default:

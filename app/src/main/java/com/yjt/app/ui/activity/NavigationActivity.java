@@ -1,7 +1,10 @@
 package com.yjt.app.ui.activity;
 
+import android.bluetooth.BluetoothGattCharacteristic;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
@@ -29,16 +32,19 @@ import com.yjt.app.R;
 import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Temp;
+import com.yjt.app.service.BluetoothService;
 import com.yjt.app.ui.dialog.PromptDialog;
 import com.yjt.app.ui.listener.dialog.OnPromptDialogListener;
 import com.yjt.app.utils.BundleUtil;
 import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.MapUtil;
+import com.yjt.app.utils.MessageUtil;
 import com.yjt.app.utils.SnackBarUtil;
 import com.yjt.app.utils.TTSUtil;
 import com.yjt.app.utils.ToastUtil;
 import com.yjt.app.utils.ViewUtil;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +56,60 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
     private List<NaviLatLng> mStartLatLngs = new ArrayList<>();
     private List<NaviLatLng> mPassLatLngs  = new ArrayList<>();
     private List<NaviLatLng> mEndLatLngs   = new ArrayList<>();
+
+    private BluetoothService            mService;
+    private BluetoothGattCharacteristic mCharacteristic;
+
+    private NavigationHandler mHandler;
+
+    protected static class NavigationHandler extends Handler {
+
+        private WeakReference<NavigationActivity> mActivitys;
+
+        public NavigationHandler(NavigationActivity activity) {
+            mActivitys = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            final NavigationActivity activity = mActivitys.get();
+            if (activity != null) {
+                switch (msg.what) {
+                    case Constant.Bluetooth.LIGHT_OPEN:
+                        if (activity.mService != null && activity.mCharacteristic != null) {
+                            LogUtil.print("---->LIGHT_OPEN");
+                            activity.mCharacteristic.setValue(Constant.Bluetooth.DATA_LIGHT_OPEN);
+                            activity.mService.writeCharacteristic(activity.mCharacteristic);
+                        }
+                        break;
+                    case Constant.Bluetooth.LIGHT_CLOSE:
+                        if (activity.mService != null && activity.mCharacteristic != null) {
+                            LogUtil.print("---->LIGHT_CLOSE");
+                            activity.mCharacteristic.setValue(Constant.Bluetooth.DATA_LIGHT_CLOSE);
+                            activity.mService.writeCharacteristic(activity.mCharacteristic);
+                        }
+                        break;
+                    case Constant.Bluetooth.LIGHT_LEFT:
+                        if (activity.mService != null && activity.mCharacteristic != null) {
+                            LogUtil.print("---->LIGHT_LEFT");
+                            activity.mCharacteristic.setValue(Constant.Bluetooth.DATA_LIGHT_LEFT);
+                            activity.mService.writeCharacteristic(activity.mCharacteristic);
+                        }
+                        break;
+                    case Constant.Bluetooth.LIGHT_RIGHT:
+                        if (activity.mService != null && activity.mCharacteristic != null) {
+                            LogUtil.print("---->LIGHT_RIGHT");
+                            activity.mCharacteristic.setValue(Constant.Bluetooth.DATA_LIGHT_RIGHT);
+                            activity.mService.writeCharacteristic(activity.mCharacteristic);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -115,6 +175,11 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
 
     protected void initialize(Bundle savedInstanceState) {
         nvMap.onCreate(savedInstanceState);
+        mHandler = new NavigationHandler(this);
+        mService = BaseApplication.getInstance().getService();
+        mCharacteristic = BaseApplication.getInstance().getCharacteristic();
+        LogUtil.print("---->mService:" + mService);
+        LogUtil.print("---->mCharacteristic:" + mCharacteristic);
         if (BundleUtil.getInstance().hasIntentExtraValue(this, Temp.ROUTE_INFO.getContent())) {
             mResult = BundleUtil.getInstance().getParcelableData(this, Temp.ROUTE_INFO.getContent());
             mStartLatLngs.add(MapUtil.getInstance().parseCoordinate(mResult.getStartPos().toString()));
@@ -182,6 +247,7 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
         switch (requestCode) {
             case Constant.RequestCode.DIALOG_EXIT:
                 LogUtil.print("---->DIALOG_EXIT onPositiveButtonClicked");
+                mHandler.sendMessage(MessageUtil.getMessage(Constant.Bluetooth.LIGHT_CLOSE));
                 finish();
                 break;
             default:
@@ -290,6 +356,7 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
             case IconType.LEFT_TURN_AROUND:
                 if (naviInfo.getCurStepRetainDistance() < Constant.Map.STEP_DISTANCE) {
                     ToastUtil.getInstance().showToast(this, "左转弯", Toast.LENGTH_SHORT);
+                    mHandler.sendMessage(MessageUtil.getMessage(Constant.Bluetooth.LIGHT_LEFT));
                 }
                 break;
             case IconType.RIGHT:
@@ -297,7 +364,11 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
             case IconType.RIGHT_FRONT:
                 if (naviInfo.getCurStepRetainDistance() < Constant.Map.STEP_DISTANCE) {
                     ToastUtil.getInstance().showToast(this, "右转弯", Toast.LENGTH_SHORT);
+                    mHandler.sendMessage(MessageUtil.getMessage(Constant.Bluetooth.LIGHT_RIGHT));
                 }
+                break;
+            default:
+                mHandler.sendMessage(MessageUtil.getMessage(Constant.Bluetooth.LIGHT_CLOSE));
                 break;
         }
 
