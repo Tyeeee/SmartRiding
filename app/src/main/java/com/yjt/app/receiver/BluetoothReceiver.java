@@ -11,8 +11,10 @@ import android.widget.Toast;
 import com.yjt.app.R;
 import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Constant;
+import com.yjt.app.constant.File;
 import com.yjt.app.constant.Temp;
 import com.yjt.app.utils.BundleUtil;
+import com.yjt.app.utils.SharedPreferenceUtil;
 import com.yjt.app.utils.ToastUtil;
 
 public class BluetoothReceiver extends BroadcastReceiver {
@@ -53,12 +55,14 @@ public class BluetoothReceiver extends BroadcastReceiver {
                         ToastUtil.getInstance().showToast(context, R.string.bluetooth_status4_1, Toast.LENGTH_SHORT);
                         break;
                     case BluetoothProfile.STATE_CONNECTED:
+                        SharedPreferenceUtil.getInstance().putBoolean(File.FILE_NAME.getContent(), Context.MODE_PRIVATE, File.CONNECTION_STATUS.getContent(), true);
                         ToastUtil.getInstance().showToast(context, R.string.bluetooth_status4, Toast.LENGTH_SHORT);
                         break;
                     case BluetoothProfile.STATE_DISCONNECTING:
                         ToastUtil.getInstance().showToast(context, R.string.bluetooth_status3_1, Toast.LENGTH_SHORT);
                         break;
                     case BluetoothProfile.STATE_DISCONNECTED:
+                        SharedPreferenceUtil.getInstance().putBoolean(File.FILE_NAME.getContent(), Context.MODE_PRIVATE, File.CONNECTION_STATUS.getContent(), false);
                         ToastUtil.getInstance().showToast(context, R.string.bluetooth_status3, Toast.LENGTH_SHORT);
                         break;
                     default:

@@ -6,6 +6,7 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import com.iflytek.cloud.SpeechUtility;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.service.BluetoothService;
 import com.yjt.app.utils.ActivityUtil;
@@ -46,11 +47,11 @@ public class BaseApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
 //        StrictModeUtil.getInstance().initialize();
-        SpeechUtility.createUtility(this, Constant.IFLY_APP_ID);
         super.onCreate();
         mApplication = this;
+        SpeechUtility.createUtility(this, Constant.IFLY_APP_ID);
+        CrashReport.initCrashReport(getApplicationContext(), Constant.BUGLY_APP_ID, true);
 //        CrashHandler.getInstance().initialize();
-//        CrashReport.initCrashReport(getApplicationContext(), Constant.BUGLY_APP_ID, false);
     }
 
     public void releaseReference() {

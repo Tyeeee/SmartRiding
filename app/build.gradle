@@ -41,6 +41,9 @@ android {
         versionName rootProject.ext.versionName
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
     }
 
     signingConfigs {
@@ -107,6 +110,9 @@ android {
 
     productFlavors {
         wandoujia {}
+        _360 {}
+        _91 {}
+        _yingyonghui {}
         baidu {}
         uc {}
         productFlavors.all { flavor ->
@@ -130,4 +136,6 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
 //    compile 'com.jakewharton:butterknife:8.2.1'
 //    apt 'com.jakewharton:butterknife-compiler:8.2.1'
+    compile 'com.tencent.bugly:crashreport:latest.release'
+    compile 'com.tencent.bugly:nativecrashreport:latest.release'
 }

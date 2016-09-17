@@ -62,6 +62,9 @@
     public static <fields>;
 }
 
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+
 -dontwarn com.squareup.okhttp.**
 -keep class com.amap.api.**{*;} 
 -keep class com.autonavi.**{*;} 

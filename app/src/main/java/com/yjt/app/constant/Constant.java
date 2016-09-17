@@ -5,7 +5,7 @@ import java.util.UUID;
 public class Constant {
 
     public static final String CHANNEL_NAME            = "CHANNEL_NAME";
-    public static final String BUGLY_APP_ID            = "900018257";
+    public static final String BUGLY_APP_ID            = "00b0a770d6";
     public static final String IFLY_APP_ID             = "appid=57c7f443";
     public static final int    PERMISSION_REQUEST_CODE = 0x00001;
 
@@ -52,7 +52,7 @@ public class Constant {
         public static final int HEADER_VIEW  = 0x1001;
         public static final int CONTENT_VIEW = 0x1002;
         public static final int FOOTER_VIEW  = 0x1003;
-        public static final int OTHER_VIEW   = 0x1004;
+//        public static final int OTHER_VIEW   = 0x1004;
     }
 
     public static class Page {

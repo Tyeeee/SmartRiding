@@ -27,6 +27,7 @@ import android.widget.AbsListView;
 import com.yjt.app.R;
 import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Constant;
+import com.yjt.app.constant.File;
 import com.yjt.app.entity.Menu;
 import com.yjt.app.receiver.BluetoothReceiver;
 import com.yjt.app.service.BluetoothService;
@@ -51,6 +52,7 @@ import com.yjt.app.utils.BluetoothUtil;
 import com.yjt.app.utils.DataUtil;
 import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.MessageUtil;
+import com.yjt.app.utils.SharedPreferenceUtil;
 import com.yjt.app.utils.SnackBarUtil;
 import com.yjt.app.utils.ViewUtil;
 
@@ -264,15 +266,19 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
                 SnackBarUtil.getInstance().showSnackBar(getActivity(), "GENERAL_Device", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
             case Constant.ItemPosition.DEVICE_DETECT:
-                ListDialog.createBuilder(getFragmentManager())
-                        .setTitle(getString(R.string.device_detect))
-                        .setItems(getString(R.string.light_left)
-                                , getString(R.string.light_right)
-                                , getString(R.string.light_open)
-                                , getString(R.string.light_close))
-                        .setChoiceMode(AbsListView.CHOICE_MODE_NONE)
-                        .setTargetFragment(this, Constant.RequestCode.DIALOG_LIST_DEVICE_DETECT)
-                        .showAllowingStateLoss();
+                if (SharedPreferenceUtil.getInstance().getBoolean(File.FILE_NAME.getContent(), Context.MODE_PRIVATE, File.CONNECTION_STATUS.getContent(), false)) {
+                    ListDialog.createBuilder(getFragmentManager())
+                            .setTitle(getString(R.string.device_detect))
+                            .setItems(getString(R.string.light_left)
+                                    , getString(R.string.light_right)
+                                    , getString(R.string.light_open)
+                                    , getString(R.string.light_close))
+                            .setChoiceMode(AbsListView.CHOICE_MODE_NONE)
+                            .setTargetFragment(this, Constant.RequestCode.DIALOG_LIST_DEVICE_DETECT)
+                            .showAllowingStateLoss();
+                } else {
+                    SnackBarUtil.getInstance().showSnackBar(getActivity(), getString(R.string.bluetooth_status7), Snackbar.LENGTH_SHORT, Color.WHITE);
+                }
                 break;
             case Constant.ItemPosition.CLEAR_DATA:
                 SnackBarUtil.getInstance().showSnackBar(getActivity(), "CLEAR_DATA ", Snackbar.LENGTH_SHORT, Color.WHITE);

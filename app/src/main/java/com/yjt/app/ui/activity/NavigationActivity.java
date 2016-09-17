@@ -246,7 +246,6 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
     public void onPositiveButtonClicked(int requestCode) {
         switch (requestCode) {
             case Constant.RequestCode.DIALOG_EXIT:
-                LogUtil.print("---->DIALOG_EXIT onPositiveButtonClicked");
                 mHandler.sendMessage(MessageUtil.getMessage(Constant.Bluetooth.LIGHT_CLOSE));
                 finish();
                 break;
@@ -357,6 +356,8 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
                 if (naviInfo.getCurStepRetainDistance() < Constant.Map.STEP_DISTANCE) {
                     ToastUtil.getInstance().showToast(this, "左转弯", Toast.LENGTH_SHORT);
                     mHandler.sendMessage(MessageUtil.getMessage(Constant.Bluetooth.LIGHT_LEFT));
+                } else {
+                    mHandler.sendMessage(MessageUtil.getMessage(Constant.Bluetooth.LIGHT_CLOSE));
                 }
                 break;
             case IconType.RIGHT:
@@ -365,6 +366,8 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
                 if (naviInfo.getCurStepRetainDistance() < Constant.Map.STEP_DISTANCE) {
                     ToastUtil.getInstance().showToast(this, "右转弯", Toast.LENGTH_SHORT);
                     mHandler.sendMessage(MessageUtil.getMessage(Constant.Bluetooth.LIGHT_RIGHT));
+                } else {
+                    mHandler.sendMessage(MessageUtil.getMessage(Constant.Bluetooth.LIGHT_CLOSE));
                 }
                 break;
             default:
