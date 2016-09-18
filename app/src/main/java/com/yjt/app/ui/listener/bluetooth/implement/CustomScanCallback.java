@@ -1,11 +1,11 @@
 package com.yjt.app.ui.listener.bluetooth.implement;
 
+import android.annotation.TargetApi;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
 import android.os.Build;
 import android.os.Handler;
-import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 
 import com.yjt.app.constant.Constant;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class CustomScanCallback extends ScanCallback {
 
     private ArrayList<BluetoothDevice> mDevices = new ArrayList<>();

@@ -4,11 +4,9 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
-import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.text.TextUtils;
 
 import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Regex;
@@ -136,7 +134,7 @@ public class BluetoothUtil {
     }
 
     public String getGattCharacteristicInfo(int value, boolean flag) {
-        String        result = Regex.NONE.getRegext();
+        String result = Regex.NONE.getRegext();
         List<Integer> values = new ArrayList<>();
         for (int i = 0; i < 32; i++) {
             int b = 1 << i;

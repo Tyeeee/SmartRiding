@@ -72,8 +72,8 @@ android {
             applicationVariants.all { variant ->
                 variant.outputs.each { output ->
                     def oldFile = output.outputFile
-                    if (variant.buildType.name.equals('release')) {
-                        def releaseApkName = releaseName() + "_v${defaultConfig.versionName}_${releaseTime()}" + '_release.apk'
+                    if (outputFile != null && variant.buildType.name.equals('release')) {
+                        def releaseApkName = releaseName() + "_v${defaultConfig.versionName}_${variant.productFlavors[0].name}_${releaseTime()}" + '_release.apk'
                         output.outputFile = new File(oldFile.parent, releaseApkName)
                     }
                 }
@@ -131,7 +131,6 @@ dependencies {
     compile "com.android.support:design:$rootProject.ext.supportLibraryVersion"
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:multidex:1.0.1'
-    compile 'com.tencent.bugly:crashreport:latest.release'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
 //    compile 'com.jakewharton:butterknife:8.2.1'
