@@ -1,7 +1,6 @@
 package com.yjt.app.ui.dialog;
 
 import android.bluetooth.BluetoothDevice;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
@@ -26,19 +25,10 @@ import java.util.ArrayList;
 public class DeviceListDialog extends ListDialog {
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (getArguments() == null) {
-            throw new IllegalArgumentException(
-                    "use ListDialogBuilder to construct this dialog");
-        }
-    }
-
-    @Override
     protected Builder build(Builder builder) {
-        CharSequence                     title    = BundleUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_TITLE.getContent());
-        CharSequence                     negative = BundleUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_NEGATIVE.getContent());
-        final ArrayList<BluetoothDevice> items    = BundleUtil.getInstance().getParcelableArrayListData(getArguments(), Temp.DIALOG_ITEMS.getContent());
+        CharSequence title = BundleUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_TITLE.getContent());
+        CharSequence negative = BundleUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_NEGATIVE.getContent());
+        final ArrayList<BluetoothDevice> items = BundleUtil.getInstance().getParcelableArrayListData(getArguments(), Temp.DIALOG_ITEMS.getContent());
         if (!TextUtils.isEmpty(title)) {
             builder.setTitle(title);
         }

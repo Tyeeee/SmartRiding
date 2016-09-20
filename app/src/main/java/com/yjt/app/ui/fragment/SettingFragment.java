@@ -1,41 +1,56 @@
 package com.yjt.app.ui.fragment;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.Button;
 
 import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
+import com.yjt.app.constant.File;
+import com.yjt.app.constant.Temp;
 import com.yjt.app.entity.Menu;
 import com.yjt.app.ui.adapter.MenuAdapter;
 import com.yjt.app.ui.adapter.binder.MenuBinder;
 import com.yjt.app.ui.base.BaseFragment;
+import com.yjt.app.ui.dialog.ListDialog;
+import com.yjt.app.ui.listener.dialog.OnDialogCancelListener;
+import com.yjt.app.ui.listener.dialog.OnListDialogListener;
 import com.yjt.app.ui.sticky.FixedStickyViewAdapter;
 import com.yjt.app.ui.widget.LinearLayoutDividerItemDecoration;
+import com.yjt.app.utils.FileUtil;
+import com.yjt.app.utils.LogUtil;
+import com.yjt.app.utils.PermissionUtil;
+import com.yjt.app.utils.SharedPreferenceUtil;
 import com.yjt.app.utils.SnackBarUtil;
 import com.yjt.app.utils.ViewUtil;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class SettingFragment extends BaseFragment implements View.OnClickListener, FixedStickyViewAdapter.OnItemClickListener {
+public class SettingFragment extends BaseFragment implements View.OnClickListener, FixedStickyViewAdapter.OnItemClickListener, OnDialogCancelListener, OnListDialogListener {
 
-    private RecyclerView           rvMenu;
-    private LinearLayoutManager    mLayoutManager;
+    private RecyclerView rvMenu;
+    private LinearLayoutManager mLayoutManager;
     private FixedStickyViewAdapter mAdapter;
-    private SettingHandler         mHandler;
-    private Button                 btnLogout;
+    private SettingHandler mHandler;
+    private Button btnLogout;
 
     private static class SettingHandler extends Handler {
 
@@ -98,7 +113,7 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
             @Override
             public void run() {
                 List<Menu> menus = new ArrayList<>();
-                Menu       menu1 = new Menu();
+                Menu menu1 = new Menu();
                 menu1.setIcon(R.mipmap.dir1);
                 menu1.setTitle(getResources().getString(R.string.password_management));
                 menus.add(menu1);
@@ -122,6 +137,10 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
                 menu6.setIcon(R.mipmap.dir1);
                 menu6.setTitle(getResources().getString(R.string.about_us));
                 menus.add(menu6);
+                Menu menu7 = new Menu();
+                menu7.setIcon(R.mipmap.dir1);
+                menu7.setTitle(getResources().getString(R.string.navigation_demonstration));
+                menus.add(menu7);
                 mAdapter.addItems(menus);
             }
         });
@@ -186,6 +205,45 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
             case Constant.ItemPosition.ABOUT_US:
                 SnackBarUtil.getInstance().showSnackBar(getActivity(), "ABOUT_US", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
+            case Constant.ItemPosition.NAVIGATION_DEMONSTRATION:
+                ListDialog.createBuilder(getFragmentManager())
+                        .setTitle(getString(R.string.navigation_demonstration))
+                        .setPositiveButtonText(R.string.enter)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setItems(getString(R.string.navigation_simulation), getString(R.string.navigation_gps))
+                        .setTargetFragment(this, Constant.RequestCode.DIALOG_RADIO_GEDER)
+                        .setChoiceMode(AbsListView.CHOICE_MODE_SINGLE)
+                        .show();
+                break;
+            default:
+                break;
         }
+    }
+
+    @Override
+    public void onCanceled(int requestCode) {
+        switch (requestCode) {
+            case Constant.RequestCode.DIALOG_RADIO_GEDER:
+                LogUtil.print("---->DIALOG_RADIO_GEDER onCanceled");
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onListItemSelected(CharSequence value, int number, int requestCode) {
+        switch (requestCode) {
+            case Constant.RequestCode.DIALOG_RADIO_GEDER:
+                SharedPreferenceUtil.getInstance().putInt(File.FILE_NAME.getContent(), Context.MODE_PRIVATE, File.NAVIGATION_DEMONSTRATION_PATTERN.getContent(), number);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onListItemSelected(Object value, int number, int requestCode) {
+
     }
 }

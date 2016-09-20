@@ -64,18 +64,19 @@ import java.util.concurrent.Executors;
 
 public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapter.OnItemClickListener, OnDialogCancelListener, OnListDialogListener, OnServiceDiscoverListener, OnDataAvailableListener, OnConnectedListener, OnDisconnectedListener {
 
-    private CircleImageView        civDevice;
-    private RecyclerView           rvMenu;
-    private LinearLayoutManager    mLayoutManager;
+    private CircleImageView civDevice;
+    private RecyclerView rvMenu;
+    private LinearLayoutManager mLayoutManager;
     private FixedStickyViewAdapter mAdapter;
-    private DeviceHandler          mHandler;
-    private ProgressDialog         mDialog;
+    private DeviceHandler mHandler;
+    private ProgressDialog mScanDialog;
+    private ProgressDialog mConnectDialog;
 
-    private BluetoothAdapter     mBluetoothAdapter;
-    private BluetoothLeScanner   mScanner;
+    private BluetoothAdapter mBluetoothAdapter;
+    private BluetoothLeScanner mScanner;
     private CustomLeScanCallback mLeScanCallback;
-    private CustomScanCallback   mScanCallback;
-    private BluetoothService     mService;
+    private CustomScanCallback mScanCallback;
+    private BluetoothService mService;
 
     private boolean isScaning;
 
@@ -95,7 +96,7 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
                 switch (msg.what) {
                     case Constant.Bluetooth.GET_DEVICE_LIST_SUCCESS:
                         BluetoothUtil.getInstance().stopScanner(fragment.mBluetoothAdapter, fragment.mScanner, fragment.mScanCallback, fragment.mLeScanCallback, false);
-                        ViewUtil.getInstance().hideDialog(fragment.mDialog);
+                        ViewUtil.getInstance().hideDialog(fragment.mScanDialog);
                         ArrayList<BluetoothDevice> devices = (ArrayList<BluetoothDevice>) msg.obj;
                         if (devices != null && devices.size() > 0) {
                             DeviceListDialog.createBuilder(fragment.getFragmentManager())
@@ -112,13 +113,13 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
                         break;
                     case Constant.Bluetooth.GET_DEVICE_LIST_FAILED:
                         BluetoothUtil.getInstance().stopScanner(fragment.mBluetoothAdapter, fragment.mScanner, fragment.mScanCallback, fragment.mLeScanCallback, true);
-                        ViewUtil.getInstance().hideDialog(fragment.mDialog);
+                        ViewUtil.getInstance().hideDialog(fragment.mScanDialog);
                         SnackBarUtil.getInstance().showSnackBar(fragment.getActivity(), fragment.getString(R.string.search_device_prompt2), Snackbar.LENGTH_SHORT, Color.WHITE);
                         fragment.isScaning = false;
                         break;
                     case Constant.Bluetooth.GET_DEVICE_LIST_ERROR:
                         BluetoothUtil.getInstance().stopScanner(fragment.mBluetoothAdapter, fragment.mScanner, fragment.mScanCallback, fragment.mLeScanCallback, true);
-                        ViewUtil.getInstance().hideDialog(fragment.mDialog);
+                        ViewUtil.getInstance().hideDialog(fragment.mScanDialog);
                         SnackBarUtil.getInstance().showSnackBar(fragment.getActivity(), fragment.getString(R.string.search_device_prompt3), Snackbar.LENGTH_SHORT, Color.WHITE);
                         fragment.isScaning = false;
                         break;
@@ -169,7 +170,7 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
             @Override
             public void run() {
                 List<Menu> menus = new ArrayList<>();
-                Menu       menu1 = new Menu();
+                Menu menu1 = new Menu();
                 menu1.setIcon(R.mipmap.dir1);
                 menu1.setTitle(getResources().getString(R.string.search_device));
                 menus.add(menu1);
@@ -241,7 +242,7 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
     public void onPause() {
         super.onPause();
         if (isScaning) {
-            ViewUtil.getInstance().hideDialog(mDialog);
+            ViewUtil.getInstance().hideDialog(mScanDialog);
             BluetoothUtil.getInstance().stopScanner(mBluetoothAdapter, mScanner, mScanCallback, mLeScanCallback, true);
         }
     }
@@ -286,6 +287,8 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
             case Constant.ItemPosition.BREAK_LINK:
                 if (mService != null) {
                     mService.disconnect();
+                } else {
+                    SnackBarUtil.getInstance().showSnackBar(getActivity(), getString(R.string.bluetooth_status7), Snackbar.LENGTH_SHORT, Color.WHITE);
                 }
                 break;
             case Constant.ItemPosition.ABOUT_DEVICE:
@@ -327,20 +330,18 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
                 if (mService != null && characteristic != null) {
                     switch (number) {
                         case Constant.ItemPosition.LIGHT_LEFT:
-                            characteristic.setValue(Constant.Bluetooth.DATA_LIGHT_LEFT);
-                            mService.writeCharacteristic(characteristic);
+                            BluetoothUtil.getInstance().lightOperation(Constant.Bluetooth.LIGHT_LEFT, characteristic, mService);
                             break;
                         case Constant.ItemPosition.LIGHT_RIGHT:
-                            characteristic.setValue(Constant.Bluetooth.DATA_LIGHT_RIGHT);
-                            mService.writeCharacteristic(characteristic);
+                            BluetoothUtil.getInstance().lightOperation(Constant.Bluetooth.LIGHT_RIGHT, characteristic, mService);
                             break;
                         case Constant.ItemPosition.LIGHT_OPEN:
                             characteristic.setValue(Constant.Bluetooth.DATA_LIGHT_OPEN);
                             mService.writeCharacteristic(characteristic);
+                            BluetoothUtil.getInstance().lightOperation(Constant.Bluetooth.LIGHT_OPEN, characteristic, mService);
                             break;
                         case Constant.ItemPosition.LIGHT_CLOSE:
-                            characteristic.setValue(Constant.Bluetooth.DATA_LIGHT_CLOSE);
-                            mService.writeCharacteristic(characteristic);
+                            BluetoothUtil.getInstance().lightOperation(Constant.Bluetooth.LIGHT_CLOSE, characteristic, mService);
                             break;
                         default:
                             break;
@@ -357,7 +358,7 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
             case Constant.RequestCode.DIALOG_LIST_DEVICE_SEARCH:
                 if (value != null) {
                     if (mService.connect(((BluetoothDevice) value).getAddress())) {
-                        mDialog = (ProgressDialog) ProgressDialog.createBuilder(getFragmentManager())
+                        mConnectDialog = (ProgressDialog) ProgressDialog.createBuilder(getFragmentManager())
                                 .setPrompt(getString(R.string.device_connecting))
                                 .setCancelableOnTouchOutside(false)
                                 .setTargetFragment(this, Constant.RequestCode.DIALOG_PROGRESS_DEVICE_CONNECT)
@@ -459,7 +460,7 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
     @Override
     public void onConnected(BluetoothGatt gatt) {
         LogUtil.print("---->onConnected");
-        ViewUtil.getInstance().hideDialog(mDialog);
+        ViewUtil.getInstance().hideDialog(mConnectDialog);
         mHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -472,7 +473,7 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
     @Override
     public void onDisconnected(BluetoothGatt gatt) {
         LogUtil.print("---->onDisconnected");
-        ViewUtil.getInstance().hideDialog(mDialog);
+        ViewUtil.getInstance().hideDialog(mConnectDialog);
         mHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -483,7 +484,7 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
 
 
     private void startScanner() {
-        mDialog = (ProgressDialog) ProgressDialog.createBuilder(getFragmentManager())
+        mScanDialog = (ProgressDialog) ProgressDialog.createBuilder(getFragmentManager())
                 .setPrompt(getString(R.string.device_searching))
                 .setCancelableOnTouchOutside(false)
                 .setTargetFragment(this, Constant.RequestCode.DIALOG_PROGRESS_DEVICE_SEARCH)

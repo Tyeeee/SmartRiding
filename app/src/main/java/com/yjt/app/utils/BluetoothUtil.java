@@ -9,7 +9,9 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 
 import com.yjt.app.base.BaseApplication;
+import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Regex;
+import com.yjt.app.service.BluetoothService;
 import com.yjt.app.ui.listener.bluetooth.implement.CustomLeScanCallback;
 import com.yjt.app.ui.listener.bluetooth.implement.CustomScanCallback;
 
@@ -152,4 +154,24 @@ public class BluetoothUtil {
         return result;
     }
 
+    public void lightOperation(int state, BluetoothGattCharacteristic characteristic, BluetoothService service) {
+        switch (state) {
+            case Constant.Bluetooth.LIGHT_LEFT:
+                characteristic.setValue(Constant.Bluetooth.DATA_LIGHT_LEFT);
+                break;
+            case Constant.Bluetooth.LIGHT_RIGHT:
+                characteristic.setValue(Constant.Bluetooth.DATA_LIGHT_RIGHT);
+                break;
+            case Constant.Bluetooth.LIGHT_OPEN:
+                characteristic.setValue(Constant.Bluetooth.DATA_LIGHT_OPEN);
+                break;
+            case Constant.Bluetooth.LIGHT_CLOSE:
+                characteristic.setValue(Constant.Bluetooth.DATA_LIGHT_CLOSE);
+                break;
+            default:
+                characteristic.setValue(Constant.Bluetooth.DATA_LIGHT_CLOSE);
+                break;
+        }
+        service.writeCharacteristic(characteristic);
+    }
 }

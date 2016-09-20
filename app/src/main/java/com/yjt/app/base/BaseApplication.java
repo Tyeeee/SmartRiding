@@ -30,9 +30,9 @@ import com.yjt.app.utils.ViewUtil;
 
 public class BaseApplication extends MultiDexApplication {
 
-    private static BaseApplication             mApplication;
-    private        BluetoothService            mService;
-    private        BluetoothGattCharacteristic mCharacteristic;
+    private static BaseApplication mApplication;
+    private BluetoothService mService;
+    private BluetoothGattCharacteristic mCharacteristic;
 
     public static BaseApplication getInstance() {
         return mApplication;

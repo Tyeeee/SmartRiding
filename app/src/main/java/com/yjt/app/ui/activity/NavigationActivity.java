@@ -1,6 +1,7 @@
 package com.yjt.app.ui.activity;
 
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,14 +32,17 @@ import com.autonavi.tbt.TrafficFacilityInfo;
 import com.yjt.app.R;
 import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Constant;
+import com.yjt.app.constant.File;
 import com.yjt.app.constant.Temp;
 import com.yjt.app.service.BluetoothService;
 import com.yjt.app.ui.dialog.PromptDialog;
 import com.yjt.app.ui.listener.dialog.OnPromptDialogListener;
+import com.yjt.app.utils.BluetoothUtil;
 import com.yjt.app.utils.BundleUtil;
 import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.MapUtil;
 import com.yjt.app.utils.MessageUtil;
+import com.yjt.app.utils.SharedPreferenceUtil;
 import com.yjt.app.utils.SnackBarUtil;
 import com.yjt.app.utils.TTSUtil;
 import com.yjt.app.utils.ToastUtil;
@@ -52,12 +56,12 @@ import java.util.List;
 public class NavigationActivity extends FragmentActivity implements AMapNaviListener, AMapNaviViewListener, OnPromptDialogListener {
 
     private AMapNaviView nvMap;
-    private RouteResult  mResult;
+    private RouteResult mResult;
     private List<NaviLatLng> mStartLatLngs = new ArrayList<>();
-    private List<NaviLatLng> mPassLatLngs  = new ArrayList<>();
-    private List<NaviLatLng> mEndLatLngs   = new ArrayList<>();
+    private List<NaviLatLng> mPassLatLngs = new ArrayList<>();
+    private List<NaviLatLng> mEndLatLngs = new ArrayList<>();
 
-    private BluetoothService            mService;
+    private BluetoothService mService;
     private BluetoothGattCharacteristic mCharacteristic;
 
     private NavigationHandler mHandler;
@@ -79,29 +83,25 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
                     case Constant.Bluetooth.LIGHT_OPEN:
                         if (activity.mService != null && activity.mCharacteristic != null) {
                             LogUtil.print("---->LIGHT_OPEN");
-                            activity.mCharacteristic.setValue(Constant.Bluetooth.DATA_LIGHT_OPEN);
-                            activity.mService.writeCharacteristic(activity.mCharacteristic);
+                            BluetoothUtil.getInstance().lightOperation(Constant.Bluetooth.LIGHT_OPEN, activity.mCharacteristic, activity.mService);
                         }
                         break;
                     case Constant.Bluetooth.LIGHT_CLOSE:
                         if (activity.mService != null && activity.mCharacteristic != null) {
                             LogUtil.print("---->LIGHT_CLOSE");
-                            activity.mCharacteristic.setValue(Constant.Bluetooth.DATA_LIGHT_CLOSE);
-                            activity.mService.writeCharacteristic(activity.mCharacteristic);
+                            BluetoothUtil.getInstance().lightOperation(Constant.Bluetooth.LIGHT_CLOSE, activity.mCharacteristic, activity.mService);
                         }
                         break;
                     case Constant.Bluetooth.LIGHT_LEFT:
                         if (activity.mService != null && activity.mCharacteristic != null) {
                             LogUtil.print("---->LIGHT_LEFT");
-                            activity.mCharacteristic.setValue(Constant.Bluetooth.DATA_LIGHT_LEFT);
-                            activity.mService.writeCharacteristic(activity.mCharacteristic);
+                            BluetoothUtil.getInstance().lightOperation(Constant.Bluetooth.LIGHT_LEFT, activity.mCharacteristic, activity.mService);
                         }
                         break;
                     case Constant.Bluetooth.LIGHT_RIGHT:
                         if (activity.mService != null && activity.mCharacteristic != null) {
                             LogUtil.print("---->LIGHT_RIGHT");
-                            activity.mCharacteristic.setValue(Constant.Bluetooth.DATA_LIGHT_RIGHT);
-                            activity.mService.writeCharacteristic(activity.mCharacteristic);
+                            BluetoothUtil.getInstance().lightOperation(Constant.Bluetooth.LIGHT_RIGHT, activity.mCharacteristic, activity.mService);
                         }
                         break;
                     default:
@@ -309,7 +309,11 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
     @Override
     public void onCalculateRouteSuccess() {
         LogUtil.print("---->onCalculateRouteSuccess");
-        AMapNavi.getInstance(BaseApplication.getInstance()).startNavi(NaviType.EMULATOR);
+        if (SharedPreferenceUtil.getInstance().getInt(File.FILE_NAME.getContent(), Context.MODE_PRIVATE, File.NAVIGATION_DEMONSTRATION_PATTERN.getContent(), Constant.Common.DEFAULT_VALUE) == Constant.Map.NAVIGATION_GPS) {
+            AMapNavi.getInstance(BaseApplication.getInstance()).startNavi(NaviType.GPS);
+        } else {
+            AMapNavi.getInstance(BaseApplication.getInstance()).startNavi(NaviType.EMULATOR);
+        }
     }
 
     @Override
@@ -347,7 +351,13 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
 
     @Override
     public void onNaviInfoUpdate(NaviInfo naviInfo) {
-        LogUtil.print("---->onNaviInfoUpdate");
+        LogUtil.print("---->onNaviInfoUpdate1:" + naviInfo.getCurrentRoadName());
+        LogUtil.print("---->onNaviInfoUpdate2:" + naviInfo.getCurStepRetainDistance());
+        LogUtil.print("---->onNaviInfoUpdate3:" + naviInfo.getPathRetainDistance());
+        LogUtil.print("---->onNaviInfoUpdate4:" + naviInfo.getCurStep());
+        LogUtil.print("---->onNaviInfoUpdate5:" + naviInfo.getCurLink());
+        LogUtil.print("---->onNaviInfoUpdate6:" + naviInfo.getDirection());
+        LogUtil.print("---->onNaviInfoUpdate7:" + naviInfo.getPathRetainTime());
         switch (naviInfo.getIconType()) {
             case IconType.LEFT:
             case IconType.LEFT_BACK:
