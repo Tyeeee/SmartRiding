@@ -1,18 +1,18 @@
 package com.yjt.app.utils;
 
-import android.app.Activity;
-import android.content.DialogInterface;
+import android.support.v4.app.FragmentActivity;
 import android.text.Html;
 import android.text.Spanned;
 import android.widget.EditText;
 
 import com.amap.api.maps.model.LatLng;
+import com.amap.api.navi.enums.PathPlanningErrCode;
 import com.amap.api.navi.model.NaviLatLng;
 import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.LatLonPoint;
 import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
-import com.yjt.app.constant.Regex;
+import com.yjt.app.ui.dialog.PromptDialog;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -67,7 +67,7 @@ public class MapUtil {
     }
 
     public String makeHtmlSpace(int number) {
-        final String  space  = "&nbsp;";
+        final String space = "&nbsp;";
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < number; i++) {
             result.append(space);
@@ -83,9 +83,9 @@ public class MapUtil {
         }
 
         if (lenMeter > 1000) {
-            float         dis  = (float) lenMeter / 1000;
+            float dis = (float) lenMeter / 1000;
             DecimalFormat fnum = new DecimalFormat("##0.0");
-            String        dstr = fnum.format(dis);
+            String dstr = fnum.format(dis);
             return dstr + Constant.Map.Kilometer;
         }
 
@@ -144,14 +144,14 @@ public class MapUtil {
      * long类型时间格式化
      */
     public String convertToTime(long time) {
-        SimpleDateFormat df   = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date             date = new Date(time);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date(time);
         return df.format(date);
     }
 
     public String getFriendlyTime(int second) {
         if (second > 3600) {
-            int hour    = second / 3600;
+            int hour = second / 3600;
             int miniate = (second % 3600) / 60;
             return hour + "小时" + miniate + "分钟";
         }
@@ -219,450 +219,583 @@ public class MapUtil {
         }
     }
 
-    public void showMapException(Activity activity, final int resultCode) {
+    public void showMapError(FragmentActivity activity, final int resultCode) {
         switch (resultCode) {
             case AMapException.CODE_AMAP_SIGNATURE_ERROR:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_SIGNATURE_ERROR, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_SIGNATURE_ERROR)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_INVALID_USER_KEY:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_INVALID_USER_KEY, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_INVALID_USER_KEY)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_SERVICE_NOT_AVAILBALE:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_SERVICE_NOT_AVAILBALE, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_SERVICE_NOT_AVAILBALE)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_DAILY_QUERY_OVER_LIMIT:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_DAILY_QUERY_OVER_LIMIT, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_DAILY_QUERY_OVER_LIMIT)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_ACCESS_TOO_FREQUENT:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_ACCESS_TOO_FREQUENT, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_ACCESS_TOO_FREQUENT)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_INVALID_USER_IP:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_INVALID_USER_IP, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_INVALID_USER_IP)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_INVALID_USER_DOMAIN:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_INVALID_USER_DOMAIN, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_INVALID_USER_DOMAIN)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_INVALID_USER_SCODE:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_INVALID_USER_SCODE, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_INVALID_USER_SCODE)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_USERKEY_PLAT_NOMATCH:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_USERKEY_PLAT_NOMATCH, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_USERKEY_PLAT_NOMATCH)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_IP_QUERY_OVER_LIMIT:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_IP_QUERY_OVER_LIMIT, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_IP_QUERY_OVER_LIMIT)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_NOT_SUPPORT_HTTPS:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_NOT_SUPPORT_HTTPS, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_NOT_SUPPORT_HTTPS)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_INSUFFICIENT_PRIVILEGES:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_INSUFFICIENT_PRIVILEGES, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_INSUFFICIENT_PRIVILEGES)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_USER_KEY_RECYCLED:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_USER_KEY_RECYCLED, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_USER_KEY_RECYCLED)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_ENGINE_RESPONSE_ERROR:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_ENGINE_RESPONSE_ERROR, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_ENGINE_RESPONSE_ERROR)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_ENGINE_RESPONSE_DATA_ERROR:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_ENGINE_RESPONSE_DATA_ERROR, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_ENGINE_RESPONSE_DATA_ERROR)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_ENGINE_CONNECT_TIMEOUT:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_ENGINE_CONNECT_TIMEOUT, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_ENGINE_CONNECT_TIMEOUT)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_ENGINE_RETURN_TIMEOUT:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_ENGINE_RETURN_TIMEOUT, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_ENGINE_RETURN_TIMEOUT)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_SERVICE_INVALID_PARAMS:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_SERVICE_INVALID_PARAMS, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_SERVICE_INVALID_PARAMS)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_SERVICE_MISSING_REQUIRED_PARAMS:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_SERVICE_MISSING_REQUIRED_PARAMS, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_SERVICE_MISSING_REQUIRED_PARAMS)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_SERVICE_ILLEGAL_REQUEST:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_SERVICE_ILLEGAL_REQUEST, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_SERVICE_ILLEGAL_REQUEST)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_SERVICE_UNKNOWN_ERROR:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_SERVICE_UNKNOWN_ERROR, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_SERVICE_UNKNOWN_ERROR)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_CLIENT_ERRORCODE_MISSSING:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_ERRORCODE_MISSSING, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_CLIENT_ERRORCODE_MISSSING)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_CLIENT_ERROR_PROTOCOL:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_ERROR_PROTOCOL, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_CLIENT_ERROR_PROTOCOL)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_CLIENT_SOCKET_TIMEOUT_EXCEPTION:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_SOCKET_TIMEOUT_EXCEPTION, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_CLIENT_SOCKET_TIMEOUT_EXCEPTION)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_CLIENT_URL_EXCEPTION:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_URL_EXCEPTION, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_CLIENT_URL_EXCEPTION)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_CLIENT_UNKNOWHOST_EXCEPTION:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_UNKNOWHOST_EXCEPTION, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_CLIENT_UNKNOWHOST_EXCEPTION)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_CLIENT_NETWORK_EXCEPTION:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_NETWORK_EXCEPTION, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_CLIENT_NETWORK_EXCEPTION)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_CLIENT_UNKNOWN_ERROR:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_UNKNOWN_ERROR, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_CLIENT_UNKNOWN_ERROR)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_CLIENT_INVALID_PARAMETER:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_INVALID_PARAMETER, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_CLIENT_INVALID_PARAMETER)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_CLIENT_IO_EXCEPTION:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_IO_EXCEPTION, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_CLIENT_IO_EXCEPTION)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_CLIENT_NULLPOINT_EXCEPTION:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_NULLPOINT_EXCEPTION, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_CLIENT_NULLPOINT_EXCEPTION)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_SERVICE_TABLEID_NOT_EXIST:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_SERVICE_TABLEID_NOT_EXIST, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_SERVICE_TABLEID_NOT_EXIST)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_ID_NOT_EXIST:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_ID_NOT_EXIST, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_ID_NOT_EXIST)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_SERVICE_MAINTENANCE:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_SERVICE_MAINTENANCE, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_SERVICE_MAINTENANCE)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_ENGINE_TABLEID_NOT_EXIST:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_ENGINE_TABLEID_NOT_EXIST, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_ENGINE_TABLEID_NOT_EXIST)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_NEARBY_INVALID_USERID:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_NEARBY_INVALID_USERID, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_NEARBY_INVALID_USERID)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_NEARBY_KEY_NOT_BIND:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_NEARBY_KEY_NOT_BIND, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_NEARBY_KEY_NOT_BIND)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_CLIENT_UPLOADAUTO_STARTED_ERROR:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_UPLOADAUTO_STARTED_ERROR, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_CLIENT_UPLOADAUTO_STARTED_ERROR)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
+                break;
             case AMapException.CODE_AMAP_CLIENT_USERID_ILLEGAL:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_USERID_ILLEGAL, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_CLIENT_USERID_ILLEGAL)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_CLIENT_NEARBY_NULL_RESULT:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_NEARBY_NULL_RESULT, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_CLIENT_NEARBY_NULL_RESULT)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_CLIENT_UPLOAD_TOO_FREQUENT:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_UPLOAD_TOO_FREQUENT, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_CLIENT_UPLOAD_TOO_FREQUENT)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_CLIENT_UPLOAD_LOCATION_ERROR:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_CLIENT_UPLOAD_LOCATION_ERROR, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_CLIENT_UPLOAD_LOCATION_ERROR)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_ROUTE_OUT_OF_SERVICE:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_ROUTE_OUT_OF_SERVICE, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_ROUTE_OUT_OF_SERVICE)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_ROUTE_NO_ROADS_NEARBY:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_ROUTE_NO_ROADS_NEARBY, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_ROUTE_NO_ROADS_NEARBY)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_ROUTE_FAIL:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_ROUTE_FAIL, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_ROUTE_FAIL)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_OVER_DIRECTION_RANGE:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_OVER_DIRECTION_RANGE, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_OVER_DIRECTION_RANGE)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_SHARE_LICENSE_IS_EXPIRED:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_SHARE_LICENSE_IS_EXPIRED, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_SHARE_LICENSE_IS_EXPIRED)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             case AMapException.CODE_AMAP_SHARE_FAILURE:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), AMapException.AMAP_SHARE_FAILURE, activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(AMapException.AMAP_SHARE_FAILURE)
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
+                break;
+            case PathPlanningErrCode.ERROR_CONNECTION:
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(activity.getString(R.string.error_prompt_path_plan1))
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
+                break;
+            case PathPlanningErrCode.ERROR_ENDPOINT:
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(activity.getString(R.string.error_prompt_path_plan2))
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
+                break;
+            case PathPlanningErrCode.ERROR_NOROADFORENDPOINT:
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(activity.getString(R.string.error_prompt_path_plan3))
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
+                break;
+            case PathPlanningErrCode.ERROR_NOROADFORSTARTPOINT:
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(activity.getString(R.string.error_prompt_path_plan4))
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
+                break;
+            case PathPlanningErrCode.ERROR_NOROADFORWAYPOINT:
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(activity.getString(R.string.error_prompt_path_plan5))
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
+                break;
+            case PathPlanningErrCode.ERROR_PROTOCOL:
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(activity.getString(R.string.error_prompt_path_plan6))
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
+                break;
+            case PathPlanningErrCode.ERROR_STARTPOINT:
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(activity.getString(R.string.error_prompt_path_plan7))
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
+                break;
+            case PathPlanningErrCode.INSUFFICIENT_PRIVILEGES:
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(activity.getString(R.string.error_prompt_path_plan8))
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
+                break;
+            case PathPlanningErrCode.INVALID_PARAMS:
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(activity.getString(R.string.error_prompt_path_plan9))
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
+                break;
+            case PathPlanningErrCode.INVALID_USER_KEY:
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(activity.getString(R.string.error_prompt_path_plan10))
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
+                break;
+            case PathPlanningErrCode.OVER_QUOTA:
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(activity.getString(R.string.error_prompt_path_plan11))
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
+                break;
+            case PathPlanningErrCode.SERVICE_NOT_EXIST:
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(activity.getString(R.string.error_prompt_path_plan12))
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
+                break;
+            case PathPlanningErrCode.SERVICE_RESPONSE_ERROR:
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(activity.getString(R.string.error_prompt_path_plan13))
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
+                break;
+            case PathPlanningErrCode.SUCCESS_ROUTE:
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(activity.getString(R.string.error_prompt_path_plan14))
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
+                break;
+            case PathPlanningErrCode.UNKNOWN_ERROR:
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(activity.getString(R.string.error_prompt_path_plan15))
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
             default:
-                ViewUtil.getInstance().showAlertDialog(activity, activity.getString(R.string.error_prompt), activity.getString(R.string.search_failed)
-                        + Regex.LEFT_PARENTHESIS.getRegext()
-                        + resultCode
-                        + Regex.RIGHT_PARENTHESIS.getRegext(), activity.getString(R.string.enter), null, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, null, null);
+                PromptDialog.createBuilder(activity.getSupportFragmentManager())
+                        .setTitle(activity.getString(R.string.error_prompt))
+                        .setPrompt(activity.getString(R.string.error_prompt_path_plan1))
+                        .setNegativeButtonText(R.string.cancel)
+                        .setRequestCode(Constant.RequestCode.DIALOG_ERROR)
+                        .setCancelableOnTouchOutside(false)
+                        .show();
                 break;
         }
     }

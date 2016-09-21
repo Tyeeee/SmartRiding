@@ -80,6 +80,21 @@
     <string name="arrival">到达终点</string>
     <string name="tts_prompt">音频初始化失败</string>
     <string name="error_prompt">错误提示</string>
+    <string name="error_prompt_path_plan1">网络超时或网络失败</string>
+    <string name="error_prompt_path_plan2">终点错误</string>
+    <string name="error_prompt_path_plan3">终点没有找到道路</string>
+    <string name="error_prompt_path_plan4">起点没有找到道路</string>
+    <string name="error_prompt_path_plan5">途径点没有找到道路</string>
+    <string name="error_prompt_path_plan6">协议解析错误</string>
+    <string name="error_prompt_path_plan7">起点错误</string>
+    <string name="error_prompt_path_plan8">无权限访问此服务</string>
+    <string name="error_prompt_path_plan9">请求参数非法</string>
+    <string name="error_prompt_path_plan10">用户key非法或过期</string>
+    <string name="error_prompt_path_plan11">请求超出配额</string>
+    <string name="error_prompt_path_plan12">请求服务不存在</string>
+    <string name="error_prompt_path_plan13">请求服务响应错误</string>
+    <string name="error_prompt_path_plan14">路径计算成功</string>
+    <string name="error_prompt_path_plan15">未知错误</string>
 
     <string name="app_name">智慧骑行</string>
     <string name="bluetooth_name">蓝牙设备名称:</string>

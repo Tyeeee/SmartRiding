@@ -37,8 +37,8 @@ import java.util.List;
 
 public class MapActivity extends BaseActivity implements View.OnClickListener, AMap.OnMapClickListener, AMap.OnMarkerClickListener, AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter, RouteSearch.OnRouteSearchListener, AMap.OnMapLoadedListener {
 
-    private MapView              mvMap;
-    private FloatingActionMenu   fabMenu;
+    private MapView mvMap;
+    private FloatingActionMenu fabMenu;
     private FloatingActionButton fabDetail;
     private FloatingActionButton fabNavigation;
 
@@ -46,7 +46,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
     private LatLonPoint mPassPoint;
     private LatLonPoint mEndPoint;
 
-    private AMap        mAmap;
+    private AMap mAmap;
     private RouteSearch mSearch;
     private RouteResult mResult;
 
@@ -257,7 +257,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
                 SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.route_prompt2), Snackbar.LENGTH_SHORT);
             }
         } else {
-            MapUtil.getInstance().showMapException(this, resultCode);
+            MapUtil.getInstance().showMapError(this, resultCode);
         }
 
         fabMenu.addButton(fabDetail);
@@ -281,7 +281,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
                 SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.route_prompt2), Snackbar.LENGTH_SHORT);
             }
         } else {
-            MapUtil.getInstance().showMapException(this, resultCode);
+            MapUtil.getInstance().showMapError(this, resultCode);
         }
 
         fabMenu.addButton(fabDetail);

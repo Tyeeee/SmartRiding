@@ -87,8 +87,9 @@ public class Constant {
         public static final int DIALOG_PROGRESS_DEVICE_CONNECT = 0x5010;
         public static final int DIALOG_LIST_DEVICE_SEARCH = 0x5011;
         public static final int DIALOG_LIST_DEVICE_DETECT = 0x5012;
-        public static final int ALBUM = 0x5013;
-        public static final int CAMERA = 0x5014;
+        public static final int DIALOG_ERROR = 0x5013;
+        public static final int ALBUM = 0x5014;
+        public static final int CAMERA = 0x5015;
     }
 
     public static class Map {

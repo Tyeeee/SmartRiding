@@ -48,21 +48,21 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener, FixedStickyViewAdapter.OnItemClickListener, OnPromptDialogListener {
 
-    private DrawerLayout          drawerLayout;
+    private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle mToggle;
 
-    private RelativeLayout  rlAccount;
+    private RelativeLayout rlAccount;
     private CircleImageView civHeadPortrait;
-    private TextView        tvAccountName;
-    private TextView        tvTelphoneNumber;
+    private TextView tvAccountName;
+    private TextView tvTelphoneNumber;
 
-    private RecyclerView           rvMenu;
-    private LinearLayoutManager    mLayoutManager;
+    private RecyclerView rvMenu;
+    private LinearLayoutManager mLayoutManager;
     private FixedStickyViewAdapter mAdapter;
 
     private FragmentHelper mHelper;
 
-    private Handler     mFragmentHandler;
+    private Handler mFragmentHandler;
     private MainHandler mHandler;
 
     protected static class MainHandler extends Handler {
@@ -173,7 +173,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             @Override
             public void run() {
                 List<Menu> menus = new ArrayList<>();
-                Menu       menu1 = new Menu();
+                Menu menu1 = new Menu();
                 menu1.setIcon(R.mipmap.dir1);
                 menu1.setTitle(getResources().getString(R.string.home_page));
                 menus.add(menu1);
@@ -254,7 +254,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             PromptDialog.createBuilder(getSupportFragmentManager())
                     .setTitle(getString(R.string.prompt_title))
                     .setPrompt(getString(R.string.prompt_exit_application))
-                    .setPositiveButtonText(R.string.enter)
+//                    .setPositiveButtonText(R.string.enter)
                     .setNegativeButtonText(R.string.cancel)
                     .setRequestCode(Constant.RequestCode.DIALOG_EXIT)
                     .show();

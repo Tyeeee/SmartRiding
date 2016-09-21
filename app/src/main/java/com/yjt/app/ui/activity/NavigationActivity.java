@@ -212,8 +212,8 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
             options.setMonitorCameraEnabled(false);
             options.setScreenAlwaysBright(true);
             options.setAutoDrawRoute(true);
-            options.setCrossDisplayEnabled(true);
-            options.setCrossDisplayShow(true);
+            options.setCrossDisplayEnabled(false);
+            options.setCrossDisplayShow(false);
             options.setAutoChangeZoom(true);
             options.setLayoutVisible(true);
             nvMap.setViewOptions(options);
@@ -263,12 +263,14 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
     public void onInitNaviSuccess() {
         LogUtil.print("---->onInitNaviSuccess");
 //        AMapNavi.getInstance(BaseApplication.getInstance()).calculateWalkRoute(MapUtil.getInstance().parseCoordinate(mResult.getStartPos().toString()), MapUtil.getInstance().parseCoordinate(mResult.getTargetPos().toString()));
-        int strategy = 0;
         try {
-            strategy = AMapNavi.getInstance(BaseApplication.getInstance()).strategyConvert(true, true, true, false, false);
+            AMapNavi.getInstance(BaseApplication.getInstance()).calculateDriveRoute(mStartLatLngs
+                    , mEndLatLngs
+                    , mPassLatLngs
+                    , AMapNavi.getInstance(BaseApplication.getInstance()).strategyConvert(true, true, true, false, false));
         } catch (Exception e) {
+            e.printStackTrace();
         }
-        AMapNavi.getInstance(BaseApplication.getInstance()).calculateDriveRoute(mStartLatLngs, mEndLatLngs, mPassLatLngs, strategy);
     }
 
     @Override
@@ -299,11 +301,13 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
     @Override
     public void onArriveDestination() {
         LogUtil.print("---->onArriveDestination");
+        mHandler.sendMessage(MessageUtil.getMessage(Constant.Bluetooth.LIGHT_CLOSE));
     }
 
     @Override
     public void onArriveDestination(NaviStaticInfo naviStaticInfo) {
         LogUtil.print("---->onArriveDestination");
+        mHandler.sendMessage(MessageUtil.getMessage(Constant.Bluetooth.LIGHT_CLOSE));
     }
 
     @Override
@@ -317,13 +321,19 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
     }
 
     @Override
-    public void onCalculateRouteFailure(int i) {
+    public void onCalculateRouteFailure(int resultCode) {
+        MapUtil.getInstance().showMapError(this, resultCode);
         LogUtil.print("---->onCalculateRouteFailure");
     }
 
     @Override
     public void onReCalculateRouteForYaw() {
         LogUtil.print("---->onReCalculateRouteForYaw");
+        if (SharedPreferenceUtil.getInstance().getInt(File.FILE_NAME.getContent(), Context.MODE_PRIVATE, File.NAVIGATION_DEMONSTRATION_PATTERN.getContent(), Constant.Common.DEFAULT_VALUE) == Constant.Map.NAVIGATION_GPS) {
+            AMapNavi.getInstance(BaseApplication.getInstance()).startNavi(NaviType.GPS);
+        } else {
+            AMapNavi.getInstance(BaseApplication.getInstance()).startNavi(NaviType.EMULATOR);
+        }
     }
 
     @Override
@@ -337,9 +347,9 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
     }
 
     @Override
-    public void onGpsOpenStatus(boolean b) {
+    public void onGpsOpenStatus(boolean enabled) {
         LogUtil.print("---->onGpsOpenStatus");
-        if (!b) {
+        if (!enabled) {
             SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.gps_prompt), Snackbar.LENGTH_SHORT);
         }
     }
@@ -419,6 +429,9 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
 
     @Override
     public void onCalculateMultipleRoutesSuccess(int[] routeIds) {
+        for (int i : routeIds) {
+            LogUtil.print("---->" + i);
+        }
         LogUtil.print("---->onCalculateMultipleRoutesSuccess");
     }
 
