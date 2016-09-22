@@ -254,12 +254,12 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
                     for (DrivePath path : driveRouteResult.getPaths()) {
                         LogUtil.print("---->path:" + paths.size());
                         CustomOverlay overLay = new CustomOverlay(mAmap, path, driveRouteResult.getStartPos(), driveRouteResult.getTargetPos(), null);
-                        overLay.setRouteWidth(getResources().getDimension(R.dimen.dp_15));
+                        overLay.setRouteWidth(getResources().getDimension(R.dimen.dp_10));
                         overLay.setColor(true);
                         overLay.setNodeIconVisible(true);
                         overLay.setPassMarkerVisible(true);
                         overLay.removeMarkerAndLine();
-                        overLay.addRouteToMap(Color.GREEN);
+                        overLay.addRouteToMap(Color.BLUE);
                         overLay.zoomToSpan();
                     }
                 } else {
