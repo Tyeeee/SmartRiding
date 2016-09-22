@@ -88,8 +88,9 @@ public class Constant {
         public static final int DIALOG_LIST_DEVICE_SEARCH = 0x5011;
         public static final int DIALOG_LIST_DEVICE_DETECT = 0x5012;
         public static final int DIALOG_ERROR = 0x5013;
-        public static final int ALBUM = 0x5014;
-        public static final int CAMERA = 0x5015;
+        public static final int DIALOG_PROGRESS_LOCATION_INFO = 0x5014;
+        public static final int ALBUM = 0x5015;
+        public static final int CAMERA = 0x5016;
     }
 
     public static class Map {
@@ -113,6 +114,9 @@ public class Constant {
         public static final String CW = "cw";
         public static final String W = "w";
 
+        public static final int DEFAULT_VALUE = -1;
+        public static final int ZOOM_VALUE = 30;
+        public static final float ZOOM_ANGLE = 0.0f;
         public static final int SIMULATED_NAVIGATION_SPEED = 100;
         public static final int STEP_DISTANCE = 20;
         public static final String Kilometer = "\u516c\u91cc";// "公里";
@@ -145,7 +149,6 @@ public class Constant {
         public static final String MOVE_STATUS15 = "拍照";
         public static final String MOVE_STATUS16 = "车道";
         public static final String MOVE_STATUS17 = "并线";
-
         public static final int NAVIGATION_GPS = 1;
     }
 

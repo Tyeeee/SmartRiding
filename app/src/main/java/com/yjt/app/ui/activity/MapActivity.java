@@ -1,6 +1,7 @@
 package com.yjt.app.ui.activity;
 
 import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -14,9 +15,11 @@ import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.overlay.WalkRouteOverlay;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.route.BusRouteResult;
+import com.amap.api.services.route.DrivePath;
 import com.amap.api.services.route.DriveRouteResult;
 import com.amap.api.services.route.RouteResult;
 import com.amap.api.services.route.RouteSearch;
+import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
 import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
@@ -31,7 +34,6 @@ import com.yjt.app.utils.MapUtil;
 import com.yjt.app.utils.SnackBarUtil;
 import com.yjt.app.utils.ViewUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -134,17 +136,17 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
             mAmap = mvMap.getMap();
             mAmap.getUiSettings().setZoomControlsEnabled(false);
         }
+
         mSearch = new RouteSearch(this);
         if (mStartPoint != null && mEndPoint != null) {
-            List<LatLonPoint> points = new ArrayList<>();
             mAmap.addMarker(new MarkerOptions().position(MapUtil.getInstance().convertToLatLng(mStartPoint)).icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_start)));
-            if (mPassPoint != null) {
-                points = new ArrayList<>();
-                points.add(mPassPoint);
-                mAmap.addMarker(new MarkerOptions().position(MapUtil.getInstance().convertToLatLng(mPassPoint)).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
-            }
+//            if (mPassPoint != null) {
+//                List<LatLonPoint> points = new ArrayList<>();
+//                points.add(mPassPoint);
+//                mAmap.addMarker(new MarkerOptions().position(MapUtil.getInstance().convertToLatLng(mPassPoint)).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
+//            }
             mAmap.addMarker(new MarkerOptions().position(MapUtil.getInstance().convertToLatLng(mEndPoint)).icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_end)));
-            mSearch.calculateDriveRouteAsyn(new RouteSearch.DriveRouteQuery(new RouteSearch.FromAndTo(mStartPoint, mEndPoint), RouteSearch.DrivingNoHighAvoidCongestionSaveMoney, points, null, null));
+            mSearch.calculateDriveRouteAsyn(new RouteSearch.DriveRouteQuery(new RouteSearch.FromAndTo(mStartPoint, mEndPoint), RouteSearch.DrivingNoHighWaySaveMoney, null, null, null));
 //            mSearch.calculateWalkRouteAsyn(new RouteSearch.WalkRouteQuery(new RouteSearch.FromAndTo(mStartPoint, mEndPoint), RouteSearch.WalkMultipath));
         } else {
             SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.route_prompt1), Snackbar.LENGTH_SHORT);
@@ -193,6 +195,8 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
                 Bundle bundle2 = new Bundle();
                 bundle2.putParcelable(Temp.ROUTE_INFO.getContent(), mResult);
                 startActivity(NavigationActivity.class, bundle2);
+                break;
+            default:
                 break;
         }
     }
@@ -244,18 +248,36 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
         ViewUtil.getInstance().hideDialog(mDialog, this);
         mAmap.clear();
         if (resultCode == Constant.Map.GEOCODE_SEARCH_SUCCESS) {
-            if (driveRouteResult != null && driveRouteResult.getPaths() != null && driveRouteResult.getPaths().size() > 0) {
-                CustomOverlay overLay = new CustomOverlay(mAmap, driveRouteResult.getPaths().get(0), driveRouteResult.getStartPos(), driveRouteResult.getTargetPos(), null);
-                overLay.setRouteWidth(getResources().getDimension(R.dimen.dp_10));
-                overLay.setColor(true);
-                overLay.setNodeIconVisible(true);
-                overLay.setPassMarkerVisible(true);
-                overLay.removeMarkerAndLine();
-                overLay.addRouteToMap();
-                overLay.zoomToSpan();
-            } else {
-                SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.route_prompt2), Snackbar.LENGTH_SHORT);
+            if (driveRouteResult != null) {
+                List<DrivePath> paths = driveRouteResult.getPaths();
+                if (paths != null && paths.size() > 0) {
+                    for (DrivePath path : driveRouteResult.getPaths()) {
+                        LogUtil.print("---->path:" + paths.size());
+                        CustomOverlay overLay = new CustomOverlay(mAmap, path, driveRouteResult.getStartPos(), driveRouteResult.getTargetPos(), null);
+                        overLay.setRouteWidth(getResources().getDimension(R.dimen.dp_15));
+                        overLay.setColor(true);
+                        overLay.setNodeIconVisible(true);
+                        overLay.setPassMarkerVisible(true);
+                        overLay.removeMarkerAndLine();
+                        overLay.addRouteToMap(Color.GREEN);
+                        overLay.zoomToSpan();
+                    }
+                } else {
+                    SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.route_prompt2), Snackbar.LENGTH_SHORT);
+                }
             }
+//            if (driveRouteResult != null && driveRouteResult.getPaths() != null && driveRouteResult.getPaths().size() > 0) {
+//                CustomOverlay overLay = new CustomOverlay(mAmap, driveRouteResult.getPaths().get(0), driveRouteResult.getStartPos(), driveRouteResult.getTargetPos(), null);
+//                overLay.setRouteWidth(getResources().getDimension(R.dimen.dp_15));
+//                overLay.setColor(true);
+//                overLay.setNodeIconVisible(true);
+//                overLay.setPassMarkerVisible(true);
+//                overLay.removeMarkerAndLine();
+//                overLay.addRouteToMap();
+//                overLay.zoomToSpan();
+//            } else {
+//                SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.route_prompt2), Snackbar.LENGTH_SHORT);
+//            }
         } else {
             MapUtil.getInstance().showMapError(this, resultCode);
         }
@@ -271,14 +293,19 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
         ViewUtil.getInstance().hideDialog(mDialog, this);
         mAmap.clear();
         if (resultCode == Constant.Map.GEOCODE_SEARCH_SUCCESS) {
-            if (walkRouteResult != null && walkRouteResult.getPaths() != null && walkRouteResult.getPaths().size() > 0) {
-                WalkRouteOverlay overlay = new WalkRouteOverlay(this, mAmap, walkRouteResult.getPaths().get(0), walkRouteResult.getStartPos(), walkRouteResult.getTargetPos());
-                overlay.removeFromMap();
-                overlay.setNodeIconVisibility(false);
-                overlay.addToMap();
-                overlay.zoomToSpan();
-            } else {
-                SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.route_prompt2), Snackbar.LENGTH_SHORT);
+            if (walkRouteResult != null) {
+                List<WalkPath> paths = walkRouteResult.getPaths();
+                if (paths != null && paths.size() > 0) {
+                    for (WalkPath path : paths) {
+                        WalkRouteOverlay overlay = new WalkRouteOverlay(this, mAmap, path, walkRouteResult.getStartPos(), walkRouteResult.getTargetPos());
+                        overlay.removeFromMap();
+                        overlay.setNodeIconVisibility(false);
+                        overlay.addToMap();
+                        overlay.zoomToSpan();
+                    }
+                } else {
+                    SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.route_prompt2), Snackbar.LENGTH_SHORT);
+                }
             }
         } else {
             MapUtil.getInstance().showMapError(this, resultCode);

@@ -106,23 +106,14 @@ public class MapUtil {
         return (s == null) || (s.trim().length() == 0);
     }
 
-    /**
-     * 把LatLng对象转化为LatLonPoint对象
-     */
     public LatLonPoint convertToLatLonPoint(LatLng latlon) {
         return new LatLonPoint(latlon.latitude, latlon.longitude);
     }
 
-    /**
-     * 把LatLonPoint对象转化为LatLon对象
-     */
     public LatLng convertToLatLng(LatLonPoint latLonPoint) {
         return new LatLng(latLonPoint.getLatitude(), latLonPoint.getLongitude());
     }
 
-    /**
-     * 把集合体的LatLonPoint转化为集合体的LatLng
-     */
     public ArrayList<LatLng> convertArrList(List<LatLonPoint> shapes) {
         ArrayList<LatLng> lineShapes = new ArrayList<LatLng>();
         for (LatLonPoint point : shapes) {
@@ -140,9 +131,6 @@ public class MapUtil {
         }
     }
 
-    /**
-     * long类型时间格式化
-     */
     public String convertToTime(long time) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date(time);

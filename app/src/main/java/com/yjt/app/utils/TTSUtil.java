@@ -103,7 +103,7 @@ public class TTSUtil implements SynthesizerListener, AMapNaviListener, InitListe
         }
     }
 
-    public void destroy() {
+    public synchronized void destroy() {
         if (mSpeechSynthesizer != null) {
             mSpeechSynthesizer.stopSpeaking();
             mSpeechSynthesizer.destroy();

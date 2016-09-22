@@ -68,9 +68,9 @@ public class CustomOverlay {
         isNodeIconVisible = nodeIconVisible;
     }
 
-    public void addRouteToMap() {
+    public void addRouteToMap(int color) {
         mOptions = new PolylineOptions();
-        mOptions.color(Color.BLUE).width(mRouteWidth);
+        mOptions.color(color).width(mRouteWidth);
         if (mAMap != null && mDrivePath != null && mRouteWidth != 0) {
             mLatLngPaths = new ArrayList<>();
             mTmcs = new ArrayList<>();

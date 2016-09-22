@@ -119,6 +119,7 @@
     <string name="start">起点：</string>
     <string name="end">终点：</string>
     <string name="navigation">导航</string>
+    <string name="navigation_failed">导航失败</string>
     <string name="gps_prompt">请手动打开gps定位</string>
     <string name="path_condition_error">路线条件有误</string>
     <string name="path_calculation_error">路线计算有误</string>

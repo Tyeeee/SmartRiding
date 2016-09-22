@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amap.api.navi.model.AMapNaviPath;
 import com.amap.api.services.route.DrivePath;
 import com.amap.api.services.route.DriveRouteResult;
 import com.amap.api.services.route.DriveStep;

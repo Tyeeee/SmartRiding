@@ -28,16 +28,16 @@ import com.yjt.app.utils.ViewUtil;
 
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
-    private ImageView      ivExchange;
+    private ImageView ivExchange;
     private SearchTextView stvStartPoint;
     private SearchTextView stvPassPoint;
     private SearchTextView stvEndPoint;
-    private Button         btnSearch;
+    private Button btnSearch;
 
     private String mTempString;
     private double mTempLongitude;
     private double mTempLatitude;
-    private int    mPointType;
+    private int mPointType;
 
     private double mStartLatitude;
     private double mStartLongitude;

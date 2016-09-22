@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -69,8 +70,7 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
     private LinearLayoutManager mLayoutManager;
     private FixedStickyViewAdapter mAdapter;
     private DeviceHandler mHandler;
-    private ProgressDialog mScanDialog;
-    private ProgressDialog mConnectDialog;
+    private DialogFragment mDialog;
 
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothLeScanner mScanner;
@@ -96,7 +96,7 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
                 switch (msg.what) {
                     case Constant.Bluetooth.GET_DEVICE_LIST_SUCCESS:
                         BluetoothUtil.getInstance().stopScanner(fragment.mBluetoothAdapter, fragment.mScanner, fragment.mScanCallback, fragment.mLeScanCallback, false);
-                        ViewUtil.getInstance().hideDialog(fragment.mScanDialog);
+                        ViewUtil.getInstance().hideDialog(fragment.mDialog);
                         ArrayList<BluetoothDevice> devices = (ArrayList<BluetoothDevice>) msg.obj;
                         if (devices != null && devices.size() > 0) {
                             DeviceListDialog.createBuilder(fragment.getFragmentManager())
@@ -113,13 +113,13 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
                         break;
                     case Constant.Bluetooth.GET_DEVICE_LIST_FAILED:
                         BluetoothUtil.getInstance().stopScanner(fragment.mBluetoothAdapter, fragment.mScanner, fragment.mScanCallback, fragment.mLeScanCallback, true);
-                        ViewUtil.getInstance().hideDialog(fragment.mScanDialog);
+                        ViewUtil.getInstance().hideDialog(fragment.mDialog);
                         SnackBarUtil.getInstance().showSnackBar(fragment.getActivity(), fragment.getString(R.string.search_device_prompt2), Snackbar.LENGTH_SHORT, Color.WHITE);
                         fragment.isScaning = false;
                         break;
                     case Constant.Bluetooth.GET_DEVICE_LIST_ERROR:
                         BluetoothUtil.getInstance().stopScanner(fragment.mBluetoothAdapter, fragment.mScanner, fragment.mScanCallback, fragment.mLeScanCallback, true);
-                        ViewUtil.getInstance().hideDialog(fragment.mScanDialog);
+                        ViewUtil.getInstance().hideDialog(fragment.mDialog);
                         SnackBarUtil.getInstance().showSnackBar(fragment.getActivity(), fragment.getString(R.string.search_device_prompt3), Snackbar.LENGTH_SHORT, Color.WHITE);
                         fragment.isScaning = false;
                         break;
@@ -242,7 +242,7 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
     public void onPause() {
         super.onPause();
         if (isScaning) {
-            ViewUtil.getInstance().hideDialog(mScanDialog);
+            ViewUtil.getInstance().hideDialog(mDialog);
             BluetoothUtil.getInstance().stopScanner(mBluetoothAdapter, mScanner, mScanCallback, mLeScanCallback, true);
         }
     }
@@ -358,7 +358,7 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
             case Constant.RequestCode.DIALOG_LIST_DEVICE_SEARCH:
                 if (value != null) {
                     if (mService.connect(((BluetoothDevice) value).getAddress())) {
-                        mConnectDialog = (ProgressDialog) ProgressDialog.createBuilder(getFragmentManager())
+                        mDialog = ProgressDialog.createBuilder(getFragmentManager())
                                 .setPrompt(getString(R.string.device_connecting))
                                 .setCancelableOnTouchOutside(false)
                                 .setTargetFragment(this, Constant.RequestCode.DIALOG_PROGRESS_DEVICE_CONNECT)
@@ -460,7 +460,7 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
     @Override
     public void onConnected(BluetoothGatt gatt) {
         LogUtil.print("---->onConnected");
-        ViewUtil.getInstance().hideDialog(mConnectDialog);
+        ViewUtil.getInstance().hideDialog(mDialog);
         mHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -473,7 +473,7 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
     @Override
     public void onDisconnected(BluetoothGatt gatt) {
         LogUtil.print("---->onDisconnected");
-        ViewUtil.getInstance().hideDialog(mConnectDialog);
+        ViewUtil.getInstance().hideDialog(mDialog);
         mHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -484,7 +484,7 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
 
 
     private void startScanner() {
-        mScanDialog = (ProgressDialog) ProgressDialog.createBuilder(getFragmentManager())
+        mDialog = ProgressDialog.createBuilder(getFragmentManager())
                 .setPrompt(getString(R.string.device_searching))
                 .setCancelableOnTouchOutside(false)
                 .setTargetFragment(this, Constant.RequestCode.DIALOG_PROGRESS_DEVICE_SEARCH)

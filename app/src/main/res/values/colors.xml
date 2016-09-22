@@ -25,4 +25,10 @@
     <color name="gray_29000000">#29000000</color>
     <color name="gray_8A000000">#8A000000</color>
     <color name="gray_DE000000">#DE000000</color>
+    <color name="pink_f99b99">#f99b99</color>
+    <color name="yellow_ffff00">#ffff00</color>
+    <color name="yellow_f99400">#f99400</color>
+    <color name="green_008d0d">#008d0d</color>
+    <color name="purple_8c028d">#8c028d</color>
+
 </resources>

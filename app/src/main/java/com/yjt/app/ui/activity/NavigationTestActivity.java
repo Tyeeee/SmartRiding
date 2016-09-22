@@ -25,20 +25,16 @@ import com.amap.api.navi.model.AMapNaviTrafficFacilityInfo;
 import com.amap.api.navi.model.AimLessModeCongestionInfo;
 import com.amap.api.navi.model.AimLessModeStat;
 import com.amap.api.navi.model.NaviInfo;
-import com.amap.api.navi.model.NaviLatLng;
-import com.amap.api.services.route.RouteResult;
 import com.autonavi.tbt.NaviStaticInfo;
 import com.autonavi.tbt.TrafficFacilityInfo;
 import com.yjt.app.R;
 import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.File;
-import com.yjt.app.constant.Temp;
 import com.yjt.app.service.BluetoothService;
 import com.yjt.app.ui.dialog.PromptDialog;
 import com.yjt.app.ui.listener.dialog.OnPromptDialogListener;
 import com.yjt.app.utils.BluetoothUtil;
-import com.yjt.app.utils.BundleUtil;
 import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.MapUtil;
 import com.yjt.app.utils.MessageUtil;
@@ -49,17 +45,11 @@ import com.yjt.app.utils.ToastUtil;
 import com.yjt.app.utils.ViewUtil;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 
 
-public class NavigationActivity extends FragmentActivity implements AMapNaviListener, AMapNaviViewListener, OnPromptDialogListener {
+public class NavigationTestActivity extends FragmentActivity implements AMapNaviListener, AMapNaviViewListener, OnPromptDialogListener {
 
     private AMapNaviView nvMap;
-    private RouteResult mResult;
-    private List<NaviLatLng> mStartLatLngs = new ArrayList<>();
-    private List<NaviLatLng> mPassLatLngs = new ArrayList<>();
-    private List<NaviLatLng> mEndLatLngs = new ArrayList<>();
 
     private BluetoothService mService;
     private BluetoothGattCharacteristic mCharacteristic;
@@ -68,16 +58,16 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
 
     protected static class NavigationHandler extends Handler {
 
-        private WeakReference<NavigationActivity> mActivitys;
+        private WeakReference<NavigationTestActivity> mActivitys;
 
-        public NavigationHandler(NavigationActivity activity) {
+        public NavigationHandler(NavigationTestActivity activity) {
             mActivitys = new WeakReference<>(activity);
         }
 
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            final NavigationActivity activity = mActivitys.get();
+            final NavigationTestActivity activity = mActivitys.get();
             if (activity != null) {
                 switch (msg.what) {
                     case Constant.Bluetooth.LIGHT_OPEN:
@@ -181,16 +171,14 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
         mCharacteristic = BaseApplication.getInstance().getCharacteristic();
         LogUtil.print("---->mService:" + mService);
         LogUtil.print("---->mCharacteristic:" + mCharacteristic);
-        if (BundleUtil.getInstance().hasIntentExtraValue(this, Temp.ROUTE_INFO.getContent())) {
-            mResult = BundleUtil.getInstance().getParcelableData(this, Temp.ROUTE_INFO.getContent());
-            mStartLatLngs.add(MapUtil.getInstance().parseCoordinate(mResult.getStartPos().toString()));
-            mEndLatLngs.add(MapUtil.getInstance().parseCoordinate(mResult.getTargetPos().toString()));
-        } else {
-            SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.route_prompt3), Snackbar.LENGTH_SHORT);
-        }
         setMapOptions();
         TTSUtil.getInstance().initializeSpeechSynthesizer();
         AMapNavi.getInstance(BaseApplication.getInstance()).setEmulatorNaviSpeed(Constant.Map.SIMULATED_NAVIGATION_SPEED);
+        if (SharedPreferenceUtil.getInstance().getInt(File.FILE_NAME.getContent(), Context.MODE_PRIVATE, File.NAVIGATION_DEMONSTRATION_PATTERN.getContent(), Constant.Common.DEFAULT_VALUE) == Constant.Map.NAVIGATION_GPS) {
+            AMapNavi.getInstance(BaseApplication.getInstance()).startNavi(NaviType.GPS);
+        } else {
+            AMapNavi.getInstance(BaseApplication.getInstance()).startNavi(NaviType.EMULATOR);
+        }
     }
 
     protected void setListener() {
@@ -205,9 +193,8 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
             options.setSettingMenuEnabled(false);
             options.setNaviNight(false);
             options.setReCalculateRouteForYaw(true);
-            options.setReCalculateRouteForTrafficJam(false);
-            options.setRouteListButtonShow(true);
             options.setTrafficLine(true);
+            options.setReCalculateRouteForTrafficJam(false);
             options.setLeaderLineEnabled(Color.GRAY);
             options.setTrafficInfoUpdateEnabled(false);
             options.setCameraInfoUpdateEnabled(false);
@@ -264,15 +251,8 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
     @Override
     public void onInitNaviSuccess() {
         LogUtil.print("---->onInitNaviSuccess");
-//        AMapNavi.getInstance(BaseApplication.getInstance()).calculateWalkRoute(MapUtil.getInstance().parseCoordinate(mResult.getStartPos().toString()), MapUtil.getInstance().parseCoordinate(mResult.getTargetPos().toString()));
-        try {
-            AMapNavi.getInstance(BaseApplication.getInstance()).calculateDriveRoute(mStartLatLngs
-                    , mEndLatLngs
-                    , mPassLatLngs
-                    , AMapNavi.getInstance(BaseApplication.getInstance()).strategyConvert(true, true, true, false, true));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ToastUtil.getInstance().showToast(this, getString(R.string.navigation_failed), Toast.LENGTH_SHORT);
+        finish();
     }
 
     @Override
@@ -315,11 +295,6 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
     @Override
     public void onCalculateRouteSuccess() {
         LogUtil.print("---->onCalculateRouteSuccess");
-        if (SharedPreferenceUtil.getInstance().getInt(File.FILE_NAME.getContent(), Context.MODE_PRIVATE, File.NAVIGATION_DEMONSTRATION_PATTERN.getContent(), Constant.Common.DEFAULT_VALUE) == Constant.Map.NAVIGATION_GPS) {
-            AMapNavi.getInstance(BaseApplication.getInstance()).startNavi(NaviType.GPS);
-        } else {
-            AMapNavi.getInstance(BaseApplication.getInstance()).startNavi(NaviType.EMULATOR);
-        }
     }
 
     @Override
@@ -331,21 +306,6 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
     @Override
     public void onReCalculateRouteForYaw() {
         LogUtil.print("---->onReCalculateRouteForYaw");
-        if (SharedPreferenceUtil.getInstance().getInt(File.FILE_NAME.getContent(), Context.MODE_PRIVATE, File.NAVIGATION_DEMONSTRATION_PATTERN.getContent(), Constant.Common.DEFAULT_VALUE) == Constant.Map.NAVIGATION_GPS) {
-            AMapNavi.getInstance(BaseApplication.getInstance()).startNavi(NaviType.GPS);
-        } else {
-            AMapNavi.getInstance(BaseApplication.getInstance()).startNavi(NaviType.EMULATOR);
-        }
-    }
-
-    @Override
-    public void onCalculateMultipleRoutesSuccess(int[] routeIds) {
-        LogUtil.print("---->onCalculateMultipleRoutesSuccess");
-        if (SharedPreferenceUtil.getInstance().getInt(File.FILE_NAME.getContent(), Context.MODE_PRIVATE, File.NAVIGATION_DEMONSTRATION_PATTERN.getContent(), Constant.Common.DEFAULT_VALUE) == Constant.Map.NAVIGATION_GPS) {
-            AMapNavi.getInstance(BaseApplication.getInstance()).startNavi(NaviType.GPS);
-        } else {
-            AMapNavi.getInstance(BaseApplication.getInstance()).startNavi(NaviType.EMULATOR);
-        }
     }
 
     @Override
@@ -437,6 +397,11 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
     @Override
     public void hideLaneInfo() {
         LogUtil.print("---->hideLaneInfo");
+    }
+
+    @Override
+    public void onCalculateMultipleRoutesSuccess(int[] routeIds) {
+        LogUtil.print("---->onCalculateMultipleRoutesSuccess");
     }
 
     @Override

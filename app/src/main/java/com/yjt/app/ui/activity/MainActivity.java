@@ -254,7 +254,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             PromptDialog.createBuilder(getSupportFragmentManager())
                     .setTitle(getString(R.string.prompt_title))
                     .setPrompt(getString(R.string.prompt_exit_application))
-//                    .setPositiveButtonText(R.string.enter)
+                    .setPositiveButtonText(R.string.enter)
                     .setNegativeButtonText(R.string.cancel)
                     .setRequestCode(Constant.RequestCode.DIALOG_EXIT)
                     .show();
