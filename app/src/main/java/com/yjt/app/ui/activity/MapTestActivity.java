@@ -224,9 +224,7 @@ public class MapTestActivity extends BaseActivity implements View.OnClickListene
                 startActivity(RouteDetailActivity.class, bundle1);
                 break;
             case R.id.fabNavigation:
-                Bundle bundle2 = new Bundle();
-//                bundle2.putParcelable(Temp.ROUTE_INFO.getContent(), mResult);
-                startActivity(NavigationTestActivity.class, bundle2);
+                startActivity(NavigationTestActivity.class);
                 break;
         }
     }
