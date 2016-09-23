@@ -53,6 +53,7 @@ public class MapTestActivity extends BaseActivity implements View.OnClickListene
 
     private MapView mvMap;
     private FloatingActionMenu fabMenu;
+    private FloatingActionButton fabSelection;
     private FloatingActionButton fabDetail;
     private FloatingActionButton fabNavigation;
 
@@ -61,6 +62,8 @@ public class MapTestActivity extends BaseActivity implements View.OnClickListene
     private List<NaviLatLng> mEndLatLngs = new ArrayList<>();
     private SparseArray<RouteOverLay> mRouteOverLays = new SparseArray<>();
     private AMap mAmap;
+    private int mRouteIndex;
+    private int mZindex;
     private DialogFragment mDialog;
     private MapHandler mHandler;
 
@@ -88,7 +91,7 @@ public class MapTestActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
+        setContentView(R.layout.activity_map_test);
         findViewById();
         setViewListener();
         initialize(savedInstanceState);
@@ -129,6 +132,13 @@ public class MapTestActivity extends BaseActivity implements View.OnClickListene
     protected void findViewById() {
         mvMap = ViewUtil.getInstance().findView(this, R.id.mvMap);
         fabMenu = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.fabMenu, this);
+        fabSelection = new FloatingActionButton(this);
+        fabSelection.setId(R.id.fabSelection);
+        fabSelection.setSize(FloatingActionButton.SIZE_MINI);
+        fabSelection.setColorNormalResId(android.R.color.white);
+        fabSelection.setColorPressedResId(R.color.gray_979797);
+        fabSelection.setIcon(R.mipmap.icon_car);
+        fabSelection.setTitle("选路");
         fabDetail = new FloatingActionButton(this);
         fabDetail.setId(R.id.fabDetail);
         fabDetail.setSize(FloatingActionButton.SIZE_MINI);
@@ -145,6 +155,7 @@ public class MapTestActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void setViewListener() {
+        fabSelection.setOnClickListener(this);
         fabDetail.setOnClickListener(this);
         fabNavigation.setOnClickListener(this);
     }
@@ -218,10 +229,21 @@ public class MapTestActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.fabSelection:
+                if (mRouteIndex >= mRouteOverLays.size()) {
+                    mRouteIndex = 0;
+                }
+                int index = mRouteOverLays.keyAt(mRouteIndex);
+                for (int i = 0; i < mRouteOverLays.size(); i++) {
+                    mRouteOverLays.get(mRouteOverLays.keyAt(i)).setTransparency(Constant.Map.TRANSPARENCY_SELECTED);
+                }
+                mRouteOverLays.get(index).setTransparency(Constant.Map.TRANSPARENCY_UNSELECT);
+                mRouteOverLays.get(index).setZindex(++mZindex);
+                AMapNavi.getInstance(this).selectRouteId(index);
+                mRouteIndex++;
+                break;
             case R.id.fabDetail:
-                Bundle bundle1 = new Bundle();
-//                bundle1.putParcelable(Temp.ROUTE_INFO.getContent(), mResult);
-                startActivity(RouteDetailActivity.class, bundle1);
+                startActivity(RouteDetailTestActivity.class);
                 break;
             case R.id.fabNavigation:
                 startActivity(NavigationTestActivity.class);
@@ -344,6 +366,7 @@ public class MapTestActivity extends BaseActivity implements View.OnClickListene
         mRouteOverLays.clear();
         try {
             for (int routeId : routeIds) {
+                LogUtil.print("---->routeId:" + routeId);
                 mAmap.moveCamera(CameraUpdateFactory.changeTilt(Constant.Map.ZOOM_ANGLE));
                 RouteOverLay overLay = new RouteOverLay(mAmap, AMapNavi.getInstance(this).getNaviPaths().get(routeId), this);
                 overLay.setTrafficLine(true);
@@ -358,7 +381,10 @@ public class MapTestActivity extends BaseActivity implements View.OnClickListene
         } catch (AMapNaviException e) {
             e.printStackTrace();
         }
-        LogUtil.print("------------mRouteOverLays:" + mRouteOverLays.size());
+
+        if (mRouteOverLays.size() > 1) {
+            fabMenu.addButton(fabSelection);
+        }
         fabMenu.addButton(fabDetail);
         fabMenu.addButton(fabNavigation);
     }

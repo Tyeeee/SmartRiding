@@ -153,9 +153,8 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
         super.onDestroy();
         nvMap.onDestroy();
         AMapNavi.getInstance(BaseApplication.getInstance()).stopNavi();
-        AMapNavi.getInstance(BaseApplication.getInstance()).destroy();
-        TTSUtil.getInstance().destroy();
         AMapNavi.getInstance(BaseApplication.getInstance()).removeAMapNaviListener(this);
+        AMapNavi.getInstance(BaseApplication.getInstance()).destroy();
     }
 
     @Override

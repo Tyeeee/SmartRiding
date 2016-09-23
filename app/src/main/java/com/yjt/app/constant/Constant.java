@@ -117,6 +117,8 @@ public class Constant {
         public static final int DEFAULT_VALUE = -1;
         public static final int ZOOM_VALUE = 30;
         public static final float ZOOM_ANGLE = 0.0f;
+        public static final float TRANSPARENCY_SELECTED = 0.7f;
+        public static final float TRANSPARENCY_UNSELECT = 0.0f;
         public static final int SIMULATED_NAVIGATION_SPEED = 100;
         public static final int STEP_DISTANCE = 20;
         public static final String Kilometer = "\u516c\u91cc";// "公里";

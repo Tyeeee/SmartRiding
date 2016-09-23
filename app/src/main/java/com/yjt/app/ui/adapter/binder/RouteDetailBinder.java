@@ -14,7 +14,7 @@ import com.yjt.app.utils.ViewUtil;
 public class RouteDetailBinder extends BaseViewBinder {
 
     private RecyclerView mView;
-    private Context      mContext;
+    private Context mContext;
 
     public RouteDetailBinder(Context context, RecyclerView parent) {
         this.mContext = context;
@@ -24,7 +24,7 @@ public class RouteDetailBinder extends BaseViewBinder {
     @Override
     public void bind(RecyclerView.ViewHolder viewHolder, Object o, int position) {
         RouteDetailHolder holder = (RouteDetailHolder) viewHolder;
-        RouteDetail       detail = (RouteDetail) o;
+        RouteDetail detail = (RouteDetail) o;
         if (detail.isLineVisible() == View.VISIBLE) {
             ViewUtil.getInstance().setViewVisible(holder.vline);
         } else {

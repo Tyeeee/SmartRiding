@@ -143,8 +143,6 @@ public class NavigationTestActivity extends FragmentActivity implements AMapNavi
         super.onDestroy();
         nvMap.onDestroy();
         AMapNavi.getInstance(BaseApplication.getInstance()).stopNavi();
-        AMapNavi.getInstance(BaseApplication.getInstance()).destroy();
-        TTSUtil.getInstance().destroy();
         AMapNavi.getInstance(BaseApplication.getInstance()).removeAMapNaviListener(this);
     }
 

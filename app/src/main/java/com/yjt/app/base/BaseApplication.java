@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
+import com.amap.api.navi.AMapNavi;
 import com.iflytek.cloud.SpeechUtility;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.yjt.app.constant.Constant;
@@ -55,6 +56,8 @@ public class BaseApplication extends MultiDexApplication {
     }
 
     public void releaseReference() {
+        AMapNavi.getInstance(BaseApplication.getInstance()).destroy();
+        TTSUtil.getInstance().destroy();
         AnimationUtil.releaseInstance();
         BluetoothUtil.releaseInstance();
         CrashHandler.releaseInstance();
@@ -67,7 +70,6 @@ public class BaseApplication extends MultiDexApplication {
         SnackBarUtil.releaseInstance();
         StrictModeUtil.releaseInstance();
         ToastUtil.releaseInstance();
-        TTSUtil.releaseInstance();
         VersionUtil.releaseInstance();
         ViewUtil.releaseInstance();
         FragmentUtil.getInstance().clearCache();

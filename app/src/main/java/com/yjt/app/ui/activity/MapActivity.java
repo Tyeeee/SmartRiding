@@ -13,6 +13,7 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.overlay.WalkRouteOverlay;
+import com.amap.api.navi.AMapNavi;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.route.BusRouteResult;
 import com.amap.api.services.route.DrivePath;
@@ -22,6 +23,7 @@ import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
 import com.yjt.app.R;
+import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Temp;
 import com.yjt.app.ui.base.BaseActivity;
@@ -45,7 +47,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
     private FloatingActionButton fabNavigation;
 
     private LatLonPoint mStartPoint;
-    private LatLonPoint mPassPoint;
+    //        private LatLonPoint mPassPoint;
     private LatLonPoint mEndPoint;
 
     private AMap mAmap;
@@ -121,11 +123,11 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
             LogUtil.print("---->显示 StartLatitude:" + BundleUtil.getInstance().getDoubleData(this, Temp.START_LOCATION_LATITUDE.getContent()));
             mStartPoint = new LatLonPoint(BundleUtil.getInstance().getDoubleData(this, Temp.START_LOCATION_LATITUDE.getContent()), BundleUtil.getInstance().getDoubleData(this, Temp.START_LOCATION_LONGITUDE.getContent()));
         }
-        if (BundleUtil.getInstance().hasBundleExtraValue(this, Temp.PASS_LOCATION_LONGITUDE.getContent()) && BundleUtil.getInstance().hasBundleExtraValue(this, Temp.PASS_LOCATION_LATITUDE.getContent())) {
-            LogUtil.print("---->显示 PassLongitude:" + BundleUtil.getInstance().getDoubleData(this, Temp.PASS_LOCATION_LONGITUDE.getContent()));
-            LogUtil.print("---->显示 PassLatitude:" + BundleUtil.getInstance().getDoubleData(this, Temp.PASS_LOCATION_LATITUDE.getContent()));
-            mPassPoint = new LatLonPoint(BundleUtil.getInstance().getDoubleData(this, Temp.PASS_LOCATION_LATITUDE.getContent()), BundleUtil.getInstance().getDoubleData(this, Temp.PASS_LOCATION_LONGITUDE.getContent()));
-        }
+//        if (BundleUtil.getInstance().hasBundleExtraValue(this, Temp.PASS_LOCATION_LONGITUDE.getContent()) && BundleUtil.getInstance().hasBundleExtraValue(this, Temp.PASS_LOCATION_LATITUDE.getContent())) {
+//            LogUtil.print("---->显示 PassLongitude:" + BundleUtil.getInstance().getDoubleData(this, Temp.PASS_LOCATION_LONGITUDE.getContent()));
+//            LogUtil.print("---->显示 PassLatitude:" + BundleUtil.getInstance().getDoubleData(this, Temp.PASS_LOCATION_LATITUDE.getContent()));
+//            mPassPoint = new LatLonPoint(BundleUtil.getInstance().getDoubleData(this, Temp.PASS_LOCATION_LATITUDE.getContent()), BundleUtil.getInstance().getDoubleData(this, Temp.PASS_LOCATION_LONGITUDE.getContent()));
+//        }
         if (BundleUtil.getInstance().hasBundleExtraValue(this, Temp.END_LOCATION_LONGITUDE.getContent()) && BundleUtil.getInstance().hasBundleExtraValue(this, Temp.END_LOCATION_LATITUDE.getContent())) {
             LogUtil.print("---->显示 EndLongitude:" + BundleUtil.getInstance().getDoubleData(this, Temp.END_LOCATION_LONGITUDE.getContent()));
             LogUtil.print("---->显示 EndLatitude:" + BundleUtil.getInstance().getDoubleData(this, Temp.END_LOCATION_LATITUDE.getContent()));

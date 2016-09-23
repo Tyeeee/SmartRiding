@@ -207,7 +207,6 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
         mClient.onDestroy();
         mClient = null;
         mOption = null;
-        TTSUtil.getInstance().destroy();
     }
 
 

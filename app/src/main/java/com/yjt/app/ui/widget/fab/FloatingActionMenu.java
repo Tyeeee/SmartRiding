@@ -202,12 +202,12 @@ public class FloatingActionMenu extends ViewGroup {
         }
     }
 
-//    public void removeButton(FloatingActionButton button) {
-//        removeView(button.getLabelView());
-//        removeView(button);
-//        button.setTag(R.id.fab_label, null);
-//        mButtonsCount--;
-//    }
+    public void removeButton(FloatingActionButton button) {
+        removeView(button.getLabelView());
+        removeView(button);
+        button.setTag(R.id.fab_label, null);
+        mButtonsCount--;
+    }
 
     private int getColor(@ColorRes int id) {
         return getResources().getColor(id);
