@@ -32,24 +32,20 @@ public class CustomLeScanCallback implements BluetoothAdapter.LeScanCallback {
             mDevices.add(device);
         }
 
-        if (mHandler != null) {
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (!isScan) {
-                        isScan = !isScan;
-                        if (mHandler != null) {
-                            mHandler.sendMessage(MessageUtil.getMessage(Constant.Bluetooth.GET_DEVICE_LIST_SUCCESS, mDevices));
-                        }
-                    }
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!isScan) {
+                    isScan = !isScan;
+                    mHandler.sendMessage(MessageUtil.getMessage(Constant.Bluetooth.GET_DEVICE_LIST_SUCCESS, mDevices));
                 }
-            }, Constant.Bluetooth.SCAN_PERIOD);
-        }
+            }
+        }, Constant.Bluetooth.SCAN_PERIOD);
     }
 
     public void cancelCallback() {
         if (mHandler != null) {
-            mHandler = null;
+            mHandler.removeCallbacksAndMessages(null);
             mDevices.clear();
         }
     }

@@ -95,7 +95,7 @@ public class BaseApplication extends MultiDexApplication {
     }
 
     public void setCharacteristic(BluetoothGattCharacteristic characteristic) {
-        LogUtil.print("---->characteristic:" + characteristic);
+        LogUtil.print("---->>" + characteristic.getUuid());
         this.mCharacteristic = characteristic;
     }
 }

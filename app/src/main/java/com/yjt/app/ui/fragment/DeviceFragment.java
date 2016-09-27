@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.Toast;
 
 import com.yjt.app.R;
 import com.yjt.app.base.BaseApplication;
@@ -55,6 +56,7 @@ import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.MessageUtil;
 import com.yjt.app.utils.SharedPreferenceUtil;
 import com.yjt.app.utils.SnackBarUtil;
+import com.yjt.app.utils.ToastUtil;
 import com.yjt.app.utils.ViewUtil;
 
 import java.lang.ref.WeakReference;
@@ -107,7 +109,7 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
                                     .setCancelableOnTouchOutside(false)
                                     .showAllowingStateLoss();
                         } else {
-                            SnackBarUtil.getInstance().showSnackBar(fragment.getActivity(), fragment.getString(R.string.search_device_prompt1), Snackbar.LENGTH_SHORT, Color.WHITE);
+                            ToastUtil.getInstance().showToast(fragment.getActivity(), fragment.getString(R.string.search_device_prompt1), Toast.LENGTH_SHORT);
                         }
                         fragment.isScaning = false;
                         break;
@@ -120,7 +122,7 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
                     case Constant.Bluetooth.GET_DEVICE_LIST_ERROR:
                         BluetoothUtil.getInstance().stopScanner(fragment.mBluetoothAdapter, fragment.mScanner, fragment.mScanCallback, fragment.mLeScanCallback, true);
                         ViewUtil.getInstance().hideDialog(fragment.mDialog);
-                        SnackBarUtil.getInstance().showSnackBar(fragment.getActivity(), fragment.getString(R.string.search_device_prompt3), Snackbar.LENGTH_SHORT, Color.WHITE);
+                        ToastUtil.getInstance().showToast(fragment.getActivity(), fragment.getString(R.string.search_device_prompt3), Toast.LENGTH_SHORT);
                         fragment.isScaning = false;
                         break;
                     default:
@@ -264,7 +266,7 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
                 startScanner();
                 break;
             case Constant.ItemPosition.GENERAL_SETTING:
-                SnackBarUtil.getInstance().showSnackBar(getActivity(), "GENERAL_Device", Snackbar.LENGTH_SHORT, Color.WHITE);
+                SnackBarUtil.getInstance().showSnackBar(getActivity(), "GENERAL_SETTING", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
             case Constant.ItemPosition.DEVICE_DETECT:
                 if (SharedPreferenceUtil.getInstance().getBoolean(File.FILE_NAME.getContent(), Context.MODE_PRIVATE, File.CONNECTION_STATUS.getContent(), false)) {
@@ -273,22 +275,23 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
                             .setItems(getString(R.string.light_left)
                                     , getString(R.string.light_right)
                                     , getString(R.string.light_open)
-                                    , getString(R.string.light_close))
+                                    , getString(R.string.light_open)
+                                    , getString(R.string.dump_energy))
                             .setChoiceMode(AbsListView.CHOICE_MODE_NONE)
                             .setTargetFragment(this, Constant.RequestCode.DIALOG_LIST_DEVICE_DETECT)
                             .showAllowingStateLoss();
                 } else {
-                    SnackBarUtil.getInstance().showSnackBar(getActivity(), getString(R.string.bluetooth_status7), Snackbar.LENGTH_SHORT, Color.WHITE);
+                    ToastUtil.getInstance().showToast(getActivity(), getString(R.string.bluetooth_status7), Toast.LENGTH_SHORT);
                 }
                 break;
             case Constant.ItemPosition.CLEAR_DATA:
-                SnackBarUtil.getInstance().showSnackBar(getActivity(), "CLEAR_DATA ", Snackbar.LENGTH_SHORT, Color.WHITE);
+                SnackBarUtil.getInstance().showSnackBar(getActivity(), "CLEAR_DATA", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
             case Constant.ItemPosition.BREAK_LINK:
                 if (mService != null) {
                     mService.disconnect();
                 } else {
-                    SnackBarUtil.getInstance().showSnackBar(getActivity(), getString(R.string.bluetooth_status7), Snackbar.LENGTH_SHORT, Color.WHITE);
+                    ToastUtil.getInstance().showToast(getActivity(), getString(R.string.bluetooth_status7), Toast.LENGTH_SHORT);
                 }
                 break;
             case Constant.ItemPosition.ABOUT_DEVICE:
@@ -343,6 +346,9 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
                         case Constant.ItemPosition.LIGHT_CLOSE:
                             BluetoothUtil.getInstance().lightOperation(Constant.Bluetooth.LIGHT_CLOSE, characteristic, mService);
                             break;
+                        case Constant.ItemPosition.DUMP_ENERGY:
+                            mService.readDumpEnergy();
+                            break;
                         default:
                             break;
                     }
@@ -379,68 +385,52 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
 
     @Override
     public void onServiceDiscover(BluetoothGatt gatt) {
-        if (mService != null) {
-            List<BluetoothGattService> services = mService.getSupportedGattServices();
-            if (services != null && services.size() > 0) {
-                for (BluetoothGattService service : services) {
-                    LogUtil.print("---->service type:" + BluetoothUtil.getInstance().getServiceType(service.getType()));
-                    LogUtil.print("---->service uuid:" + service.getUuid().toString());
-                    LogUtil.print("---->includedServices size:" + service.getIncludedServices().size());
-                    for (BluetoothGattCharacteristic characteristic : service.getCharacteristics()) {
-                        LogUtil.print("---->char uuid:" + characteristic.getUuid());
-                        LogUtil.print("---->char permission:" + BluetoothUtil.getInstance().getGattCharacteristicInfo(characteristic.getPermissions(), true));
-                        LogUtil.print("---->char property:" + BluetoothUtil.getInstance().getGattCharacteristicInfo(characteristic.getProperties(), false));
-                        LogUtil.print("---->char value:" + Arrays.toString(characteristic.getValue()));
-                        switch (String.valueOf(characteristic.getUuid())) {
-                            case Constant.Bluetooth.UUID1:
-                                LogUtil.print("---->UUID1:" + service.getUuid());
-                                BaseApplication.getInstance().setCharacteristic(characteristic);
-                                break;
-                            case Constant.Bluetooth.UUID2:
-                                LogUtil.print("---->UUID2:" + service.getUuid());
-                                BaseApplication.getInstance().setCharacteristic(characteristic);
-                                break;
-                            case Constant.Bluetooth.UUID3:
-                                LogUtil.print("---->UUID3:" + service.getUuid());
-                                BaseApplication.getInstance().setCharacteristic(characteristic);
-                                break;
-                            case Constant.Bluetooth.UUID4:
-                                LogUtil.print("---->UUID4:" + service.getUuid());
-                                BaseApplication.getInstance().setCharacteristic(characteristic);
-                                break;
-                            case Constant.Bluetooth.UUID5:
-                                LogUtil.print("---->UUID5:" + service.getUuid());
-                                BaseApplication.getInstance().setCharacteristic(characteristic);
-                                break;
-                            case Constant.Bluetooth.UUID6:
-                                LogUtil.print("---->UUID6:" + service.getUuid());
-                                BaseApplication.getInstance().setCharacteristic(characteristic);
-                                break;
-                            case Constant.Bluetooth.UUID7:
-                                LogUtil.print("---->UUID7:" + service.getUuid());
-                                BaseApplication.getInstance().setCharacteristic(characteristic);
-                                break;
-                            case Constant.Bluetooth.UUID8:
-                                LogUtil.print("---->UUID8:" + service.getUuid());
-                                BaseApplication.getInstance().setCharacteristic(characteristic);
-                                break;
-                            case Constant.Bluetooth.UUID9:
-                                LogUtil.print("---->UUID9:" + service.getUuid());
-                                BaseApplication.getInstance().setCharacteristic(characteristic);
-                                break;
-                            case Constant.Bluetooth.UUIDA:
-                                LogUtil.print("---->UUIDA:" + service.getUuid());
-                                BaseApplication.getInstance().setCharacteristic(characteristic);
-                                break;
-                            default:
-                                break;
-                        }
-                        for (BluetoothGattDescriptor descriptor : characteristic.getDescriptors()) {
-                            LogUtil.print("---->desc uuid:" + descriptor.getUuid());
-                            LogUtil.print("---->desc permission:" + BluetoothUtil.getInstance().getGattCharacteristicInfo(characteristic.getPermissions(), true));
-                            LogUtil.print("---->desc value:" + Arrays.toString(descriptor.getValue()));
-                        }
-                    }
+        for (BluetoothGattService service : gatt.getServices()) {
+            LogUtil.print("---->service type:" + BluetoothUtil.getInstance().getServiceType(service.getType()));
+            LogUtil.print("---->service uuid:" + service.getUuid().toString());
+            for (BluetoothGattCharacteristic characteristic : service.getCharacteristics()) {
+                LogUtil.print("------>char uuid:" + characteristic.getUuid());
+                LogUtil.print("------>char permission:" + BluetoothUtil.getInstance().getGattCharacteristicInfo(characteristic.getPermissions(), true));
+                LogUtil.print("------>char property:" + BluetoothUtil.getInstance().getGattCharacteristicInfo(characteristic.getProperties(), false));
+                LogUtil.print("------>char value:" + Arrays.toString(characteristic.getValue()));
+                switch (String.valueOf(characteristic.getUuid())) {
+                    case Constant.Bluetooth.UUID1:
+                        BaseApplication.getInstance().setCharacteristic(characteristic);
+                        break;
+                    case Constant.Bluetooth.UUID2:
+                        BaseApplication.getInstance().setCharacteristic(characteristic);
+                        break;
+                    case Constant.Bluetooth.UUID3:
+                        BaseApplication.getInstance().setCharacteristic(characteristic);
+                        break;
+                    case Constant.Bluetooth.UUID4:
+                        BaseApplication.getInstance().setCharacteristic(characteristic);
+                        break;
+                    case Constant.Bluetooth.UUID5:
+                        BaseApplication.getInstance().setCharacteristic(characteristic);
+                        break;
+                    case Constant.Bluetooth.UUID6:
+                        BaseApplication.getInstance().setCharacteristic(characteristic);
+                        break;
+                    case Constant.Bluetooth.UUID7:
+                        BaseApplication.getInstance().setCharacteristic(characteristic);
+                        break;
+                    case Constant.Bluetooth.UUID8:
+                        BaseApplication.getInstance().setCharacteristic(characteristic);
+                        break;
+                    case Constant.Bluetooth.UUID9:
+                        BaseApplication.getInstance().setCharacteristic(characteristic);
+                        break;
+                    case Constant.Bluetooth.UUIDA:
+                        BaseApplication.getInstance().setCharacteristic(characteristic);
+                        break;
+                    default:
+                        break;
+                }
+                for (BluetoothGattDescriptor descriptor : characteristic.getDescriptors()) {
+                    LogUtil.print("-------->desc uuid:" + descriptor.getUuid());
+                    LogUtil.print("-------->desc permission:" + BluetoothUtil.getInstance().getGattCharacteristicInfo(characteristic.getPermissions(), true));
+                    LogUtil.print("-------->desc value:" + Arrays.toString(descriptor.getValue()));
                 }
             }
         }
@@ -448,12 +438,13 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
 
     @Override
     public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-        LogUtil.print("---->Device:" + gatt.getDevice().getName() + ",Read:" + characteristic.getUuid() + "__" + DataUtil.getInstance().bytesToHexString(characteristic.getValue()));
+        LogUtil.print("---->read:" + gatt.getDevice().getName() + ",status:" + status + ",uid:" + characteristic.getUuid() + "_" + DataUtil.getInstance().bytesToHexString(characteristic.getValue()));
+        LogUtil.print(Arrays.toString(characteristic.getValue()));
     }
 
     @Override
     public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-        LogUtil.print("---->Device:" + gatt.getDevice().getName() + ",Write:" + characteristic.getUuid() + "__" + DataUtil.getInstance().bytesToHexString(characteristic.getValue()));
+        LogUtil.print("---->write:" + gatt.getDevice().getName() + ",uid:" + characteristic.getUuid() + "_" + DataUtil.getInstance().bytesToHexString(characteristic.getValue()));
     }
 
 

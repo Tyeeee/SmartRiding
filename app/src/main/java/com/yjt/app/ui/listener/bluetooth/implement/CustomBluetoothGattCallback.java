@@ -16,16 +16,17 @@ import com.yjt.app.ui.listener.bluetooth.OnDataAvailableListener;
 import com.yjt.app.ui.listener.bluetooth.OnDisconnectedListener;
 import com.yjt.app.ui.listener.bluetooth.OnDisconnectingListener;
 import com.yjt.app.ui.listener.bluetooth.OnServiceDiscoverListener;
+import com.yjt.app.utils.BluetoothUtil;
 import com.yjt.app.utils.LogUtil;
 
 public class CustomBluetoothGattCallback extends BluetoothGattCallback {
 
-    private OnConnectingListener      mConnectingListener;
-    private OnConnectedListener       mConnectedListener;
-    private OnDisconnectingListener   mDisconnectingListener;
-    private OnDisconnectedListener    mDisconnectedListener;
+    private OnConnectingListener mConnectingListener;
+    private OnConnectedListener mConnectedListener;
+    private OnDisconnectingListener mDisconnectingListener;
+    private OnDisconnectedListener mDisconnectedListener;
     private OnServiceDiscoverListener mDiscoverListener;
-    private OnDataAvailableListener   mDataListener;
+    private OnDataAvailableListener mDataListener;
 
     public CustomBluetoothGattCallback(OnConnectingListener connectingListener
             , OnConnectedListener connectedListener
@@ -44,8 +45,7 @@ public class CustomBluetoothGattCallback extends BluetoothGattCallback {
     @Override
     public void onConnectionStateChange(BluetoothGatt gatt, int status,
                                         int newState) {
-        LogUtil.print("---->status:" + status);
-        LogUtil.print("---->newState:" + newState);
+        LogUtil.print("---->onConnectionStateChange");
         switch (newState) {
             case BluetoothProfile.STATE_CONNECTING:
                 LogUtil.print("---->Connecting to GATT server.");
@@ -83,6 +83,7 @@ public class CustomBluetoothGattCallback extends BluetoothGattCallback {
                     mDisconnectingListener.onDisconnecting(gatt);
                 }
                 gatt.close();
+                BluetoothUtil.getInstance().refreshCache(gatt);
                 break;
             case BluetoothProfile.STATE_DISCONNECTED:
                 LogUtil.print("---->Disconnected from GATT server.");
@@ -93,6 +94,7 @@ public class CustomBluetoothGattCallback extends BluetoothGattCallback {
                     mDisconnectedListener.onDisconnected(gatt);
                 }
                 gatt.close();
+                BluetoothUtil.getInstance().refreshCache(gatt);
                 break;
             default:
                 break;
@@ -101,6 +103,7 @@ public class CustomBluetoothGattCallback extends BluetoothGattCallback {
 
     @Override
     public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+        LogUtil.print("---->onServicesDiscovered");
         if (status == BluetoothGatt.GATT_SUCCESS
                 && mDiscoverListener != null) {
             mDiscoverListener.onServiceDiscover(gatt);
@@ -112,6 +115,7 @@ public class CustomBluetoothGattCallback extends BluetoothGattCallback {
     @Override
     public void onCharacteristicRead(BluetoothGatt gatt,
                                      BluetoothGattCharacteristic characteristic, int status) {
+        LogUtil.print("---->onCharacteristicRead");
         if (mDataListener != null) {
             mDataListener.onCharacteristicRead(gatt, characteristic, status);
         }
@@ -120,6 +124,7 @@ public class CustomBluetoothGattCallback extends BluetoothGattCallback {
     @Override
     public void onCharacteristicChanged(BluetoothGatt gatt,
                                         BluetoothGattCharacteristic characteristic) {
+        LogUtil.print("---->onCharacteristicChanged");
         if (mDataListener != null) {
             mDataListener.onCharacteristicWrite(gatt, characteristic);
         }
@@ -127,8 +132,7 @@ public class CustomBluetoothGattCallback extends BluetoothGattCallback {
 
     @Override
     public void onReadRemoteRssi(BluetoothGatt gatt, int rssi, int status) {
-        LogUtil.print("---->rssi: " + rssi);
-        LogUtil.print("---->status: " + status);
+        LogUtil.print("---->onReadRemoteRssi: " + rssi + "," + status);
         BaseApplication.getInstance().sendBroadcast(new Intent(Constant.Bluetooth.ACTION_RSSI).putExtra(Temp.RSSI_STATUS.getContent(), rssi));
     }
 }

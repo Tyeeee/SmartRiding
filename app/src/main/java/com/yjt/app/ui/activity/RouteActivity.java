@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -46,6 +47,7 @@ import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.MapUtil;
 import com.yjt.app.utils.SnackBarUtil;
 import com.yjt.app.utils.TTSUtil;
+import com.yjt.app.utils.ToastUtil;
 import com.yjt.app.utils.ViewUtil;
 
 import java.lang.ref.WeakReference;
@@ -368,7 +370,7 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
                 setResult(Constant.Common.RESULT_CODE, intent);
                 onFinish("tvEnter");
             } else {
-                SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.route_prompt2), Snackbar.LENGTH_SHORT, Color.WHITE);
+                ToastUtil.getInstance().showToast(this, getString(R.string.route_prompt2), Toast.LENGTH_SHORT);
                 setResult(Constant.Common.RESULT_CODE);
                 onFinish("LOCATION_FAILED");
             }

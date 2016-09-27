@@ -1,5 +1,7 @@
 package com.yjt.app.ui.base;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,7 +22,7 @@ import com.yjt.app.utils.ViewUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements Application.ActivityLifecycleCallbacks {
 
     protected Toolbar tbTitle;
 
@@ -109,6 +111,53 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onDestroy();
         LogUtil.d("---->" + getClass().getName(), this.getClass().getSimpleName()
                 + " onDestroy() invoked!!");
+    }
+
+    @Override
+    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+        LogUtil.d("---->" + getClass().getName(), this.getClass().getSimpleName()
+                + " onActivityCreated() invoked!!");
+    }
+
+    @Override
+    public void onActivityStarted(Activity activity) {
+        LogUtil.d("---->" + getClass().getName(), this.getClass().getSimpleName()
+                + " onActivityStarted() invoked!!");
+    }
+
+    @Override
+    public void onActivityResumed(Activity activity) {
+        LogUtil.d("---->" + getClass().getName(), this.getClass().getSimpleName()
+                + " onActivityResumed() invoked!!");
+    }
+
+    @Override
+    public void onActivityPaused(Activity activity) {
+        LogUtil.d("---->" + getClass().getName(), this.getClass().getSimpleName()
+                + " onActivityPaused() invoked!!");
+    }
+
+    @Override
+    public void onActivityStopped(Activity activity) {
+        LogUtil.d("---->" + getClass().getName(), this.getClass().getSimpleName()
+                + " onActivityStopped() invoked!!");
+    }
+
+    @Override
+    public void onActivityDestroyed(Activity activity) {
+        LogUtil.d("---->" + getClass().getName(), this.getClass().getSimpleName()
+                + " onActivityDestroyed() invoked!!");
+    }
+
+    @Override
+    public void onActivityReenter(int resultCode, Intent data) {
+        super.onActivityReenter(resultCode, data);
+    }
+
+    @Override
+    public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+        LogUtil.d("---->" + getClass().getName(), this.getClass().getSimpleName()
+                + " onActivitySaveInstanceState() invoked!!");
     }
 
     @Override

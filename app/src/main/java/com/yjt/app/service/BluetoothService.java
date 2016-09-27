@@ -28,21 +28,22 @@ import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.ToastUtil;
 
 import java.util.List;
+import java.util.UUID;
 
 
 public class BluetoothService extends Service {
 
     private BluetoothAdapter mAdapter;
-    private BluetoothGatt    mGatt;
+    private BluetoothGatt mGatt;
     //    private String           mAddress;
 
-    private OnConnectingListener      mConnectingListener;
-    private OnConnectedListener       mConnectedListener;
-    private OnDisconnectingListener   mDisconnectingListener;
-    private OnDisconnectedListener    mDisconnectedListener;
-    private OnReadRemoteRssiListener  onRssiListener;
+    private OnConnectingListener mConnectingListener;
+    private OnConnectedListener mConnectedListener;
+    private OnDisconnectingListener mDisconnectingListener;
+    private OnDisconnectedListener mDisconnectedListener;
+    private OnReadRemoteRssiListener onRssiListener;
     private OnServiceDiscoverListener mDiscoverListener;
-    private OnDataAvailableListener   mDataListener;
+    private OnDataAvailableListener mDataListener;
 
     public void setAdapter(BluetoothAdapter adapter) {
         this.mAdapter = adapter;
@@ -117,7 +118,11 @@ public class BluetoothService extends Service {
         }
     }
 
-    public void readCharacteristic(BluetoothGattCharacteristic characteristic) {
+    public void readDumpEnergy() {
+        readCharacteristic(mGatt.getService(Constant.Bluetooth.BATTERY_SERVICE_UUID).getCharacteristic(Constant.Bluetooth.BATTERY_CHARACTERISTIC_UUID));
+    }
+
+    private void readCharacteristic(BluetoothGattCharacteristic characteristic) {
         if (mAdapter != null && mGatt != null) {
             mGatt.readCharacteristic(characteristic);
         } else {
@@ -138,21 +143,38 @@ public class BluetoothService extends Service {
             LogUtil.print("---->BluetoothAdapter not initialized");
             return;
         }
-        if (enabled) {
-            LogUtil.print("---->Enable Notification");
-            mGatt.setCharacteristicNotification(characteristic, true);
-        } else {
-            LogUtil.print("---->Disable Notification");
-            mGatt.setCharacteristicNotification(characteristic, false);
+        mGatt.setCharacteristicNotification(characteristic, enabled);
+        BluetoothGattDescriptor descriptor = characteristic.getDescriptor(characteristic.getUuid());
+        if (descriptor != null) {
+            if (enabled) {
+                descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE);
+            } else {
+                descriptor.setValue(BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE);
+            }
+            mGatt.writeDescriptor(descriptor);
         }
-        BluetoothGattDescriptor descriptor = characteristic.getDescriptor(Constant.Bluetooth.CLIENT_UUID);
-        descriptor.setValue(BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE);
-        mGatt.writeDescriptor(descriptor);
     }
 
-    public List<BluetoothGattService> getSupportedGattServices() {
-        if (mGatt != null) {
-            return mGatt.getServices();
+    public BluetoothGattService getService(BluetoothGatt gatt, String serviceUUID) {
+        if (gatt != null) {
+            return gatt.getService(UUID.fromString(serviceUUID));
+        }
+        return null;
+    }
+
+    public BluetoothGattCharacteristic getCharacteristic(BluetoothGattService service, String charactUUID) {
+        if (service != null) {
+            return service.getCharacteristic(UUID.fromString(charactUUID));
+        }
+        return null;
+    }
+
+    public BluetoothGattCharacteristic getCharacteristic(BluetoothGatt gatt, String serviceUUID, String charactUUID) {
+        if (gatt != null) {
+            BluetoothGattService service = getService(gatt, serviceUUID);
+            if (service != null) {
+                return getCharacteristic(service, charactUUID);
+            }
         }
         return null;
     }

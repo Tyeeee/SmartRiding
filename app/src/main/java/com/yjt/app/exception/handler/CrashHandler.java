@@ -1,4 +1,4 @@
-package com.yjt.app.exception;
+package com.yjt.app.exception.handler;
 
 import android.os.Build;
 import android.os.Looper;
@@ -9,7 +9,6 @@ import com.yjt.app.base.BaseApplication;
 import com.yjt.app.utils.ApplicationUtil;
 import com.yjt.app.utils.DateUtil;
 import com.yjt.app.utils.DeviceInfoUtil;
-import com.yjt.app.utils.FileUtil;
 import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.ToastUtil;
 

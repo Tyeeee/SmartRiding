@@ -102,7 +102,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                         || TextUtils.equals(stvStartPoint.getText(), getString(R.string.start_point))
                         || mStartLongitude == 0
                         || mStartLatitude == 0) {
-                    SnackBarUtil.getInstance().showSnackBar(getActivity(), getString(R.string.start_point), Snackbar.LENGTH_SHORT, Color.WHITE);
+                    ToastUtil.getInstance().showToast(getActivity(), getString(R.string.start_point), Toast.LENGTH_SHORT);
                 } else if (TextUtils.isEmpty(stvEndPoint.getText())
                         || TextUtils.equals(stvEndPoint.getText(), getString(R.string.end_point))
                         || mEndLongitude == 0
@@ -113,7 +113,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                         || TextUtils.equals(stvPassPoint.getText(), stvEndPoint.getText())
                         || mStartLongitude == mEndLongitude
                         || mStartLatitude == mEndLatitude) {
-                    SnackBarUtil.getInstance().showSnackBar(getActivity(), getString(R.string.search_prompt), Snackbar.LENGTH_SHORT, Color.WHITE);
+                    ToastUtil.getInstance().showToast(getActivity(), getString(R.string.search_prompt), Toast.LENGTH_SHORT);
                 } else {
                     Bundle bundle = new Bundle();
                     bundle.putDouble(Temp.START_LOCATION_LONGITUDE.getContent(), mStartLongitude);

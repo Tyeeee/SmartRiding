@@ -112,14 +112,6 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
     }
 
     @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (SnackBarUtil.getInstance().isShown()) {
-            ViewUtil.getInstance().setSystemUiVisibility(this);
-        }
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
@@ -185,7 +177,7 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
             mStartLatLngs.add(MapUtil.getInstance().parseCoordinate(mResult.getStartPos().toString()));
             mEndLatLngs.add(MapUtil.getInstance().parseCoordinate(mResult.getTargetPos().toString()));
         } else {
-            SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.route_prompt3), Snackbar.LENGTH_SHORT);
+            ToastUtil.getInstance().showToast(this, getString(R.string.route_prompt3), Toast.LENGTH_SHORT);
         }
         setMapOptions();
         TTSUtil.getInstance().initializeSpeechSynthesizer();

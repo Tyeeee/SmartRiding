@@ -320,7 +320,7 @@ public class NavigationTestActivity extends FragmentActivity implements AMapNavi
     public void onGpsOpenStatus(boolean enabled) {
         LogUtil.print("---->onGpsOpenStatus");
         if (!enabled) {
-            SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.gps_prompt), Snackbar.LENGTH_SHORT);
+            ToastUtil.getInstance().showToast(this, getString(R.string.gps_prompt), Toast.LENGTH_SHORT);
         }
     }
 

@@ -4,7 +4,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.util.SparseArray;
 import android.view.View;
@@ -40,7 +39,6 @@ import com.yjt.app.ui.widget.fab.FloatingActionMenu;
 import com.yjt.app.utils.BundleUtil;
 import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.MapUtil;
-import com.yjt.app.utils.SnackBarUtil;
 import com.yjt.app.utils.ToastUtil;
 import com.yjt.app.utils.ViewUtil;
 
@@ -54,7 +52,6 @@ public class MapTestActivity extends BaseActivity implements View.OnClickListene
     private MapView mvMap;
     private FloatingActionMenu fabMenu;
     private FloatingActionButton fabSelection;
-    private FloatingActionButton fabDetail;
     private FloatingActionButton fabNavigation;
 
     private List<NaviLatLng> mStartLatLngs = new ArrayList<>();
@@ -139,12 +136,6 @@ public class MapTestActivity extends BaseActivity implements View.OnClickListene
         fabSelection.setColorPressedResId(R.color.gray_979797);
         fabSelection.setIcon(R.mipmap.icon_car);
         fabSelection.setTitle("选路");
-        fabDetail = new FloatingActionButton(this);
-        fabDetail.setId(R.id.fabDetail);
-        fabDetail.setSize(FloatingActionButton.SIZE_MINI);
-        fabDetail.setColorNormalResId(android.R.color.white);
-        fabDetail.setColorPressedResId(R.color.gray_979797);
-        fabDetail.setIcon(R.mipmap.icon_start);
         fabNavigation = new FloatingActionButton(this);
         fabNavigation.setId(R.id.fabNavigation);
         fabNavigation.setSize(FloatingActionButton.SIZE_MINI);
@@ -156,7 +147,6 @@ public class MapTestActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void setViewListener() {
         fabSelection.setOnClickListener(this);
-        fabDetail.setOnClickListener(this);
         fabNavigation.setOnClickListener(this);
     }
 
@@ -355,7 +345,6 @@ public class MapTestActivity extends BaseActivity implements View.OnClickListene
         } catch (AMapNaviException e) {
             e.printStackTrace();
         }
-        fabMenu.addButton(fabDetail);
         fabMenu.addButton(fabNavigation);
     }
 
@@ -385,7 +374,6 @@ public class MapTestActivity extends BaseActivity implements View.OnClickListene
         if (mRouteOverLays.size() > 1) {
             fabMenu.addButton(fabSelection);
         }
-        fabMenu.addButton(fabDetail);
         fabMenu.addButton(fabNavigation);
     }
 
@@ -415,7 +403,7 @@ public class MapTestActivity extends BaseActivity implements View.OnClickListene
     public void onGpsOpenStatus(boolean enabled) {
         LogUtil.print("---->onGpsOpenStatus");
         if (!enabled) {
-            SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.gps_prompt), Snackbar.LENGTH_SHORT);
+            ToastUtil.getInstance().showToast(this, getString(R.string.gps_prompt), Toast.LENGTH_SHORT);
         }
     }
 

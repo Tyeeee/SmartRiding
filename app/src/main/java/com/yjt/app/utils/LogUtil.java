@@ -70,4 +70,15 @@ public class LogUtil {
             System.out.println(str);
         }
     }
+
+    public static void print(Object... objects) {
+        if (BuildConfig.DEBUG && objects != null && objects.length > 0) {
+            StringBuilder builder = new StringBuilder();
+            for (Object object : objects) {
+                if (objects != null) {
+                    System.out.println(builder.append(object.toString()));
+                }
+            }
+        }
+    }
 }

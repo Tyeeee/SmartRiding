@@ -1,6 +1,7 @@
 package com.yjt.app.utils;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
@@ -15,7 +16,9 @@ import com.yjt.app.service.BluetoothService;
 import com.yjt.app.ui.listener.bluetooth.implement.CustomLeScanCallback;
 import com.yjt.app.ui.listener.bluetooth.implement.CustomScanCallback;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BluetoothUtil {
@@ -173,5 +176,33 @@ public class BluetoothUtil {
                 break;
         }
         service.writeCharacteristic(characteristic);
+    }
+
+    public boolean refreshCache(BluetoothGatt gatt) {
+        try {
+            Method refresh = gatt.getClass().getMethod("refresh");
+            if (refresh != null) {
+                boolean result = (Boolean) refresh.invoke(gatt);
+                LogUtil.print("refreshing result: " + result);
+                return result;
+            }
+        } catch (Exception e) {
+            LogUtil.print("An exception occured while refreshing device", e);
+        }
+        return false;
+    }
+
+    public void printServices(BluetoothGatt gatt) {
+        if (gatt != null) {
+            for (BluetoothGattService service : gatt.getServices()) {
+                LogUtil.print("service: " + service.getUuid());
+                for (BluetoothGattCharacteristic characteristic : service.getCharacteristics()) {
+                    LogUtil.print("     characteristic: " + characteristic.getUuid() + " value: " + Arrays.toString(characteristic.getValue()));
+                    for (BluetoothGattDescriptor descriptor : characteristic.getDescriptors()) {
+                        LogUtil.print("             descriptor: " + descriptor.getUuid() + " value: " + Arrays.toString(descriptor.getValue()));
+                    }
+                }
+            }
+        }
     }
 }

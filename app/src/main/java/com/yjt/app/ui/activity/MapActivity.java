@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.View;
+import android.widget.Toast;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.MapView;
@@ -13,7 +14,6 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.overlay.WalkRouteOverlay;
-import com.amap.api.navi.AMapNavi;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.route.BusRouteResult;
 import com.amap.api.services.route.DrivePath;
@@ -23,7 +23,6 @@ import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
 import com.yjt.app.R;
-import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Temp;
 import com.yjt.app.ui.base.BaseActivity;
@@ -34,6 +33,7 @@ import com.yjt.app.utils.BundleUtil;
 import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.MapUtil;
 import com.yjt.app.utils.SnackBarUtil;
+import com.yjt.app.utils.ToastUtil;
 import com.yjt.app.utils.ViewUtil;
 
 import java.util.List;
@@ -151,7 +151,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
             mSearch.calculateDriveRouteAsyn(new RouteSearch.DriveRouteQuery(new RouteSearch.FromAndTo(mStartPoint, mEndPoint), RouteSearch.DrivingNoHighWaySaveMoney, null, null, null));
 //            mSearch.calculateWalkRouteAsyn(new RouteSearch.WalkRouteQuery(new RouteSearch.FromAndTo(mStartPoint, mEndPoint), RouteSearch.WalkMultipath));
         } else {
-            SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.route_prompt1), Snackbar.LENGTH_SHORT);
+            ToastUtil.getInstance().showToast(this, getString(R.string.route_prompt1), Toast.LENGTH_SHORT);
         }
     }
 
@@ -306,7 +306,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
                         overlay.zoomToSpan();
                     }
                 } else {
-                    SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.route_prompt2), Snackbar.LENGTH_SHORT);
+                    ToastUtil.getInstance().showToast(this, getString(R.string.route_prompt2), Toast.LENGTH_SHORT);
                 }
             }
         } else {
