@@ -7,19 +7,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 
+import com.google.common.collect.Maps;
+
 import java.util.HashMap;
 
-/**
- * fragment处理
- *
- * @author yjt
- */
 public class FragmentHelper {
 
     private FragmentManager mFragmentManager;
-    private HashMap<String, OperationInfo> mItems = new HashMap<String, OperationInfo>();
+    private HashMap<String, OperationInfo> mItems = Maps.newHashMap();
     private OperationInfo mInfo;
-    private int           mResource;
+    private int mResource;
     private int[] mAnimations = new int[2];
 
     public FragmentHelper(FragmentManager fragmentManager, int mResource) {
@@ -99,10 +96,10 @@ public class FragmentHelper {
     }
 
     public static class OperationInfo {
-        protected Context  mContext;
-        protected String   mTag;
+        protected Context mContext;
+        protected String mTag;
         protected Class<?> mClass;
-        protected Bundle   mBundle;
+        protected Bundle mBundle;
         protected Fragment mFragment;
 
         public OperationInfo(Context context, String tag, Class<?> cls) {

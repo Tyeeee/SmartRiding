@@ -51,6 +51,7 @@ import com.yjt.app.utils.ViewUtil;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 public class NavigationActivity extends FragmentActivity implements AMapNaviListener, AMapNaviViewListener, OnPromptDialogListener {
@@ -169,7 +170,7 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
         nvMap.onCreate(savedInstanceState);
         mHandler = new NavigationHandler(this);
         mService = BaseApplication.getInstance().getService();
-        mCharacteristic = BaseApplication.getInstance().getCharacteristic();
+        mCharacteristic = BluetoothUtil.getInstance().findCharacteristic(BaseApplication.getInstance().getBluetoothGatt(), UUID.fromString(Constant.Bluetooth.UUIDA));
         LogUtil.print("---->mService:" + mService);
         LogUtil.print("---->mCharacteristic:" + mCharacteristic);
         if (BundleUtil.getInstance().hasIntentExtraValue(this, Temp.ROUTE_INFO.getContent())) {

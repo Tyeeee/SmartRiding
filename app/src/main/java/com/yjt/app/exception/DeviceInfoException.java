@@ -1,6 +1,6 @@
 package com.yjt.app.exception;
 
-public class DeviceInfoException extends Exception {
+public class DeviceInfoException extends Throwable {
 
     private static final long serialVersionUID = 7834459996713041856L;
 

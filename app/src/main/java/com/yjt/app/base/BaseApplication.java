@@ -1,5 +1,6 @@
 package com.yjt.app.base;
 
+import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.content.Context;
 import android.support.multidex.MultiDex;
@@ -33,7 +34,7 @@ public class BaseApplication extends MultiDexApplication {
 
     private static BaseApplication mApplication;
     private BluetoothService mService;
-    private BluetoothGattCharacteristic mCharacteristic;
+    private BluetoothGatt mGatt;
 
     public static BaseApplication getInstance() {
         return mApplication;
@@ -77,7 +78,7 @@ public class BaseApplication extends MultiDexApplication {
         TypefaceUtil.releaseInstance();
         ActivityUtil.removeAll();
         mService = null;
-        mCharacteristic = null;
+        mGatt = null;
         mApplication = null;
     }
 
@@ -86,16 +87,16 @@ public class BaseApplication extends MultiDexApplication {
     }
 
     public void setService(BluetoothService service) {
-        LogUtil.print("---->service:" + service);
+        LogUtil.print("---->service:" + service.toString());
         this.mService = service;
     }
 
-    public BluetoothGattCharacteristic getCharacteristic() {
-        return mCharacteristic;
+    public BluetoothGatt getBluetoothGatt() {
+        return mGatt;
     }
 
-    public void setCharacteristic(BluetoothGattCharacteristic characteristic) {
-        LogUtil.print("---->>" + characteristic.getUuid());
-        this.mCharacteristic = characteristic;
+    public void setBluetoothGatt(BluetoothGatt gatt) {
+        LogUtil.print("---->gatt:" + gatt.toString());
+        this.mGatt = gatt;
     }
 }

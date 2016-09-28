@@ -562,7 +562,16 @@ public class FloatingActionMenu extends ViewGroup {
     }
 
     public void expand() {
-        
+        if (!mExpanded) {
+            mExpanded = true;
+            mTouchDelegateGroup.setEnabled(true);
+            mCollapseAnimation.cancel();
+            mExpandAnimation.start();
+
+            if (mListener != null) {
+                mListener.onMenuExpanded();
+            }
+        }
     }
 
     public boolean isExpanded() {

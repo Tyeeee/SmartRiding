@@ -3,6 +3,7 @@ package com.yjt.app.constant;
 public enum Regex {
 
     NONE(""),
+    UNKNOWN("?"),
     CHINESE_AREA_CODE("+86"),
     PLUS("+"),
     MINUS("-"),

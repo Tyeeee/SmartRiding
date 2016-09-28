@@ -156,13 +156,11 @@ public class Constant {
     }
 
     public static class Bluetooth {
-        public static final int ERROR_CODE_TIMEOUT = 0x6001;
-        public static final int ERROR_CODE_INITIAL = 0x6002;
-        public static final int ERROR_CODE_GATT = 0x6003;
-        public static final int ERROR_CODE_OTHER = 0x6004;
-        public static final UUID CLIENT_UUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
-        public final static UUID BATTERY_SERVICE_UUID = UUID.fromString("0000180F-0000-1000-8000-00805F9B34FB");
-        public final static UUID BATTERY_CHARACTERISTIC_UUID = UUID.fromString("00002A19-0000-1000-8000-00805F9B34FB");
+        public final static String SERVICE_TYPE_PRIMARY = "PRIMARY";
+        public final static String SERVICE_TYPE_SECONDARY = "SECONDARY";
+        public static final String CLIENT_UUID = "00002902-0000-1000-8000-00805f9b34fb";
+        public final static String BATTERY_SERVICE_UUID = "0000180F-0000-1000-8000-00805F9B34FB";
+        public final static String BATTERY_CHARACTERISTIC_UUID = "00002A19-0000-1000-8000-00805F9B34FB";
         public static final String UUID1 = "0000fff1-0000-1000-8000-00805f9b34fb";
         public static final String UUID2 = "0000fff2-0000-1000-8000-00805f9b34fb";
         public static final String UUID3 = "0000fff3-0000-1000-8000-00805f9b34fb";
@@ -190,5 +188,7 @@ public class Constant {
         public static final int LIGHT_RIGHT = 0x6005;
         public static final int LIGHT_OPEN = 0x6006;
         public static final int LIGHT_CLOSE = 0x6007;
+        public static final String UNKNOWN = "unknown";
+        public static final int STATE_UNKNOWN = -9999;
     }
 }

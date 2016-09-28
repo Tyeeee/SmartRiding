@@ -119,7 +119,8 @@ public class BluetoothService extends Service {
     }
 
     public void readDumpEnergy() {
-        readCharacteristic(mGatt.getService(Constant.Bluetooth.BATTERY_SERVICE_UUID).getCharacteristic(Constant.Bluetooth.BATTERY_CHARACTERISTIC_UUID));
+        readCharacteristic(mGatt.getService(UUID.fromString(Constant.Bluetooth.BATTERY_SERVICE_UUID))
+                                   .getCharacteristic(UUID.fromString(Constant.Bluetooth.BATTERY_CHARACTERISTIC_UUID)));
     }
 
     private void readCharacteristic(BluetoothGattCharacteristic characteristic) {
