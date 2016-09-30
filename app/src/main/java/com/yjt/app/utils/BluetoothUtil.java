@@ -14,37 +14,16 @@ import android.util.SparseArray;
 import com.google.common.collect.Maps;
 import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Constant;
-import com.yjt.app.constant.Regex;
 import com.yjt.app.service.BluetoothService;
 import com.yjt.app.ui.listener.bluetooth.implement.CustomLeScanCallback;
 import com.yjt.app.ui.listener.bluetooth.implement.CustomScanCallback;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
-
-import static android.bluetooth.BluetoothGattCharacteristic.FORMAT_FLOAT;
-import static android.bluetooth.BluetoothGattCharacteristic.FORMAT_SFLOAT;
-import static android.bluetooth.BluetoothGattCharacteristic.FORMAT_SINT16;
-import static android.bluetooth.BluetoothGattCharacteristic.FORMAT_SINT32;
-import static android.bluetooth.BluetoothGattCharacteristic.FORMAT_SINT8;
-import static android.bluetooth.BluetoothGattCharacteristic.FORMAT_UINT16;
-import static android.bluetooth.BluetoothGattCharacteristic.FORMAT_UINT32;
-import static android.bluetooth.BluetoothGattCharacteristic.FORMAT_UINT8;
-import static android.bluetooth.BluetoothGattCharacteristic.PROPERTY_BROADCAST;
-import static android.bluetooth.BluetoothGattCharacteristic.PROPERTY_EXTENDED_PROPS;
-import static android.bluetooth.BluetoothGattCharacteristic.PROPERTY_INDICATE;
-import static android.bluetooth.BluetoothGattCharacteristic.PROPERTY_NOTIFY;
-import static android.bluetooth.BluetoothGattCharacteristic.PROPERTY_READ;
-import static android.bluetooth.BluetoothGattCharacteristic.PROPERTY_SIGNED_WRITE;
-import static android.bluetooth.BluetoothGattCharacteristic.PROPERTY_WRITE;
-import static android.bluetooth.BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE;
 
 public class BluetoothUtil {
 
@@ -160,23 +139,23 @@ public class BluetoothUtil {
         CHARACTERISTICS.put("00002A07-0000-1000-8000-00805F9B34FB", "Tx Power Level");
         CHARACTERISTICS.put("00002A45-0000-1000-8000-00805F9B34FB", "Unread Alert Status");
 
-        VALUE_FORMATS.put(FORMAT_FLOAT, "32bit float");
-        VALUE_FORMATS.put(FORMAT_SFLOAT, "16bit float");
-        VALUE_FORMATS.put(FORMAT_SINT16, "16bit signed int");
-        VALUE_FORMATS.put(FORMAT_SINT32, "32bit signed int");
-        VALUE_FORMATS.put(FORMAT_SINT8, "8bit signed int");
-        VALUE_FORMATS.put(FORMAT_UINT16, "16bit unsigned int");
-        VALUE_FORMATS.put(FORMAT_UINT32, "32bit unsigned int");
-        VALUE_FORMATS.put(FORMAT_UINT8, "8bit unsigned int");
+        VALUE_FORMATS.put(BluetoothGattCharacteristic.FORMAT_FLOAT, "32bit float");
+        VALUE_FORMATS.put(BluetoothGattCharacteristic.FORMAT_SFLOAT, "16bit float");
+        VALUE_FORMATS.put(BluetoothGattCharacteristic.FORMAT_SINT16, "16bit signed int");
+        VALUE_FORMATS.put(BluetoothGattCharacteristic.FORMAT_SINT32, "32bit signed int");
+        VALUE_FORMATS.put(BluetoothGattCharacteristic.FORMAT_SINT8, "8bit signed int");
+        VALUE_FORMATS.put(BluetoothGattCharacteristic.FORMAT_UINT16, "16bit unsigned int");
+        VALUE_FORMATS.put(BluetoothGattCharacteristic.FORMAT_UINT32, "32bit unsigned int");
+        VALUE_FORMATS.put(BluetoothGattCharacteristic.FORMAT_UINT8, "8bit unsigned int");
 
-        PROPERTIES.put(PROPERTY_BROADCAST, "BROADCAST \b");
-        PROPERTIES.put(PROPERTY_READ, "READ \b");
-        PROPERTIES.put(PROPERTY_WRITE_NO_RESPONSE, "WRITE NO RESPONSE \b");
-        PROPERTIES.put(PROPERTY_WRITE, "WRITE \b");
-        PROPERTIES.put(PROPERTY_NOTIFY, "NOTIFY \b");
-        PROPERTIES.put(PROPERTY_INDICATE, "INDICATE \b");
-        PROPERTIES.put(PROPERTY_SIGNED_WRITE, "SIGNED WRITE \b");
-        PROPERTIES.put(PROPERTY_EXTENDED_PROPS, "EXTENDED PROPS \b");
+        PROPERTIES.put(BluetoothGattCharacteristic.PROPERTY_BROADCAST, "BROADCAST \b");
+        PROPERTIES.put(BluetoothGattCharacteristic.PROPERTY_READ, "READ \b");
+        PROPERTIES.put(BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE, "WRITE NO RESPONSE \b");
+        PROPERTIES.put(BluetoothGattCharacteristic.PROPERTY_WRITE, "WRITE \b");
+        PROPERTIES.put(BluetoothGattCharacteristic.PROPERTY_NOTIFY, "NOTIFY \b");
+        PROPERTIES.put(BluetoothGattCharacteristic.PROPERTY_INDICATE, "INDICATE \b");
+        PROPERTIES.put(BluetoothGattCharacteristic.PROPERTY_SIGNED_WRITE, "SIGNED WRITE \b");
+        PROPERTIES.put(BluetoothGattCharacteristic.PROPERTY_EXTENDED_PROPS, "EXTENDED PROPS \b");
     }
 
     private BluetoothUtil() {
@@ -233,45 +212,6 @@ public class BluetoothUtil {
         }
     }
 
-    private String getGattCharacteristicPermission(int permission) {
-        switch (permission) {
-            case BluetoothGattDescriptor.PERMISSION_READ:
-                return "READ";
-            case BluetoothGattDescriptor.PERMISSION_READ_ENCRYPTED:
-                return "READ_ENCRYPTED";
-            case BluetoothGattDescriptor.PERMISSION_READ_ENCRYPTED_MITM:
-                return "READ_ENCRYPTED_MITM";
-            case BluetoothGattDescriptor.PERMISSION_WRITE:
-                return "WRITE";
-            case BluetoothGattDescriptor.PERMISSION_WRITE_ENCRYPTED:
-                return "WRITE_ENCRYPTED";
-            case BluetoothGattDescriptor.PERMISSION_WRITE_ENCRYPTED_MITM:
-                return "WRITE_ENCRYPTED_MITM";
-            case BluetoothGattDescriptor.PERMISSION_WRITE_SIGNED:
-                return "WRITE_SIGNED";
-            case BluetoothGattDescriptor.PERMISSION_WRITE_SIGNED_MITM:
-                return "WRITE_SIGNED_MITM";
-            default:
-                return "UNKNOWN";
-        }
-
-    }
-
-    public String getGattCharacteristicInfo(int value) {
-        String result = Regex.NONE.getRegext();
-        List<Integer> values = new ArrayList<>();
-        for (int i = 0; i < 32; i++) {
-            int b = 1 << i;
-            if ((value & b) > 0) {
-                values.add(b);
-            }
-        }
-        for (int i = 0; i < values.size(); i++) {
-            result += getGattCharacteristicPermission(values.get(i)) + Regex.VERTICAL.getRegext();
-        }
-        return result;
-    }
-
     public void lightOperation(int state, BluetoothGattCharacteristic characteristic, BluetoothService service) {
         switch (state) {
             case Constant.Bluetooth.LIGHT_LEFT:
@@ -314,12 +254,10 @@ public class BluetoothUtil {
                 LogUtil.print("---->service info:" + resolveServiceName(service.getUuid().toString()));
                 for (BluetoothGattCharacteristic characteristic : service.getCharacteristics()) {
                     LogUtil.print("------>characteristic name:" + resolveCharacteristicName(characteristic.getUuid().toString()));
-                    LogUtil.print("------>characteristic permission:" + getGattCharacteristicInfo(characteristic.getPermissions()));
                     LogUtil.print("------>characteristic property:" + getAvailableProperties(characteristic.getProperties()));
                     LogUtil.print("------>characteristic value:" + Arrays.toString(characteristic.getValue()));
                     for (BluetoothGattDescriptor descriptor : characteristic.getDescriptors()) {
                         LogUtil.print("-------->descriptor uuid:" + descriptor.getUuid());
-                        LogUtil.print("-------->descriptor permission:" + getGattCharacteristicInfo(descriptor.getPermissions()));
                         LogUtil.print("-------->descriptor value:" + Arrays.toString(descriptor.getValue()));
                     }
                 }
@@ -333,7 +271,6 @@ public class BluetoothUtil {
                 for (BluetoothGattCharacteristic characteristic : service.getCharacteristics()) {
                     if (characteristic.getUuid().equals(uuid)) {
                         LogUtil.print("---->characteristic name:" + resolveCharacteristicName(characteristic.getUuid().toString()));
-                        LogUtil.print("---->characteristic permission:" + getGattCharacteristicInfo(characteristic.getPermissions()));
                         LogUtil.print("---->characteristic property:" + getAvailableProperties(characteristic.getProperties()));
                         LogUtil.print("---->characteristic value:" + Arrays.toString(characteristic.getValue()));
                         return characteristic;
@@ -349,7 +286,7 @@ public class BluetoothUtil {
             for (BluetoothGattDescriptor descriptor : characteristic.getDescriptors()) {
                 if (descriptor.getUuid().equals(uuid)) {
                     LogUtil.print("---->descriptor uuid:" + descriptor.getUuid());
-                    LogUtil.print("---->descriptor permission:" + getGattCharacteristicInfo(characteristic.getPermissions()));
+                    LogUtil.print("---->characteristic property:" + getAvailableProperties(characteristic.getProperties()));
                     LogUtil.print("---->descriptor value:" + Arrays.toString(descriptor.getValue()));
                     return descriptor;
                 }

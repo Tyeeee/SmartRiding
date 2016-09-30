@@ -88,9 +88,7 @@ public class TTSUtil implements SynthesizerListener, AMapNaviListener, InitListe
         if (mSpeechRecognizer == null) {
             initializeSpeechRecognizer();
         }
-        if (mDialog == null) {
-            mDialog = new RecognizerDialog(activity, this);
-        }
+        mDialog = new RecognizerDialog(activity, this);
         mDialog.setListener(this);
         mDialog.show();
 //        mSpeechRecognizer.startListening(this);

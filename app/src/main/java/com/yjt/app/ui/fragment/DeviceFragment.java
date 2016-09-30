@@ -5,8 +5,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattDescriptor;
-import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.content.Context;
@@ -51,7 +49,6 @@ import com.yjt.app.ui.sticky.FixedStickyViewAdapter;
 import com.yjt.app.ui.widget.CircleImageView;
 import com.yjt.app.ui.widget.LinearLayoutDividerItemDecoration;
 import com.yjt.app.utils.BluetoothUtil;
-import com.yjt.app.utils.DataUtil;
 import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.MessageUtil;
 import com.yjt.app.utils.SharedPreferenceUtil;
@@ -393,13 +390,17 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
 
     @Override
     public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-        LogUtil.print("---->read:" + gatt.getDevice().getName() + ",status:" + status + ",uid:" + characteristic.getUuid() + "_" + DataUtil.getInstance().bytesToHexString(characteristic.getValue()));
-        LogUtil.print(Arrays.toString(characteristic.getValue()));
+        LogUtil.print("---->read:" + gatt.getDevice().getName() + ",status:" + status + ",uid:" + characteristic.getUuid() + ",value:" + Arrays.toString(characteristic.getValue()));
     }
 
     @Override
     public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-        LogUtil.print("---->write:" + gatt.getDevice().getName() + ",uid:" + characteristic.getUuid() + "_" + DataUtil.getInstance().bytesToHexString(characteristic.getValue()));
+        LogUtil.print("---->write:" + gatt.getDevice().getName() + ",uid:" + characteristic.getUuid() + ",value:" + Arrays.toString(characteristic.getValue()));
+    }
+
+    @Override
+    public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+        LogUtil.print("---->change:" + gatt.getDevice().getName() + ",uid:" + characteristic.getUuid() + ",value:" + Arrays.toString(characteristic.getValue()));
     }
 
 

@@ -30,7 +30,6 @@ import com.amap.api.services.geocoder.RegeocodeResult;
 import com.amap.api.services.help.Inputtips;
 import com.amap.api.services.help.InputtipsQuery;
 import com.amap.api.services.help.Tip;
-import com.amap.api.services.route.DrivePath;
 import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Temp;
@@ -79,7 +78,6 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
 
     private LinearLayoutManager mLayoutManager;
     private FixedStickyViewAdapter mAdapter;
-    private DrivePath mPath;
     private RouteHandler mHandler;
 
     private Inputtips mTips;

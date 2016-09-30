@@ -1,7 +1,5 @@
 package com.yjt.app.constant;
 
-import java.util.UUID;
-
 public class Constant {
 
     public static final String CHANNEL_NAME = "CHANNEL_NAME";

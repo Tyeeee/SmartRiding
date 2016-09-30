@@ -45,6 +45,7 @@ public class CustomBluetoothGattCallback extends BluetoothGattCallback {
     @Override
     public void onConnectionStateChange(BluetoothGatt gatt, int status,
                                         int newState) {
+        super.onConnectionStateChange(gatt, status, newState);
         LogUtil.print("---->onConnectionStateChange");
         switch (newState) {
             case BluetoothProfile.STATE_CONNECTING:
@@ -103,6 +104,7 @@ public class CustomBluetoothGattCallback extends BluetoothGattCallback {
 
     @Override
     public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+        super.onServicesDiscovered(gatt, status);
         LogUtil.print("---->onServicesDiscovered");
         if (status == BluetoothGatt.GATT_SUCCESS
                 && mDiscoverListener != null) {
@@ -115,6 +117,7 @@ public class CustomBluetoothGattCallback extends BluetoothGattCallback {
     @Override
     public void onCharacteristicRead(BluetoothGatt gatt,
                                      BluetoothGattCharacteristic characteristic, int status) {
+        super.onCharacteristicRead(gatt, characteristic, status);
         LogUtil.print("---->onCharacteristicRead");
         if (mDataListener != null) {
             mDataListener.onCharacteristicRead(gatt, characteristic, status);
@@ -122,16 +125,26 @@ public class CustomBluetoothGattCallback extends BluetoothGattCallback {
     }
 
     @Override
-    public void onCharacteristicChanged(BluetoothGatt gatt,
-                                        BluetoothGattCharacteristic characteristic) {
-        LogUtil.print("---->onCharacteristicChanged");
+    public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+        super.onCharacteristicWrite(gatt, characteristic, status);
         if (mDataListener != null) {
             mDataListener.onCharacteristicWrite(gatt, characteristic);
         }
     }
 
     @Override
+    public void onCharacteristicChanged(BluetoothGatt gatt,
+                                        BluetoothGattCharacteristic characteristic) {
+        super.onCharacteristicChanged(gatt, characteristic);
+        LogUtil.print("---->onCharacteristicChanged");
+        if (mDataListener != null) {
+            mDataListener.onCharacteristicChanged(gatt, characteristic);
+        }
+    }
+
+    @Override
     public void onReadRemoteRssi(BluetoothGatt gatt, int rssi, int status) {
+        super.onReadRemoteRssi(gatt, rssi, status);
         LogUtil.print("---->onReadRemoteRssi: " + rssi + "," + status);
         BaseApplication.getInstance().sendBroadcast(new Intent(Constant.Bluetooth.ACTION_RSSI).putExtra(Temp.RSSI_STATUS.getContent(), rssi));
     }

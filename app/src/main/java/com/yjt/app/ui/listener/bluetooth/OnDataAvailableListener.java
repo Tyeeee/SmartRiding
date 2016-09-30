@@ -11,4 +11,7 @@ public interface OnDataAvailableListener {
 
     void onCharacteristicWrite(BluetoothGatt gatt,
                                BluetoothGattCharacteristic characteristic);
+    
+    void onCharacteristicChanged(BluetoothGatt gatt,
+                                 BluetoothGattCharacteristic characteristic);
 }
