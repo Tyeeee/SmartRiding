@@ -21,12 +21,12 @@ import com.yjt.app.utils.LogUtil;
 
 public class CustomBluetoothGattCallback extends BluetoothGattCallback {
 
-    private OnConnectingListener mConnectingListener;
-    private OnConnectedListener mConnectedListener;
-    private OnDisconnectingListener mDisconnectingListener;
-    private OnDisconnectedListener mDisconnectedListener;
+    private OnConnectingListener      mConnectingListener;
+    private OnConnectedListener       mConnectedListener;
+    private OnDisconnectingListener   mDisconnectingListener;
+    private OnDisconnectedListener    mDisconnectedListener;
     private OnServiceDiscoverListener mDiscoverListener;
-    private OnDataAvailableListener mDataListener;
+    private OnDataAvailableListener   mDataListener;
 
     public CustomBluetoothGattCallback(OnConnectingListener connectingListener
             , OnConnectedListener connectedListener
@@ -106,8 +106,7 @@ public class CustomBluetoothGattCallback extends BluetoothGattCallback {
     public void onServicesDiscovered(BluetoothGatt gatt, int status) {
         super.onServicesDiscovered(gatt, status);
         LogUtil.print("---->onServicesDiscovered");
-        if (status == BluetoothGatt.GATT_SUCCESS
-                && mDiscoverListener != null) {
+        if (status == BluetoothGatt.GATT_SUCCESS && mDiscoverListener != null) {
             mDiscoverListener.onServiceDiscover(gatt);
         } else {
             LogUtil.print("---->onServicesDiscovered received: " + status);
@@ -119,7 +118,7 @@ public class CustomBluetoothGattCallback extends BluetoothGattCallback {
                                      BluetoothGattCharacteristic characteristic, int status) {
         super.onCharacteristicRead(gatt, characteristic, status);
         LogUtil.print("---->onCharacteristicRead");
-        if (mDataListener != null) {
+        if (status == BluetoothGatt.GATT_SUCCESS && mDataListener != null) {
             mDataListener.onCharacteristicRead(gatt, characteristic, status);
         }
     }

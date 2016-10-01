@@ -45,8 +45,8 @@ public class CustomScanCallback extends ScanCallback {
             @Override
             public void run() {
                 if (!isScan) {
-                    isScan = !isScan;
                     mHandler.sendMessage(MessageUtil.getMessage(Constant.Bluetooth.GET_DEVICE_LIST_SUCCESS, mDevices));
+                    isScan = !isScan;
                 }
             }
         }, Constant.Bluetooth.SCAN_PERIOD);

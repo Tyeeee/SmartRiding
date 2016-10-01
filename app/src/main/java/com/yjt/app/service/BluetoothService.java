@@ -34,16 +34,16 @@ import java.util.UUID;
 public class BluetoothService extends Service {
 
     private BluetoothAdapter mAdapter;
-    private BluetoothGatt mGatt;
+    private BluetoothGatt    mGatt;
     //    private String           mAddress;
 
-    private OnConnectingListener mConnectingListener;
-    private OnConnectedListener mConnectedListener;
-    private OnDisconnectingListener mDisconnectingListener;
-    private OnDisconnectedListener mDisconnectedListener;
-    private OnReadRemoteRssiListener onRssiListener;
+    private OnConnectingListener      mConnectingListener;
+    private OnConnectedListener       mConnectedListener;
+    private OnDisconnectingListener   mDisconnectingListener;
+    private OnDisconnectedListener    mDisconnectedListener;
+    private OnReadRemoteRssiListener  onRssiListener;
     private OnServiceDiscoverListener mDiscoverListener;
-    private OnDataAvailableListener mDataListener;
+    private OnDataAvailableListener   mDataListener;
 
     public void setAdapter(BluetoothAdapter adapter) {
         this.mAdapter = adapter;

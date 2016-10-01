@@ -65,18 +65,18 @@ import java.util.concurrent.Executors;
 
 public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapter.OnItemClickListener, OnDialogCancelListener, OnListDialogListener, OnServiceDiscoverListener, OnDataAvailableListener, OnConnectedListener, OnDisconnectedListener {
 
-    private CircleImageView civDevice;
-    private RecyclerView rvMenu;
-    private LinearLayoutManager mLayoutManager;
+    private CircleImageView        civDevice;
+    private RecyclerView           rvMenu;
+    private LinearLayoutManager    mLayoutManager;
     private FixedStickyViewAdapter mAdapter;
-    private DeviceHandler mHandler;
-    private DialogFragment mDialog;
+    private DeviceHandler          mHandler;
+    private DialogFragment         mDialog;
 
-    private BluetoothAdapter mBluetoothAdapter;
-    private BluetoothLeScanner mScanner;
+    private BluetoothAdapter     mBluetoothAdapter;
+    private BluetoothLeScanner   mScanner;
     private CustomLeScanCallback mLeScanCallback;
-    private CustomScanCallback mScanCallback;
-    private BluetoothService mService;
+    private CustomScanCallback   mScanCallback;
+    private BluetoothService     mService;
 
     private boolean isScaning;
 
@@ -170,7 +170,7 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
             @Override
             public void run() {
                 List<Menu> menus = new ArrayList<>();
-                Menu menu1 = new Menu();
+                Menu       menu1 = new Menu();
                 menu1.setIcon(R.mipmap.dir1);
                 menu1.setTitle(getResources().getString(R.string.search_device));
                 menus.add(menu1);
@@ -390,17 +390,32 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
 
     @Override
     public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-        LogUtil.print("---->read:" + gatt.getDevice().getName() + ",status:" + status + ",uid:" + characteristic.getUuid() + ",value:" + Arrays.toString(characteristic.getValue()));
+        LogUtil.print("---->read:" + gatt.getDevice().getName()
+                              + ",status:" + status
+                              + ",uid:" + characteristic.getUuid()
+                              + ",value type:" + BluetoothUtil.getInstance().resolveValueTypeDescription(characteristic.getProperties())
+                              + ",value:" + Arrays.toString(characteristic.getValue()));
+        if (characteristic.getUuid().equals(UUID.fromString(Constant.Bluetooth.BATTERY_CHARACTERISTIC_UUID))) {
+            LogUtil.print("---->>>>" + characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0));
+        }
     }
 
     @Override
     public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-        LogUtil.print("---->write:" + gatt.getDevice().getName() + ",uid:" + characteristic.getUuid() + ",value:" + Arrays.toString(characteristic.getValue()));
+        LogUtil.print("---->write:"
+                              + gatt.getDevice().getName()
+                              + ",uid:" + characteristic.getUuid()
+                              + ",value type:" + BluetoothUtil.getInstance().resolveValueTypeDescription(characteristic.getProperties())
+                              + ",value:" + Arrays.toString(characteristic.getValue()));
     }
 
     @Override
     public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-        LogUtil.print("---->change:" + gatt.getDevice().getName() + ",uid:" + characteristic.getUuid() + ",value:" + Arrays.toString(characteristic.getValue()));
+        LogUtil.print("---->change:"
+                              + gatt.getDevice().getName()
+                              + ",uid:" + characteristic.getUuid()
+                              + ",value type:" + BluetoothUtil.getInstance().resolveValueTypeDescription(characteristic.getProperties())
+                              + ",value:" + Arrays.toString(characteristic.getValue()));
     }
 
 

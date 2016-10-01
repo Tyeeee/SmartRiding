@@ -28,10 +28,10 @@ import java.util.UUID;
 public class BluetoothUtil {
 
     private static BluetoothUtil mBluetoothUtil;
-    private final static Map<String, String> SERVICES = Maps.newHashMap();
-    private final static Map<String, String> CHARACTERISTICS = Maps.newHashMap();
-    private final static SparseArray<String> VALUE_FORMATS = new SparseArray<>();
-    private final static LinkedHashMap<Integer, String> PROPERTIES = Maps.newLinkedHashMap();
+    private final static Map<String, String>            SERVICES        = Maps.newHashMap();
+    private final static Map<String, String>            CHARACTERISTICS = Maps.newHashMap();
+    private final static SparseArray<String>            VALUE_FORMATS   = new SparseArray<>();
+    private final static LinkedHashMap<Integer, String> PROPERTIES      = Maps.newLinkedHashMap();
 
     static {
         SERVICES.put("00001811-0000-1000-8000-00805F9B34FB", "Alert Notification Service");
@@ -255,6 +255,7 @@ public class BluetoothUtil {
                 for (BluetoothGattCharacteristic characteristic : service.getCharacteristics()) {
                     LogUtil.print("------>characteristic name:" + resolveCharacteristicName(characteristic.getUuid().toString()));
                     LogUtil.print("------>characteristic property:" + getAvailableProperties(characteristic.getProperties()));
+                    LogUtil.print("------>characteristic value type:" + resolveValueTypeDescription(characteristic.getProperties()));
                     LogUtil.print("------>characteristic value:" + Arrays.toString(characteristic.getValue()));
                     for (BluetoothGattDescriptor descriptor : characteristic.getDescriptors()) {
                         LogUtil.print("-------->descriptor uuid:" + descriptor.getUuid());
@@ -272,6 +273,7 @@ public class BluetoothUtil {
                     if (characteristic.getUuid().equals(uuid)) {
                         LogUtil.print("---->characteristic name:" + resolveCharacteristicName(characteristic.getUuid().toString()));
                         LogUtil.print("---->characteristic property:" + getAvailableProperties(characteristic.getProperties()));
+                        LogUtil.print("---->characteristic value type:" + resolveValueTypeDescription(characteristic.getProperties()));
                         LogUtil.print("---->characteristic value:" + Arrays.toString(characteristic.getValue()));
                         return characteristic;
                     }
@@ -286,7 +288,6 @@ public class BluetoothUtil {
             for (BluetoothGattDescriptor descriptor : characteristic.getDescriptors()) {
                 if (descriptor.getUuid().equals(uuid)) {
                     LogUtil.print("---->descriptor uuid:" + descriptor.getUuid());
-                    LogUtil.print("---->characteristic property:" + getAvailableProperties(characteristic.getProperties()));
                     LogUtil.print("---->descriptor value:" + Arrays.toString(descriptor.getValue()));
                     return descriptor;
                 }
@@ -327,8 +328,9 @@ public class BluetoothUtil {
     public String resolveValueTypeDescription(int properties) {
         for (int i = 0; i < VALUE_FORMATS.size(); i++) {
             int format = VALUE_FORMATS.keyAt(i);
-            if ((format & properties) != 0)
+            if ((format & properties) != 0) {
                 return VALUE_FORMATS.get(format, Constant.Bluetooth.UNKNOWN);
+            }
         }
         return Constant.Bluetooth.UNKNOWN;
     }
