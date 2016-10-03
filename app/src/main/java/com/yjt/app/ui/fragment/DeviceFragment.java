@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.content.Context;
@@ -27,7 +28,6 @@ import android.widget.Toast;
 import com.yjt.app.R;
 import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Constant;
-import com.yjt.app.constant.File;
 import com.yjt.app.entity.Menu;
 import com.yjt.app.receiver.BluetoothReceiver;
 import com.yjt.app.service.BluetoothService;
@@ -38,9 +38,10 @@ import com.yjt.app.ui.dialog.DeviceListDialog;
 import com.yjt.app.ui.dialog.ListDialog;
 import com.yjt.app.ui.dialog.ProgressDialog;
 import com.yjt.app.ui.listener.bluetooth.OnConnectedListener;
-import com.yjt.app.ui.listener.bluetooth.OnDataAvailableListener;
+import com.yjt.app.ui.listener.bluetooth.OnDataListener;
 import com.yjt.app.ui.listener.bluetooth.OnDisconnectedListener;
-import com.yjt.app.ui.listener.bluetooth.OnServiceDiscoverListener;
+import com.yjt.app.ui.listener.bluetooth.OnMtuChangedListener;
+import com.yjt.app.ui.listener.bluetooth.OnServicesDiscoveredListener;
 import com.yjt.app.ui.listener.bluetooth.implement.CustomLeScanCallback;
 import com.yjt.app.ui.listener.bluetooth.implement.CustomScanCallback;
 import com.yjt.app.ui.listener.dialog.OnDialogCancelListener;
@@ -51,7 +52,6 @@ import com.yjt.app.ui.widget.LinearLayoutDividerItemDecoration;
 import com.yjt.app.utils.BluetoothUtil;
 import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.MessageUtil;
-import com.yjt.app.utils.SharedPreferenceUtil;
 import com.yjt.app.utils.SnackBarUtil;
 import com.yjt.app.utils.ToastUtil;
 import com.yjt.app.utils.ViewUtil;
@@ -63,7 +63,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 
-public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapter.OnItemClickListener, OnDialogCancelListener, OnListDialogListener, OnServiceDiscoverListener, OnDataAvailableListener, OnConnectedListener, OnDisconnectedListener {
+public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapter.OnItemClickListener, OnDialogCancelListener, OnListDialogListener, OnServicesDiscoveredListener, OnDataListener, OnConnectedListener, OnDisconnectedListener, OnMtuChangedListener {
 
     private CircleImageView        civDevice;
     private RecyclerView           rvMenu;
@@ -215,8 +215,9 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
         if (mService != null) {
             mService.setOnConnectedListener(this);
             mService.setOnDisconnectedListener(this);
-            mService.setOnServiceDiscoverListener(this);
-            mService.setOnDataAvailableListener(this);
+            mService.setServicesDiscoveredListener(this);
+            mService.setOnDataListener(this);
+            mService.setOnMtuChangedListener(this);
         }
     }
 
@@ -261,19 +262,24 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
     public void onItemClick(int position) {
         switch (position) {
             case Constant.ItemPosition.SEARCH_DEVICE:
-                startScanner();
+                if (BaseApplication.getInstance().getBluetoothGatt() == null) {
+                    startScanner();
+                } else {
+                    ToastUtil.getInstance().showToast(getActivity(), getString(R.string.bluetooth_status4), Toast.LENGTH_SHORT);
+                }
                 break;
             case Constant.ItemPosition.GENERAL_SETTING:
                 SnackBarUtil.getInstance().showSnackBar(getActivity(), "GENERAL_SETTING", Snackbar.LENGTH_SHORT, Color.WHITE);
                 break;
             case Constant.ItemPosition.DEVICE_DETECT:
-                if (SharedPreferenceUtil.getInstance().getBoolean(File.FILE_NAME.getContent(), Context.MODE_PRIVATE, File.CONNECTION_STATUS.getContent(), false)) {
+                if (BaseApplication.getInstance().getBluetoothGatt() != null) {
                     ListDialog.createBuilder(getFragmentManager())
                             .setTitle(getString(R.string.device_detect))
                             .setItems(getString(R.string.light_left)
                                     , getString(R.string.light_right)
                                     , getString(R.string.light_open)
                                     , getString(R.string.light_close)
+                                    , getString(R.string.device_name)
                                     , getString(R.string.dump_energy))
                             .setChoiceMode(AbsListView.CHOICE_MODE_NONE)
                             .setTargetFragment(this, Constant.RequestCode.DIALOG_LIST_DEVICE_DETECT)
@@ -344,6 +350,9 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
                         case Constant.ItemPosition.LIGHT_CLOSE:
                             BluetoothUtil.getInstance().lightOperation(Constant.Bluetooth.LIGHT_CLOSE, characteristic, mService);
                             break;
+                        case Constant.ItemPosition.DEVICE_NAME:
+                            mService.readDeviceName();
+                            break;
                         case Constant.ItemPosition.DUMP_ENERGY:
                             mService.readDumpEnergy();
                             break;
@@ -382,27 +391,28 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
     }
 
     @Override
-    public void onServiceDiscover(BluetoothGatt gatt) {
-        LogUtil.print("---->onServiceDiscover");
-        BaseApplication.getInstance().setBluetoothGatt(gatt);
+    public void onServicesDiscovered(BluetoothGatt gatt) {
+        LogUtil.print("---->onServicesDiscovered");
         BluetoothUtil.getInstance().getGattInfo(gatt);
     }
 
     @Override
     public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-        LogUtil.print("---->read:" + gatt.getDevice().getName()
+        LogUtil.print("---->onCharacteristicRead:" + gatt.getDevice().getName()
                               + ",status:" + status
                               + ",uid:" + characteristic.getUuid()
                               + ",value type:" + BluetoothUtil.getInstance().resolveValueTypeDescription(characteristic.getProperties())
                               + ",value:" + Arrays.toString(characteristic.getValue()));
         if (characteristic.getUuid().equals(UUID.fromString(Constant.Bluetooth.BATTERY_CHARACTERISTIC_UUID))) {
-            LogUtil.print("---->>>>" + characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0));
+            LogUtil.print("---->battery:" + characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0));
+        } else if (characteristic.getUuid().equals(UUID.fromString(Constant.Bluetooth.DEVICE_NAME_CHARACTERISTIC_UUID))) {
+            LogUtil.print("---->name:" + characteristic.getStringValue(BluetoothGattCharacteristic.FORMAT_UINT16));
         }
     }
 
     @Override
     public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-        LogUtil.print("---->write:"
+        LogUtil.print("---->onCharacteristicWrite:"
                               + gatt.getDevice().getName()
                               + ",uid:" + characteristic.getUuid()
                               + ",value type:" + BluetoothUtil.getInstance().resolveValueTypeDescription(characteristic.getProperties())
@@ -411,31 +421,61 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
 
     @Override
     public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-        LogUtil.print("---->change:"
+        LogUtil.print("---->onCharacteristicChanged:"
                               + gatt.getDevice().getName()
                               + ",uid:" + characteristic.getUuid()
                               + ",value type:" + BluetoothUtil.getInstance().resolveValueTypeDescription(characteristic.getProperties())
                               + ",value:" + Arrays.toString(characteristic.getValue()));
     }
 
+    @Override
+    public void onDescriptorRead(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
+        LogUtil.print("---->onDescriptorRead:"
+                              + gatt.getDevice().getName()
+                              + ",uid:" + descriptor.getUuid()
+                              + ",status:" + status
+                              + ",value:" + Arrays.toString(descriptor.getValue()));
+    }
+
+    @Override
+    public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
+        LogUtil.print("---->onDescriptorWrite:"
+                              + gatt.getDevice().getName()
+                              + ",uid:" + descriptor.getUuid()
+                              + ",status:" + status
+                              + ",value:" + Arrays.toString(descriptor.getValue()));
+    }
+
+    @Override
+    public void onReliableWriteCompleted(BluetoothGatt gatt, int status) {
+        LogUtil.print("---->onReliableWriteCompleted:" + gatt.getDevice().getName() + ",status:" + status);
+    }
+
+    @Override
+    public void onMtuChanged(BluetoothGatt gatt, int mtu, int status) {
+        LogUtil.print("---->onMtuChanged:" + gatt.getDevice().getName() + ",mtu:" + mtu + ",status:" + status);
+    }
 
     @Override
     public void onConnected(BluetoothGatt gatt) {
-        LogUtil.print("---->onConnected");
+        LogUtil.print("---->onConnected:" + gatt);
         ViewUtil.getInstance().hideDialog(mDialog);
+        BaseApplication.getInstance().setBluetoothGatt(gatt);
+        BaseApplication.getInstance().setService(mService);
         mHandler.post(new Runnable() {
             @Override
             public void run() {
                 civDevice.setText(getString(R.string.bluetooth_status4));
             }
         });
-        BaseApplication.getInstance().setService(mService);
     }
 
     @Override
     public void onDisconnected(BluetoothGatt gatt) {
-        LogUtil.print("---->onDisconnected");
+        LogUtil.print("---->onDisconnected:" + gatt);
         ViewUtil.getInstance().hideDialog(mDialog);
+        BaseApplication.getInstance().setBluetoothGatt(null);
+        BaseApplication.getInstance().setService(null);
         mHandler.post(new Runnable() {
             @Override
             public void run() {

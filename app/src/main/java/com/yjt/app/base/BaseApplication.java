@@ -1,7 +1,6 @@
 package com.yjt.app.base;
 
 import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothGattCharacteristic;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
@@ -32,9 +31,9 @@ import com.yjt.app.utils.ViewUtil;
 
 public class BaseApplication extends MultiDexApplication {
 
-    private static BaseApplication mApplication;
-    private BluetoothService mService;
-    private BluetoothGatt mGatt;
+    private static BaseApplication  mApplication;
+    private        BluetoothService mService;
+    private        BluetoothGatt    mGatt;
 
     public static BaseApplication getInstance() {
         return mApplication;
@@ -50,10 +49,31 @@ public class BaseApplication extends MultiDexApplication {
     public void onCreate() {
 //        StrictModeUtil.getInstance().initialize();
         super.onCreate();
+        LogUtil.d("---->" + getClass().getName(), this.getClass().getSimpleName()
+                + " onCreate() invoked!!");
         mApplication = this;
         SpeechUtility.createUtility(this, Constant.IFLY_APP_ID);
         CrashReport.initCrashReport(getApplicationContext(), Constant.BUGLY_APP_ID, true);
 //        CrashHandler.getInstance().initialize();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        LogUtil.d("---->" + getClass().getName(), this.getClass().getSimpleName()
+                + " onLowMemory() invoked!!");
+        AnimationUtil.releaseInstance();
+        BluetoothUtil.releaseInstance();
+        CrashHandler.releaseInstance();
+        DensityUtil.releaseInstance();
+        FragmentUtil.releaseInstance();
+        InputUtil.releaseInstance();
+        NetworkUtil.releaseInstance();
+        SharedPreferenceUtil.releaseInstance();
+        SnackBarUtil.releaseInstance();
+        VersionUtil.releaseInstance();
+        ViewUtil.releaseInstance();
+        TypefaceUtil.releaseInstance();
     }
 
     public void releaseReference() {
@@ -73,12 +93,11 @@ public class BaseApplication extends MultiDexApplication {
         ToastUtil.releaseInstance();
         VersionUtil.releaseInstance();
         ViewUtil.releaseInstance();
-        FragmentUtil.getInstance().clearCache();
         FragmentUtil.releaseInstance();
         TypefaceUtil.releaseInstance();
         ActivityUtil.removeAll();
-        mService = null;
-        mGatt = null;
+        setBluetoothGatt(null);
+        setService(null);
         mApplication = null;
     }
 
@@ -87,7 +106,6 @@ public class BaseApplication extends MultiDexApplication {
     }
 
     public void setService(BluetoothService service) {
-        LogUtil.print("---->service:" + service.toString());
         this.mService = service;
     }
 
@@ -96,7 +114,6 @@ public class BaseApplication extends MultiDexApplication {
     }
 
     public void setBluetoothGatt(BluetoothGatt gatt) {
-        LogUtil.print("---->gatt:" + gatt.toString());
         this.mGatt = gatt;
     }
 }

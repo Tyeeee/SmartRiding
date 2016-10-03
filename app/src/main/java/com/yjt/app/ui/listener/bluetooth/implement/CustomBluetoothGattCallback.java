@@ -4,6 +4,7 @@ package com.yjt.app.ui.listener.bluetooth.implement;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothProfile;
 import android.content.Intent;
 
@@ -12,34 +13,38 @@ import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Temp;
 import com.yjt.app.ui.listener.bluetooth.OnConnectedListener;
 import com.yjt.app.ui.listener.bluetooth.OnConnectingListener;
-import com.yjt.app.ui.listener.bluetooth.OnDataAvailableListener;
+import com.yjt.app.ui.listener.bluetooth.OnDataListener;
 import com.yjt.app.ui.listener.bluetooth.OnDisconnectedListener;
 import com.yjt.app.ui.listener.bluetooth.OnDisconnectingListener;
-import com.yjt.app.ui.listener.bluetooth.OnServiceDiscoverListener;
+import com.yjt.app.ui.listener.bluetooth.OnMtuChangedListener;
+import com.yjt.app.ui.listener.bluetooth.OnServicesDiscoveredListener;
 import com.yjt.app.utils.BluetoothUtil;
 import com.yjt.app.utils.LogUtil;
 
 public class CustomBluetoothGattCallback extends BluetoothGattCallback {
 
-    private OnConnectingListener      mConnectingListener;
-    private OnConnectedListener       mConnectedListener;
-    private OnDisconnectingListener   mDisconnectingListener;
-    private OnDisconnectedListener    mDisconnectedListener;
-    private OnServiceDiscoverListener mDiscoverListener;
-    private OnDataAvailableListener   mDataListener;
+    private OnConnectingListener         mConnectingListener;
+    private OnConnectedListener          mConnectedListener;
+    private OnDisconnectingListener      mDisconnectingListener;
+    private OnDisconnectedListener       mDisconnectedListener;
+    private OnServicesDiscoveredListener mDiscoverListener;
+    private OnDataListener               mDataListener;
+    private OnMtuChangedListener         mMtuChangeListener;
 
     public CustomBluetoothGattCallback(OnConnectingListener connectingListener
             , OnConnectedListener connectedListener
             , OnDisconnectingListener disconnectingListener
             , OnDisconnectedListener disconnectedListener
-            , OnServiceDiscoverListener discoverListener
-            , OnDataAvailableListener dataListener) {
+            , OnServicesDiscoveredListener discoverListener
+            , OnDataListener dataListener
+            , OnMtuChangedListener mtuChangeListener) {
         this.mConnectingListener = connectingListener;
         this.mConnectedListener = connectedListener;
         this.mDisconnectingListener = disconnectingListener;
         this.mDisconnectedListener = disconnectedListener;
         this.mDiscoverListener = discoverListener;
         this.mDataListener = dataListener;
+        this.mMtuChangeListener = mtuChangeListener;
     }
 
     @Override
@@ -107,7 +112,7 @@ public class CustomBluetoothGattCallback extends BluetoothGattCallback {
         super.onServicesDiscovered(gatt, status);
         LogUtil.print("---->onServicesDiscovered");
         if (status == BluetoothGatt.GATT_SUCCESS && mDiscoverListener != null) {
-            mDiscoverListener.onServiceDiscover(gatt);
+            mDiscoverListener.onServicesDiscovered(gatt);
         } else {
             LogUtil.print("---->onServicesDiscovered received: " + status);
         }
@@ -142,9 +147,45 @@ public class CustomBluetoothGattCallback extends BluetoothGattCallback {
     }
 
     @Override
+    public void onDescriptorRead(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
+        super.onDescriptorRead(gatt, descriptor, status);
+        LogUtil.print("---->onDescriptorRead");
+        if (mDataListener != null) {
+            mDataListener.onDescriptorRead(gatt, descriptor, status);
+        }
+    }
+
+    @Override
+    public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
+        super.onDescriptorWrite(gatt, descriptor, status);
+        LogUtil.print("---->onDescriptorWrite");
+        if (mDataListener != null) {
+            mDataListener.onDescriptorWrite(gatt, descriptor, status);
+        }
+    }
+
+    @Override
+    public void onReliableWriteCompleted(BluetoothGatt gatt, int status) {
+        super.onReliableWriteCompleted(gatt, status);
+        LogUtil.print("---->onReliableWriteCompleted");
+        if (mDataListener != null) {
+            mDataListener.onReliableWriteCompleted(gatt, status);
+        }
+    }
+
+    @Override
     public void onReadRemoteRssi(BluetoothGatt gatt, int rssi, int status) {
         super.onReadRemoteRssi(gatt, rssi, status);
         LogUtil.print("---->onReadRemoteRssi: " + rssi + "," + status);
         BaseApplication.getInstance().sendBroadcast(new Intent(Constant.Bluetooth.ACTION_RSSI).putExtra(Temp.RSSI_STATUS.getContent(), rssi));
+    }
+
+    @Override
+    public void onMtuChanged(BluetoothGatt gatt, int mtu, int status) {
+        super.onMtuChanged(gatt, mtu, status);
+        LogUtil.print("---->onMtuChanged");
+        if (mMtuChangeListener != null) {
+            mMtuChangeListener.onMtuChanged(gatt, mtu, status);
+        }
     }
 }

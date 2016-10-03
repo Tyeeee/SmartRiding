@@ -7,8 +7,7 @@ public enum File {
     TEMP_FOLDER_NAME("temp"),
     FILE_AUTHORITY(".content.fileprovider"),
     PICTURE_URI("picture_uri"),
-    PICTURE_PATH("picture_path"),
-    CONNECTION_STATUS("connection_status");
+    PICTURE_PATH("picture_path");
 
     private String mContent;
 

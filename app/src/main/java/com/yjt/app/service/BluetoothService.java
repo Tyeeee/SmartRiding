@@ -18,16 +18,16 @@ import com.yjt.app.base.BaseApplication;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.ui.listener.bluetooth.OnConnectedListener;
 import com.yjt.app.ui.listener.bluetooth.OnConnectingListener;
-import com.yjt.app.ui.listener.bluetooth.OnDataAvailableListener;
+import com.yjt.app.ui.listener.bluetooth.OnDataListener;
 import com.yjt.app.ui.listener.bluetooth.OnDisconnectedListener;
 import com.yjt.app.ui.listener.bluetooth.OnDisconnectingListener;
+import com.yjt.app.ui.listener.bluetooth.OnMtuChangedListener;
 import com.yjt.app.ui.listener.bluetooth.OnReadRemoteRssiListener;
-import com.yjt.app.ui.listener.bluetooth.OnServiceDiscoverListener;
+import com.yjt.app.ui.listener.bluetooth.OnServicesDiscoveredListener;
 import com.yjt.app.ui.listener.bluetooth.implement.CustomBluetoothGattCallback;
 import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.ToastUtil;
 
-import java.util.List;
 import java.util.UUID;
 
 
@@ -37,13 +37,14 @@ public class BluetoothService extends Service {
     private BluetoothGatt    mGatt;
     //    private String           mAddress;
 
-    private OnConnectingListener      mConnectingListener;
-    private OnConnectedListener       mConnectedListener;
-    private OnDisconnectingListener   mDisconnectingListener;
-    private OnDisconnectedListener    mDisconnectedListener;
-    private OnReadRemoteRssiListener  onRssiListener;
-    private OnServiceDiscoverListener mDiscoverListener;
-    private OnDataAvailableListener   mDataListener;
+    private OnConnectingListener         mConnectingListener;
+    private OnConnectedListener          mConnectedListener;
+    private OnDisconnectingListener      mDisconnectingListener;
+    private OnDisconnectedListener       mDisconnectedListener;
+    private OnReadRemoteRssiListener     onRssiListener;
+    private OnServicesDiscoveredListener mDiscoverListener;
+    private OnDataListener               mDataListener;
+    private OnMtuChangedListener         mMtuChangedListener;
 
     public void setAdapter(BluetoothAdapter adapter) {
         this.mAdapter = adapter;
@@ -69,12 +70,16 @@ public class BluetoothService extends Service {
         this.onRssiListener = listener;
     }
 
-    public void setOnServiceDiscoverListener(OnServiceDiscoverListener listener) {
+    public void setServicesDiscoveredListener(OnServicesDiscoveredListener listener) {
         this.mDiscoverListener = listener;
     }
 
-    public void setOnDataAvailableListener(OnDataAvailableListener listener) {
+    public void setOnDataListener(OnDataListener listener) {
         this.mDataListener = listener;
+    }
+
+    public void setOnMtuChangedListener(OnMtuChangedListener mtuChangedListener) {
+        this.mMtuChangedListener = mtuChangedListener;
     }
 
     @Nullable
@@ -100,7 +105,8 @@ public class BluetoothService extends Service {
                             , mDisconnectingListener
                             , mDisconnectedListener
                             , mDiscoverListener
-                            , mDataListener));
+                            , mDataListener
+                            , mMtuChangedListener));
 //            mAddress = address;
             return true;
         } else {
@@ -116,6 +122,11 @@ public class BluetoothService extends Service {
         } else {
             LogUtil.print("---->BluetoothAdapter not initialized");
         }
+    }
+
+    public void readDeviceName() {
+        readCharacteristic(mGatt.getService(UUID.fromString(Constant.Bluetooth.GENERIC_ACCESS_SERVICE_UUID))
+                                   .getCharacteristic(UUID.fromString(Constant.Bluetooth.DEVICE_NAME_CHARACTERISTIC_UUID)));
     }
 
     public void readDumpEnergy() {
