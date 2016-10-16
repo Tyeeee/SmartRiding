@@ -45,8 +45,9 @@ public class Constant {
         public static final int LIGHT_RIGHT              = 1;
         public static final int LIGHT_OPEN               = 2;
         public static final int LIGHT_CLOSE              = 3;
-        public static final int DEVICE_NAME              = 4;
-        public static final int DUMP_ENERGY              = 5;
+        public static final int READ_DEVICE_NAME              = 4;
+        public static final int WRITE_DEVICE_NAME              = 5;
+        public static final int DUMP_ENERGY              = 6;
     }
 
     public static class ItemType {
@@ -191,5 +192,7 @@ public class Constant {
         public static final int    LIGHT_CLOSE                     = 0x6007;
         public static final String UNKNOWN                         = "unknown";
         public static final int    STATE_UNKNOWN                   = -9999;
+        //        public static final byte[] DEVICE_NAME                     = new byte[]{65, 109, 111, 82, 103, 98, 76, 105, 103, 104, 116};
+        public static final byte[] DEVICE_NAME                     = new byte[]{76, 105, 103, 104, 116, 65, 109, 111, 82, 103, 98};
     }
 }

@@ -1,6 +1,8 @@
 package com.yjt.app.utils;
 
 
+import java.util.Random;
+
 public class DataUtil {
 
     private static DataUtil mDataUtil;
@@ -47,7 +49,7 @@ public class DataUtil {
     }
 
     private char[] encodeHex(byte[] data, char[] toDigits) {
-        int l = data.length;
+        int    l   = data.length;
         char[] out = new char[l << 1];
         for (int i = 0, j = 0; i < l; i++) {
             out[j++] = toDigits[(0xF0 & data[i]) >>> 4];
@@ -87,7 +89,7 @@ public class DataUtil {
             return null;
         }
         for (int i = 0; i < src.length; i++) {
-            int v = src[i] & 0xFF;
+            int    v  = src[i] & 0xFF;
             String hv = Integer.toHexString(v);
             if (hv.length() < 2) {
                 stringBuilder.append(0);
@@ -98,9 +100,9 @@ public class DataUtil {
     }
 
     public byte[] hexStringToByte(String hex) {
-        int len = (hex.length() / 2);
+        int    len    = (hex.length() / 2);
         byte[] result = new byte[len];
-        char[] chars = hex.toCharArray();
+        char[] chars  = hex.toCharArray();
         for (int i = 0; i < len; i++) {
             int pos = i * 2;
             result[i] = (byte) (toByte(chars[pos]) << 4 | toByte(chars[pos + 1]));
@@ -125,5 +127,9 @@ public class DataUtil {
 
     private byte toByte(char c) {
         return (byte) "0123456789ABCDEF".indexOf(c);
+    }
+
+    public int randInt(int min, int max) {
+        return new Random().nextInt((max - min) + 1) + min;
     }
 }

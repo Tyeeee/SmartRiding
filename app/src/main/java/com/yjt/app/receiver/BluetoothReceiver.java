@@ -65,9 +65,6 @@ public class BluetoothReceiver extends BroadcastReceiver {
                         break;
                 }
                 break;
-            case Constant.Bluetooth.ACTION_RSSI:
-                ToastUtil.getInstance().showToast(context, BundleUtil.getInstance().getIntData(intent, Temp.RSSI_STATUS.getContent()), Toast.LENGTH_SHORT);
-                break;
             case BluetoothAdapter.ACTION_STATE_CHANGED:
                 switch (BundleUtil.getInstance().getIntData(intent, BluetoothAdapter.EXTRA_STATE)) {
                     case BluetoothAdapter.STATE_TURNING_ON:
@@ -85,6 +82,9 @@ public class BluetoothReceiver extends BroadcastReceiver {
                     default:
                         break;
                 }
+                break;
+            case Constant.Bluetooth.ACTION_RSSI:
+                ToastUtil.getInstance().showToast(context, BundleUtil.getInstance().getIntData(intent, Temp.RSSI_STATUS.getContent()), Toast.LENGTH_SHORT);
                 break;
             default:
                 break;

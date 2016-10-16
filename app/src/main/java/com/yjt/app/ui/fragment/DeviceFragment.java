@@ -41,6 +41,7 @@ import com.yjt.app.ui.listener.bluetooth.OnConnectedListener;
 import com.yjt.app.ui.listener.bluetooth.OnDataListener;
 import com.yjt.app.ui.listener.bluetooth.OnDisconnectedListener;
 import com.yjt.app.ui.listener.bluetooth.OnMtuChangedListener;
+import com.yjt.app.ui.listener.bluetooth.OnReadRemoteRssiListener;
 import com.yjt.app.ui.listener.bluetooth.OnServicesDiscoveredListener;
 import com.yjt.app.ui.listener.bluetooth.implement.CustomLeScanCallback;
 import com.yjt.app.ui.listener.bluetooth.implement.CustomScanCallback;
@@ -63,7 +64,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 
-public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapter.OnItemClickListener, OnDialogCancelListener, OnListDialogListener, OnServicesDiscoveredListener, OnDataListener, OnConnectedListener, OnDisconnectedListener, OnMtuChangedListener {
+public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapter.OnItemClickListener, OnDialogCancelListener, OnListDialogListener, OnServicesDiscoveredListener, OnDataListener, OnConnectedListener, OnDisconnectedListener, OnMtuChangedListener, OnReadRemoteRssiListener {
 
     private CircleImageView        civDevice;
     private RecyclerView           rvMenu;
@@ -216,6 +217,7 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
             mService.setOnConnectedListener(this);
             mService.setOnDisconnectedListener(this);
             mService.setServicesDiscoveredListener(this);
+            mService.setOnReadRemoteRssiListener(this);
             mService.setOnDataListener(this);
             mService.setOnMtuChangedListener(this);
         }
@@ -279,7 +281,8 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
                                     , getString(R.string.light_right)
                                     , getString(R.string.light_open)
                                     , getString(R.string.light_close)
-                                    , getString(R.string.device_name)
+                                    , getString(R.string.read_device_name)
+                                    , getString(R.string.write_device_name)
                                     , getString(R.string.dump_energy))
                             .setChoiceMode(AbsListView.CHOICE_MODE_NONE)
                             .setTargetFragment(this, Constant.RequestCode.DIALOG_LIST_DEVICE_DETECT)
@@ -337,21 +340,22 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
                 if (mService != null && characteristic != null) {
                     switch (number) {
                         case Constant.ItemPosition.LIGHT_LEFT:
-                            BluetoothUtil.getInstance().lightOperation(Constant.Bluetooth.LIGHT_LEFT, characteristic, mService);
+                            mService.writeCharacteristic(characteristic, Constant.Bluetooth.DATA_LIGHT_LEFT);
                             break;
                         case Constant.ItemPosition.LIGHT_RIGHT:
-                            BluetoothUtil.getInstance().lightOperation(Constant.Bluetooth.LIGHT_RIGHT, characteristic, mService);
+                            mService.writeCharacteristic(characteristic, Constant.Bluetooth.DATA_LIGHT_RIGHT);
                             break;
                         case Constant.ItemPosition.LIGHT_OPEN:
-                            characteristic.setValue(Constant.Bluetooth.DATA_LIGHT_OPEN);
-                            mService.writeCharacteristic(characteristic);
-                            BluetoothUtil.getInstance().lightOperation(Constant.Bluetooth.LIGHT_OPEN, characteristic, mService);
+                            mService.writeCharacteristic(characteristic, Constant.Bluetooth.DATA_LIGHT_OPEN);
                             break;
                         case Constant.ItemPosition.LIGHT_CLOSE:
-                            BluetoothUtil.getInstance().lightOperation(Constant.Bluetooth.LIGHT_CLOSE, characteristic, mService);
+                            mService.writeCharacteristic(characteristic, Constant.Bluetooth.DATA_LIGHT_CLOSE);
                             break;
-                        case Constant.ItemPosition.DEVICE_NAME:
+                        case Constant.ItemPosition.READ_DEVICE_NAME:
                             mService.readDeviceName();
+                            break;
+                        case Constant.ItemPosition.WRITE_DEVICE_NAME:
+                            mService.writeCharacteristic(characteristic, Constant.Bluetooth.DEVICE_NAME);
                             break;
                         case Constant.ItemPosition.DUMP_ENERGY:
                             mService.readDumpEnergy();
@@ -396,6 +400,13 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
         BluetoothUtil.getInstance().getGattInfo(gatt);
     }
 
+
+    @Override
+    public void onReadRemoteRssi(BluetoothGatt gatt, int rssi, int status) {
+        LogUtil.print("---->onServicesDiscovered");
+    }
+
+
     @Override
     public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
         LogUtil.print("---->onCharacteristicRead:" + gatt.getDevice().getName()
@@ -404,9 +415,9 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
                               + ",value type:" + BluetoothUtil.getInstance().resolveValueTypeDescription(characteristic.getProperties())
                               + ",value:" + Arrays.toString(characteristic.getValue()));
         if (characteristic.getUuid().equals(UUID.fromString(Constant.Bluetooth.BATTERY_CHARACTERISTIC_UUID))) {
-            LogUtil.print("---->battery:" + characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0));
+            ToastUtil.getInstance().showToast(getActivity(), "battery:" + characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0), Toast.LENGTH_SHORT);
         } else if (characteristic.getUuid().equals(UUID.fromString(Constant.Bluetooth.DEVICE_NAME_CHARACTERISTIC_UUID))) {
-            LogUtil.print("---->name:" + characteristic.getStringValue(BluetoothGattCharacteristic.FORMAT_UINT16));
+            ToastUtil.getInstance().showToast(getActivity(), "name:" + new String(characteristic.getValue()), Toast.LENGTH_SHORT);
         }
     }
 
@@ -474,6 +485,8 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
     public void onDisconnected(BluetoothGatt gatt) {
         LogUtil.print("---->onDisconnected:" + gatt);
         ViewUtil.getInstance().hideDialog(mDialog);
+        gatt.close();
+        BluetoothUtil.getInstance().refreshCache(gatt);
         BaseApplication.getInstance().setBluetoothGatt(null);
         BaseApplication.getInstance().setService(null);
         mHandler.post(new Runnable() {

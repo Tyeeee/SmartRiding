@@ -20,6 +20,7 @@ public enum Temp {
     DATE("date"),
     MINIMUM_NUMBER("minimum_number"),
     MAXIMUM_NUMBER("maximum_number"),
+    CONTENT("content"),
     CONNECTION_STATUS("connection_status"),
     RSSI_STATUS("rssi_status"),
     TIME_FORMAT("time_format"),

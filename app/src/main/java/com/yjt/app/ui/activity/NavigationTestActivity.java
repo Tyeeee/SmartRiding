@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
@@ -52,7 +51,7 @@ public class NavigationTestActivity extends FragmentActivity implements AMapNavi
 
     private AMapNaviView nvMap;
 
-    private BluetoothService mService;
+    private BluetoothService            mService;
     private BluetoothGattCharacteristic mCharacteristic;
 
     private NavigationHandler mHandler;
@@ -74,25 +73,25 @@ public class NavigationTestActivity extends FragmentActivity implements AMapNavi
                     case Constant.Bluetooth.LIGHT_OPEN:
                         if (activity.mService != null && activity.mCharacteristic != null) {
                             LogUtil.print("---->LIGHT_OPEN");
-                            BluetoothUtil.getInstance().lightOperation(Constant.Bluetooth.LIGHT_OPEN, activity.mCharacteristic, activity.mService);
+                            activity.mService.writeCharacteristic(activity.mCharacteristic, Constant.Bluetooth.DATA_LIGHT_OPEN);
                         }
                         break;
                     case Constant.Bluetooth.LIGHT_CLOSE:
                         if (activity.mService != null && activity.mCharacteristic != null) {
                             LogUtil.print("---->LIGHT_CLOSE");
-                            BluetoothUtil.getInstance().lightOperation(Constant.Bluetooth.LIGHT_CLOSE, activity.mCharacteristic, activity.mService);
+                            activity.mService.writeCharacteristic(activity.mCharacteristic, Constant.Bluetooth.DATA_LIGHT_CLOSE);
                         }
                         break;
                     case Constant.Bluetooth.LIGHT_LEFT:
                         if (activity.mService != null && activity.mCharacteristic != null) {
                             LogUtil.print("---->LIGHT_LEFT");
-                            BluetoothUtil.getInstance().lightOperation(Constant.Bluetooth.LIGHT_LEFT, activity.mCharacteristic, activity.mService);
+                            activity.mService.writeCharacteristic(activity.mCharacteristic, Constant.Bluetooth.DATA_LIGHT_LEFT);
                         }
                         break;
                     case Constant.Bluetooth.LIGHT_RIGHT:
                         if (activity.mService != null && activity.mCharacteristic != null) {
                             LogUtil.print("---->LIGHT_RIGHT");
-                            BluetoothUtil.getInstance().lightOperation(Constant.Bluetooth.LIGHT_RIGHT, activity.mCharacteristic, activity.mService);
+                            activity.mService.writeCharacteristic(activity.mCharacteristic, Constant.Bluetooth.DATA_LIGHT_RIGHT);
                         }
                         break;
                     default:

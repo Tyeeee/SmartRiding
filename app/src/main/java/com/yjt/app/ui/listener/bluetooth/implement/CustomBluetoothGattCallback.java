@@ -17,6 +17,7 @@ import com.yjt.app.ui.listener.bluetooth.OnDataListener;
 import com.yjt.app.ui.listener.bluetooth.OnDisconnectedListener;
 import com.yjt.app.ui.listener.bluetooth.OnDisconnectingListener;
 import com.yjt.app.ui.listener.bluetooth.OnMtuChangedListener;
+import com.yjt.app.ui.listener.bluetooth.OnReadRemoteRssiListener;
 import com.yjt.app.ui.listener.bluetooth.OnServicesDiscoveredListener;
 import com.yjt.app.utils.BluetoothUtil;
 import com.yjt.app.utils.LogUtil;
@@ -28,6 +29,7 @@ public class CustomBluetoothGattCallback extends BluetoothGattCallback {
     private OnDisconnectingListener      mDisconnectingListener;
     private OnDisconnectedListener       mDisconnectedListener;
     private OnServicesDiscoveredListener mDiscoverListener;
+    private OnReadRemoteRssiListener     mReadRemoteRssiListener;
     private OnDataListener               mDataListener;
     private OnMtuChangedListener         mMtuChangeListener;
 
@@ -36,6 +38,7 @@ public class CustomBluetoothGattCallback extends BluetoothGattCallback {
             , OnDisconnectingListener disconnectingListener
             , OnDisconnectedListener disconnectedListener
             , OnServicesDiscoveredListener discoverListener
+            , OnReadRemoteRssiListener readRemoteRssiListener
             , OnDataListener dataListener
             , OnMtuChangedListener mtuChangeListener) {
         this.mConnectingListener = connectingListener;
@@ -43,6 +46,7 @@ public class CustomBluetoothGattCallback extends BluetoothGattCallback {
         this.mDisconnectingListener = disconnectingListener;
         this.mDisconnectedListener = disconnectedListener;
         this.mDiscoverListener = discoverListener;
+        this.mReadRemoteRssiListener = readRemoteRssiListener;
         this.mDataListener = dataListener;
         this.mMtuChangeListener = mtuChangeListener;
     }
@@ -88,8 +92,6 @@ public class CustomBluetoothGattCallback extends BluetoothGattCallback {
                 if (mDisconnectingListener != null) {
                     mDisconnectingListener.onDisconnecting(gatt);
                 }
-                gatt.close();
-                BluetoothUtil.getInstance().refreshCache(gatt);
                 break;
             case BluetoothProfile.STATE_DISCONNECTED:
                 LogUtil.print("---->Disconnected from GATT server.");
@@ -99,8 +101,8 @@ public class CustomBluetoothGattCallback extends BluetoothGattCallback {
                 if (mDisconnectedListener != null) {
                     mDisconnectedListener.onDisconnected(gatt);
                 }
-                gatt.close();
-                BluetoothUtil.getInstance().refreshCache(gatt);
+//                gatt.close();
+//                BluetoothUtil.getInstance().refreshCache(gatt);
                 break;
             default:
                 break;
@@ -177,6 +179,9 @@ public class CustomBluetoothGattCallback extends BluetoothGattCallback {
     public void onReadRemoteRssi(BluetoothGatt gatt, int rssi, int status) {
         super.onReadRemoteRssi(gatt, rssi, status);
         LogUtil.print("---->onReadRemoteRssi: " + rssi + "," + status);
+        if (mReadRemoteRssiListener != null) {
+            mReadRemoteRssiListener.onReadRemoteRssi(gatt, rssi, status);
+        }
         BaseApplication.getInstance().sendBroadcast(new Intent(Constant.Bluetooth.ACTION_RSSI).putExtra(Temp.RSSI_STATUS.getContent(), rssi));
     }
 

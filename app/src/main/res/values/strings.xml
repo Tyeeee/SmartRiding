@@ -21,7 +21,8 @@
     <string name="light_right">右转灯</string>
     <string name="light_open">全开</string>
     <string name="light_close">全关</string>
-    <string name="device_name">设备名称</string>
+    <string name="read_device_name">读取设备名称</string>
+    <string name="write_device_name">写入设备名称</string>
     <string name="dump_energy">剩余电量</string>
     <string name="clear_data">清除数据</string>
     <string name="break_link">断开连接</string>

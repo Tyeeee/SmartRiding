@@ -57,12 +57,12 @@ import java.util.UUID;
 public class NavigationActivity extends FragmentActivity implements AMapNaviListener, AMapNaviViewListener, OnPromptDialogListener {
 
     private AMapNaviView nvMap;
-    private RouteResult mResult;
+    private RouteResult  mResult;
     private List<NaviLatLng> mStartLatLngs = new ArrayList<>();
-    private List<NaviLatLng> mPassLatLngs = new ArrayList<>();
-    private List<NaviLatLng> mEndLatLngs = new ArrayList<>();
+    private List<NaviLatLng> mPassLatLngs  = new ArrayList<>();
+    private List<NaviLatLng> mEndLatLngs   = new ArrayList<>();
 
-    private BluetoothService mService;
+    private BluetoothService            mService;
     private BluetoothGattCharacteristic mCharacteristic;
 
     private NavigationHandler mHandler;
@@ -84,25 +84,25 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
                     case Constant.Bluetooth.LIGHT_OPEN:
                         if (activity.mService != null && activity.mCharacteristic != null) {
                             LogUtil.print("---->LIGHT_OPEN");
-                            BluetoothUtil.getInstance().lightOperation(Constant.Bluetooth.LIGHT_OPEN, activity.mCharacteristic, activity.mService);
+                            activity.mService.writeCharacteristic(activity.mCharacteristic, Constant.Bluetooth.DATA_LIGHT_OPEN);
                         }
                         break;
                     case Constant.Bluetooth.LIGHT_CLOSE:
                         if (activity.mService != null && activity.mCharacteristic != null) {
                             LogUtil.print("---->LIGHT_CLOSE");
-                            BluetoothUtil.getInstance().lightOperation(Constant.Bluetooth.LIGHT_CLOSE, activity.mCharacteristic, activity.mService);
+                            activity.mService.writeCharacteristic(activity.mCharacteristic, Constant.Bluetooth.DATA_LIGHT_CLOSE);
                         }
                         break;
                     case Constant.Bluetooth.LIGHT_LEFT:
                         if (activity.mService != null && activity.mCharacteristic != null) {
                             LogUtil.print("---->LIGHT_LEFT");
-                            BluetoothUtil.getInstance().lightOperation(Constant.Bluetooth.LIGHT_LEFT, activity.mCharacteristic, activity.mService);
+                            activity.mService.writeCharacteristic(activity.mCharacteristic, Constant.Bluetooth.DATA_LIGHT_LEFT);
                         }
                         break;
                     case Constant.Bluetooth.LIGHT_RIGHT:
                         if (activity.mService != null && activity.mCharacteristic != null) {
                             LogUtil.print("---->LIGHT_RIGHT");
-                            BluetoothUtil.getInstance().lightOperation(Constant.Bluetooth.LIGHT_RIGHT, activity.mCharacteristic, activity.mService);
+                            activity.mService.writeCharacteristic(activity.mCharacteristic, Constant.Bluetooth.DATA_LIGHT_RIGHT);
                         }
                         break;
                     default:
