@@ -66,18 +66,18 @@ import java.util.concurrent.Executors;
 
 public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapter.OnItemClickListener, OnDialogCancelListener, OnListDialogListener, OnServicesDiscoveredListener, OnDataListener, OnConnectedListener, OnDisconnectedListener, OnMtuChangedListener, OnReadRemoteRssiListener {
 
-    private CircleImageView        civDevice;
-    private RecyclerView           rvMenu;
-    private LinearLayoutManager    mLayoutManager;
+    private CircleImageView civDevice;
+    private RecyclerView rvMenu;
+    private LinearLayoutManager mLayoutManager;
     private FixedStickyViewAdapter mAdapter;
-    private DeviceHandler          mHandler;
-    private DialogFragment         mDialog;
+    private DeviceHandler mHandler;
+    private DialogFragment mDialog;
 
-    private BluetoothAdapter     mBluetoothAdapter;
-    private BluetoothLeScanner   mScanner;
+    private BluetoothAdapter mBluetoothAdapter;
+    private BluetoothLeScanner mScanner;
     private CustomLeScanCallback mLeScanCallback;
-    private CustomScanCallback   mScanCallback;
-    private BluetoothService     mService;
+    private CustomScanCallback mScanCallback;
+    private BluetoothService mService;
 
     private boolean isScaning;
 
@@ -171,7 +171,7 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
             @Override
             public void run() {
                 List<Menu> menus = new ArrayList<>();
-                Menu       menu1 = new Menu();
+                Menu menu1 = new Menu();
                 menu1.setIcon(R.mipmap.dir1);
                 menu1.setTitle(getResources().getString(R.string.search_device));
                 menus.add(menu1);
@@ -355,7 +355,7 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
                             mService.readDeviceName();
                             break;
                         case Constant.ItemPosition.WRITE_DEVICE_NAME:
-                            mService.writeCharacteristic(characteristic, Constant.Bluetooth.DEVICE_NAME);
+                            mService.writeDeviceName(Constant.Bluetooth.DEVICE_NAME.getBytes());
                             break;
                         case Constant.ItemPosition.DUMP_ENERGY:
                             mService.readDumpEnergy();
@@ -423,6 +423,7 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
 
     @Override
     public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+        ToastUtil.getInstance().showToast(getActivity(), "value:" + new String(characteristic.getValue()), Toast.LENGTH_SHORT);
         LogUtil.print("---->onCharacteristicWrite:"
                               + gatt.getDevice().getName()
                               + ",uid:" + characteristic.getUuid()

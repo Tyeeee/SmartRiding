@@ -25,6 +25,7 @@ import com.yjt.app.ui.listener.bluetooth.OnMtuChangedListener;
 import com.yjt.app.ui.listener.bluetooth.OnReadRemoteRssiListener;
 import com.yjt.app.ui.listener.bluetooth.OnServicesDiscoveredListener;
 import com.yjt.app.ui.listener.bluetooth.implement.CustomBluetoothGattCallback;
+import com.yjt.app.utils.BluetoothUtil;
 import com.yjt.app.utils.LogUtil;
 import com.yjt.app.utils.ToastUtil;
 
@@ -34,16 +35,16 @@ import java.util.UUID;
 public class BluetoothService extends Service {
 
     private BluetoothAdapter mAdapter;
-    private BluetoothGatt    mGatt;
+    private BluetoothGatt mGatt;
 
-    private OnConnectingListener         mConnectingListener;
-    private OnConnectedListener          mConnectedListener;
-    private OnDisconnectingListener      mDisconnectingListener;
-    private OnDisconnectedListener       mDisconnectedListener;
+    private OnConnectingListener mConnectingListener;
+    private OnConnectedListener mConnectedListener;
+    private OnDisconnectingListener mDisconnectingListener;
+    private OnDisconnectedListener mDisconnectedListener;
     private OnServicesDiscoveredListener mServicesDiscoveredListener;
-    private OnReadRemoteRssiListener     mReadRemoteRssiListener;
-    private OnDataListener               mDataListener;
-    private OnMtuChangedListener         mMtuChangedListener;
+    private OnReadRemoteRssiListener mReadRemoteRssiListener;
+    private OnDataListener mDataListener;
+    private OnMtuChangedListener mMtuChangedListener;
 
     public void setAdapter(BluetoothAdapter adapter) {
         this.mAdapter = adapter;
@@ -141,16 +142,24 @@ public class BluetoothService extends Service {
                                    .getCharacteristic(UUID.fromString(Constant.Bluetooth.DEVICE_NAME_CHARACTERISTIC_UUID)));
     }
 
+    public void writeDeviceName(byte[] name) {
+        writeCharacteristic(BluetoothUtil.getInstance().findCharacteristic(BaseApplication.getInstance().getBluetoothGatt(), UUID.fromString(Constant.Bluetooth.UUID7)), name);
+    }
+
     public void readDumpEnergy() {
         readCharacteristic(mGatt.getService(UUID.fromString(Constant.Bluetooth.BATTERY_SERVICE_UUID))
                                    .getCharacteristic(UUID.fromString(Constant.Bluetooth.BATTERY_CHARACTERISTIC_UUID)));
     }
 
-    public boolean readCharacteristic(BluetoothGattCharacteristic characteristic) {
+    private boolean readCharacteristic(BluetoothGattCharacteristic characteristic) {
+        LogUtil.print("------>readCharacteristic name:" + BluetoothUtil.getInstance().resolveCharacteristicName(characteristic.getUuid().toString()));
+        LogUtil.print("------>readCharacteristic property:" + BluetoothUtil.getInstance().getAvailableProperties(characteristic.getProperties()));
         return isCharacteristicReadable(characteristic) ? mGatt.readCharacteristic(characteristic) : false;
     }
 
     public boolean writeCharacteristic(BluetoothGattCharacteristic characteristic, byte[] value) {
+        LogUtil.print("------>writeCharacteristic name:" + BluetoothUtil.getInstance().resolveCharacteristicName(characteristic.getUuid().toString()));
+        LogUtil.print("------>writeCharacteristic property:" + BluetoothUtil.getInstance().getAvailableProperties(characteristic.getProperties()));
         if (isCharacteristicWritable(characteristic)) {
             characteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
             characteristic.setValue(value);
@@ -161,6 +170,8 @@ public class BluetoothService extends Service {
     }
 
     public boolean writeCharacteristicWithNoRsp(BluetoothGattCharacteristic characteristic, byte[] value) {
+        LogUtil.print("------>writeCharacteristicWithNoRsp name:" + BluetoothUtil.getInstance().resolveCharacteristicName(characteristic.getUuid().toString()));
+        LogUtil.print("------>writeCharacteristicWithNoRsp property:" + BluetoothUtil.getInstance().getAvailableProperties(characteristic.getProperties()));
         if (isCharacteristicNoResponseWritable(characteristic)) {
             characteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
             characteristic.setValue(value);
@@ -175,7 +186,7 @@ public class BluetoothService extends Service {
             return false;
         }
         BluetoothGattDescriptor descriptor = characteristic.getDescriptor(UUID.fromString(Constant.Bluetooth.CLIENT_UUID));
-        byte[]                  value      = (enable ? BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE : BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE);
+        byte[] value = (enable ? BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE : BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE);
 
         if (descriptor == null || !descriptor.setValue(value)) {
             return false;

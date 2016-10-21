@@ -33,7 +33,6 @@ public class TypefaceUtil {
         }
     }
 
-
     public synchronized Typeface get(Context ctx, String name) {
         if (!mCache.containsKey(name)) {
             Typeface typeface = Typeface.createFromAsset(

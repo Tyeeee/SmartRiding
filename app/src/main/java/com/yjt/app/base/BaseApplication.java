@@ -31,9 +31,9 @@ import com.yjt.app.utils.ViewUtil;
 
 public class BaseApplication extends MultiDexApplication {
 
-    private static BaseApplication  mApplication;
-    private        BluetoothService mService;
-    private        BluetoothGatt    mGatt;
+    private static BaseApplication mApplication;
+    private BluetoothService mService;
+    private BluetoothGatt mGatt;
 
     public static BaseApplication getInstance() {
         return mApplication;
@@ -73,7 +73,6 @@ public class BaseApplication extends MultiDexApplication {
         SnackBarUtil.releaseInstance();
         VersionUtil.releaseInstance();
         ViewUtil.releaseInstance();
-        TypefaceUtil.releaseInstance();
     }
 
     public void releaseReference() {
