@@ -51,7 +51,7 @@ public class NavigationTestActivity extends FragmentActivity implements AMapNavi
 
     private AMapNaviView nvMap;
 
-    private BluetoothService            mService;
+    private BluetoothService mService;
     private BluetoothGattCharacteristic mCharacteristic;
 
     private NavigationHandler mHandler;

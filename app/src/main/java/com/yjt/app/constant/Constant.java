@@ -123,7 +123,7 @@ public class Constant {
         public static final float TRANSPARENCY_SELECTED = 0.7f;
         public static final float TRANSPARENCY_UNSELECT = 0.0f;
         public static final int SIMULATED_NAVIGATION_SPEED = 100;
-        public static final int STEP_DISTANCE = 20;
+        public static final int STEP_DISTANCE = 30;
         public static final String Kilometer = "\u516c\u91cc";// "公里";
         public static final String Meter = "\u7c73";// "米";
         public static final long LOCATION_MINIMUM_TIME_INTERVAL = 1000;
@@ -175,10 +175,6 @@ public class Constant {
         public static final String UUID8 = "0000fff8-0000-1000-8000-00805f9b34fb";
         public static final String UUID9 = "0000fff9-0000-1000-8000-00805f9b34fb";
         public static final String UUIDA = "0000fffa-0000-1000-8000-00805f9b34fb";
-        public static final byte[] DATA_LIGHT_LEFT = new byte[]{04, 01, 00, 00};
-        public static final byte[] DATA_LIGHT_RIGHT = new byte[]{04, 00, 01, 00};
-        public static final byte[] DATA_LIGHT_OPEN = new byte[]{04, 01, 01, 00};
-        public static final byte[] DATA_LIGHT_CLOSE = new byte[]{04, 00, 00, 00};
         public static final long SCAN_PERIOD = 5000;
         public static final int LIGHT_CLOSE_DELAY = 5000;
         //        public static final long   RSSI_PERIOD             = 1000;
@@ -196,5 +192,19 @@ public class Constant {
         public static final int STATE_UNKNOWN = -9999;
         //        public static final byte[] DEVICE_NAME                     = new byte[]{65, 109, 111, 82, 103, 98, 76, 105, 103, 104, 116};
         public static final String DEVICE_NAME = "BLE4.0 Device_" + String.valueOf(DataUtil.getInstance().randInt(1, 1000));
+
+        public static final byte[] DATA_LIGHT_LEFT = new byte[]{0x04, 0x01, 0x00, 0x05};
+        public static final byte[] DATA_LIGHT_RIGHT = new byte[]{0x04, 0x00, 0x01, 0x00};
+        public static final byte[] DATA_LIGHT_OPEN = new byte[]{0x04, 0x01, 0x01, 0x00};
+        public static final byte[] DATA_LIGHT_LEFT2 = new byte[]{0x04, 0x01, 0x00, 0x02};
+        public static final byte[] DATA_LIGHT_LEFT1 = new byte[]{0x04, 0x01, 0x00, 0x01};
+        public static final byte[] DATA_LIGHT_LEFT5 = new byte[]{0x04, 0x01, 0x00, 0x05};
+        public static final byte[] DATA_LIGHT_RIGHT2 = new byte[]{0x04, 0x00, 0x01, 0x02};
+        public static final byte[] DATA_LIGHT_RIGHT1 = new byte[]{0x04, 0x00, 0x01, 0x01};
+        public static final byte[] DATA_LIGHT_RIGHT5 = new byte[]{0x04, 0x00, 0x01, 0x05};
+        public static final byte[] DATA_LIGHT_OPEN2 = new byte[]{0x04, 0x01, 0x01, 0x02};
+        public static final byte[] DATA_LIGHT_OPEN1 = new byte[]{0x04, 0x01, 0x01, 0x01};
+        public static final byte[] DATA_LIGHT_OPEN5 = new byte[]{0x04, 0x01, 0x01, 0x05};
+        public static final byte[] DATA_LIGHT_CLOSE = new byte[]{0x04, 0x00, 0x00, 0x00};
     }
 }
