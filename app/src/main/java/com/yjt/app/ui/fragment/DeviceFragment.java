@@ -423,7 +423,6 @@ public class DeviceFragment extends BaseFragment implements FixedStickyViewAdapt
 
     @Override
     public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-        ToastUtil.getInstance().showToast(getActivity(), "value:" + new String(characteristic.getValue()), Toast.LENGTH_SHORT);
         LogUtil.print("---->onCharacteristicWrite:"
                               + gatt.getDevice().getName()
                               + ",uid:" + characteristic.getUuid()

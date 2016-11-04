@@ -54,6 +54,8 @@ public class NavigationTestActivity extends FragmentActivity implements AMapNavi
     private BluetoothService mService;
     private BluetoothGattCharacteristic mCharacteristic;
 
+    private int mCurrentDistance = -1;
+    private int mCurrentStep = -1;
     private NavigationHandler mHandler;
 
     protected static class NavigationHandler extends Handler {
@@ -338,12 +340,17 @@ public class NavigationTestActivity extends FragmentActivity implements AMapNavi
         LogUtil.print("---->onNaviInfoUpdate5:" + naviInfo.getCurLink());
         LogUtil.print("---->onNaviInfoUpdate6:" + naviInfo.getDirection());
         LogUtil.print("---->onNaviInfoUpdate7:" + naviInfo.getPathRetainTime());
+        mCurrentDistance = naviInfo.getCurStep() != mCurrentStep ? naviInfo.getCurStepRetainDistance() : mCurrentDistance;
+        LogUtil.print("---->onNaviInfoUpdate8:" + mCurrentDistance);
+        mCurrentStep = naviInfo.getCurStep() != mCurrentStep ? naviInfo.getCurStep() : mCurrentStep;
+        LogUtil.print("---->onNaviInfoUpdate9:" + mCurrentStep);
         switch (naviInfo.getIconType()) {
             case IconType.LEFT:
             case IconType.LEFT_BACK:
             case IconType.LEFT_FRONT:
             case IconType.LEFT_TURN_AROUND:
-                if (naviInfo.getCurStepRetainDistance() < Constant.Map.STEP_DISTANCE) {
+                LogUtil.print("---->onNaviInfoUpdate10:左转弯");
+                if (naviInfo.getCurStepRetainDistance() < Constant.Map.LIGHT_ON_INTERVAL) {
                     ToastUtil.getInstance().showToast(this, "左转弯", Toast.LENGTH_SHORT);
                     mHandler.sendMessage(MessageUtil.getMessage(Constant.Bluetooth.LIGHT_LEFT));
                 } else {
@@ -353,7 +360,8 @@ public class NavigationTestActivity extends FragmentActivity implements AMapNavi
             case IconType.RIGHT:
             case IconType.RIGHT_BACK:
             case IconType.RIGHT_FRONT:
-                if (naviInfo.getCurStepRetainDistance() < Constant.Map.STEP_DISTANCE) {
+                LogUtil.print("---->onNaviInfoUpdate11:右转弯");
+                if (naviInfo.getCurStepRetainDistance() < Constant.Map.LIGHT_ON_INTERVAL) {
                     ToastUtil.getInstance().showToast(this, "右转弯", Toast.LENGTH_SHORT);
                     mHandler.sendMessage(MessageUtil.getMessage(Constant.Bluetooth.LIGHT_RIGHT));
                 } else {
@@ -361,6 +369,7 @@ public class NavigationTestActivity extends FragmentActivity implements AMapNavi
                 }
                 break;
             default:
+                LogUtil.print("---->onNaviInfoUpdate12:其他");
                 mHandler.sendMessage(MessageUtil.getMessage(Constant.Bluetooth.LIGHT_CLOSE));
                 break;
         }

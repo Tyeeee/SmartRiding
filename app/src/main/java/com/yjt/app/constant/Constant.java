@@ -123,7 +123,8 @@ public class Constant {
         public static final float TRANSPARENCY_SELECTED = 0.7f;
         public static final float TRANSPARENCY_UNSELECT = 0.0f;
         public static final int SIMULATED_NAVIGATION_SPEED = 100;
-        public static final int STEP_DISTANCE = 30;
+        public static final int LIGHT_ON_INTERVAL = 17;
+        public static final int LIGHT_OFF_INTERVAL = 17;
         public static final String Kilometer = "\u516c\u91cc";// "公里";
         public static final String Meter = "\u7c73";// "米";
         public static final long LOCATION_MINIMUM_TIME_INTERVAL = 1000;

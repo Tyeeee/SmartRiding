@@ -57,12 +57,12 @@ import java.util.UUID;
 public class NavigationActivity extends FragmentActivity implements AMapNaviListener, AMapNaviViewListener, OnPromptDialogListener {
 
     private AMapNaviView nvMap;
-    private RouteResult  mResult;
+    private RouteResult mResult;
     private List<NaviLatLng> mStartLatLngs = new ArrayList<>();
-    private List<NaviLatLng> mPassLatLngs  = new ArrayList<>();
-    private List<NaviLatLng> mEndLatLngs   = new ArrayList<>();
+    private List<NaviLatLng> mPassLatLngs = new ArrayList<>();
+    private List<NaviLatLng> mEndLatLngs = new ArrayList<>();
 
-    private BluetoothService            mService;
+    private BluetoothService mService;
     private BluetoothGattCharacteristic mCharacteristic;
 
     private NavigationHandler mHandler;
@@ -377,7 +377,7 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
             case IconType.LEFT_BACK:
             case IconType.LEFT_FRONT:
             case IconType.LEFT_TURN_AROUND:
-                if (naviInfo.getCurStepRetainDistance() < Constant.Map.STEP_DISTANCE) {
+                if (naviInfo.getCurStepRetainDistance() < Constant.Map.LIGHT_ON_INTERVAL) {
                     ToastUtil.getInstance().showToast(this, "左转弯", Toast.LENGTH_SHORT);
                     mHandler.sendMessage(MessageUtil.getMessage(Constant.Bluetooth.LIGHT_LEFT));
                 } else {
@@ -387,7 +387,7 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
             case IconType.RIGHT:
             case IconType.RIGHT_BACK:
             case IconType.RIGHT_FRONT:
-                if (naviInfo.getCurStepRetainDistance() < Constant.Map.STEP_DISTANCE) {
+                if (naviInfo.getCurStepRetainDistance() < Constant.Map.LIGHT_ON_INTERVAL) {
                     ToastUtil.getInstance().showToast(this, "右转弯", Toast.LENGTH_SHORT);
                     mHandler.sendMessage(MessageUtil.getMessage(Constant.Bluetooth.LIGHT_RIGHT));
                 } else {
