@@ -241,7 +241,6 @@ public class MultiLineMapActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
-
     @Override
     public void onMapLoaded() {
         LogUtil.print("---->onMapLoaded");

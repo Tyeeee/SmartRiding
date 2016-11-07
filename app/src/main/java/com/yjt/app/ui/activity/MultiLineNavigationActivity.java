@@ -295,6 +295,11 @@ public class MultiLineNavigationActivity extends FragmentActivity implements AMa
     @Override
     public void onCalculateRouteSuccess() {
         LogUtil.print("---->onCalculateRouteSuccess");
+        if (SharedPreferenceUtil.getInstance().getInt(File.FILE_NAME.getContent(), Context.MODE_PRIVATE, File.NAVIGATION_DEMONSTRATION_PATTERN.getContent(), Constant.Common.DEFAULT_VALUE) == Constant.Map.NAVIGATION_GPS) {
+            AMapNavi.getInstance(BaseApplication.getInstance()).startNavi(NaviType.GPS);
+        } else {
+            AMapNavi.getInstance(BaseApplication.getInstance()).startNavi(NaviType.EMULATOR);
+        }
     }
 
     @Override
