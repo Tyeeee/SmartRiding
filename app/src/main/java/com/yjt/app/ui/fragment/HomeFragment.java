@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Temp;
-import com.yjt.app.ui.activity.MapTestActivity;
+import com.yjt.app.ui.activity.MultiLineMapActivity;
 import com.yjt.app.ui.activity.RouteActivity;
 import com.yjt.app.ui.base.BaseFragment;
 import com.yjt.app.ui.widget.SearchTextView;
@@ -130,7 +130,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     LogUtil.print("--->跳转 PassLatitude:" + mPassLatitude);
                     LogUtil.print("--->跳转 EndLongitude:" + mEndLongitude);
                     LogUtil.print("--->跳转 EndLatitude:" + mEndLatitude);
-                    startActivity(getActivity(), MapTestActivity.class, bundle);
+                    startActivity(getActivity(), MultiLineMapActivity.class, bundle);
                     stvStartPoint.setText(null);
                     stvPassPoint.setText(null);
                     stvEndPoint.setText(null);

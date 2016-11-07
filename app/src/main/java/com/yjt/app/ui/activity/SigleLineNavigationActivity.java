@@ -54,7 +54,7 @@ import java.util.List;
 import java.util.UUID;
 
 
-public class NavigationActivity extends FragmentActivity implements AMapNaviListener, AMapNaviViewListener, OnPromptDialogListener {
+public class SigleLineNavigationActivity extends FragmentActivity implements AMapNaviListener, AMapNaviViewListener, OnPromptDialogListener {
 
     private AMapNaviView nvMap;
     private RouteResult mResult;
@@ -69,16 +69,16 @@ public class NavigationActivity extends FragmentActivity implements AMapNaviList
 
     protected static class NavigationHandler extends Handler {
 
-        private WeakReference<NavigationActivity> mActivitys;
+        private WeakReference<SigleLineNavigationActivity> mActivitys;
 
-        public NavigationHandler(NavigationActivity activity) {
+        public NavigationHandler(SigleLineNavigationActivity activity) {
             mActivitys = new WeakReference<>(activity);
         }
 
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            final NavigationActivity activity = mActivitys.get();
+            final SigleLineNavigationActivity activity = mActivitys.get();
             if (activity != null) {
                 switch (msg.what) {
                     case Constant.Bluetooth.LIGHT_OPEN:

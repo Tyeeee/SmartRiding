@@ -47,7 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MapTestActivity extends BaseActivity implements View.OnClickListener, AMap.OnMarkerClickListener, AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter, AMap.OnMapLoadedListener, AMapNaviListener {
+public class MultiLineMapActivity extends BaseActivity implements View.OnClickListener, AMap.OnMarkerClickListener, AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter, AMap.OnMapLoadedListener, AMapNaviListener {
 
     private MapView mvMap;
     private FloatingActionMenu fabMenu;
@@ -66,16 +66,16 @@ public class MapTestActivity extends BaseActivity implements View.OnClickListene
 
     protected static class MapHandler extends Handler {
 
-        private WeakReference<MapTestActivity> mActivitys;
+        private WeakReference<MultiLineMapActivity> mActivitys;
 
-        public MapHandler(MapTestActivity activity) {
+        public MapHandler(MultiLineMapActivity activity) {
             mActivitys = new WeakReference<>(activity);
         }
 
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            final MapTestActivity activity = mActivitys.get();
+            final MultiLineMapActivity activity = mActivitys.get();
             if (activity != null) {
                 switch (msg.what) {
                     default:
@@ -88,7 +88,7 @@ public class MapTestActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map_test);
+        setContentView(R.layout.activity_map_multi_line);
         findViewById();
         setViewListener();
         initialize(savedInstanceState);
@@ -233,10 +233,10 @@ public class MapTestActivity extends BaseActivity implements View.OnClickListene
                 mRouteIndex++;
                 break;
             case R.id.fabDetail:
-                startActivity(RouteDetailTestActivity.class);
+                startActivity(MultiRouteDetailActivity.class);
                 break;
             case R.id.fabNavigation:
-                startActivity(NavigationTestActivity.class);
+                startActivity(MultiLineNavigationActivity.class);
                 break;
         }
     }

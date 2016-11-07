@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class RouteDetailActivity extends BaseActivity {
+public class MultiRouteDetailActivity extends BaseActivity {
 
     private DriveRouteResult mResult;
     private TextView tvDistance;
@@ -45,16 +45,16 @@ public class RouteDetailActivity extends BaseActivity {
 
     private static class RouteDetailHandler extends Handler {
 
-        private WeakReference<RouteDetailActivity> mActivitys;
+        private WeakReference<MultiRouteDetailActivity> mActivitys;
 
-        public RouteDetailHandler(RouteDetailActivity Activity) {
+        public RouteDetailHandler(MultiRouteDetailActivity Activity) {
             mActivitys = new WeakReference<>(Activity);
         }
 
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            RouteDetailActivity Activity = mActivitys.get();
+            MultiRouteDetailActivity Activity = mActivitys.get();
             if (Activity != null) {
                 switch (msg.what) {
                     default:

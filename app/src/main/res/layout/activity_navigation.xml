@@ -5,5 +5,5 @@
     android:id="@+id/nvMap"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.yjt.app.ui.activity.NavigationActivity"/>
+    tools:context="com.yjt.app.ui.activity.SigleLineNavigationActivity"/>
 

@@ -79,38 +79,38 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustUnspecified"/>
         <activity
-            android:name=".ui.activity.MapActivity"
+            android:name=".ui.activity.SingleLineMapActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
         <activity
-            android:name=".ui.activity.RouteDetailActivity"
+            android:name=".ui.activity.SingleRouteDetailActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:label="@string/activity_route_detail"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
         <activity
-            android:name=".ui.activity.NavigationActivity"
+            android:name=".ui.activity.SigleLineNavigationActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
         <activity
-            android:name=".ui.activity.MapTestActivity"
+            android:name=".ui.activity.MultiLineMapActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
         <activity
-            android:name=".ui.activity.NavigationTestActivity"
+            android:name=".ui.activity.MultiLineNavigationActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
         <activity
-            android:name=".ui.activity.RouteDetailTestActivity"
+            android:name=".ui.activity.MultiRouteDetailActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:label="@string/activity_route_detail"
             android:launchMode="singleTop"

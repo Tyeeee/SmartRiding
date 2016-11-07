@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.yjt.app.ui.activity.RouteDetailActivity">
+    tools:context="com.yjt.app.ui.activity.SingleRouteDetailActivity">
 
     <include layout="@layout/toolbar_title"/>
 

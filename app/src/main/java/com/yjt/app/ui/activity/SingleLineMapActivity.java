@@ -39,7 +39,7 @@ import com.yjt.app.utils.ViewUtil;
 import java.util.List;
 
 
-public class MapActivity extends BaseActivity implements View.OnClickListener, AMap.OnMapClickListener, AMap.OnMarkerClickListener, AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter, RouteSearch.OnRouteSearchListener, AMap.OnMapLoadedListener {
+public class SingleLineMapActivity extends BaseActivity implements View.OnClickListener, AMap.OnMapClickListener, AMap.OnMarkerClickListener, AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter, RouteSearch.OnRouteSearchListener, AMap.OnMapLoadedListener {
 
     private MapView mvMap;
     private FloatingActionMenu fabMenu;
@@ -59,7 +59,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
+        setContentView(R.layout.activity_map_single_line);
         findViewById();
         setViewListener();
         initialize(savedInstanceState);
@@ -191,12 +191,12 @@ public class MapActivity extends BaseActivity implements View.OnClickListener, A
             case R.id.fabDetail:
                 Bundle bundle1 = new Bundle();
                 bundle1.putParcelable(Temp.ROUTE_INFO.getContent(), mResult);
-                startActivity(RouteDetailActivity.class, bundle1);
+                startActivity(SingleRouteDetailActivity.class, bundle1);
                 break;
             case R.id.fabNavigation:
                 Bundle bundle2 = new Bundle();
                 bundle2.putParcelable(Temp.ROUTE_INFO.getContent(), mResult);
-                startActivity(NavigationActivity.class, bundle2);
+                startActivity(SigleLineNavigationActivity.class, bundle2);
                 break;
             default:
                 break;

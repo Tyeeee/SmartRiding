@@ -47,7 +47,7 @@ import java.lang.ref.WeakReference;
 import java.util.UUID;
 
 
-public class NavigationTestActivity extends FragmentActivity implements AMapNaviListener, AMapNaviViewListener, OnPromptDialogListener {
+public class MultiLineNavigationActivity extends FragmentActivity implements AMapNaviListener, AMapNaviViewListener, OnPromptDialogListener {
 
     private AMapNaviView nvMap;
 
@@ -60,16 +60,16 @@ public class NavigationTestActivity extends FragmentActivity implements AMapNavi
 
     protected static class NavigationHandler extends Handler {
 
-        private WeakReference<NavigationTestActivity> mActivitys;
+        private WeakReference<MultiLineNavigationActivity> mActivitys;
 
-        public NavigationHandler(NavigationTestActivity activity) {
+        public NavigationHandler(MultiLineNavigationActivity activity) {
             mActivitys = new WeakReference<>(activity);
         }
 
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            final NavigationTestActivity activity = mActivitys.get();
+            final MultiLineNavigationActivity activity = mActivitys.get();
             if (activity != null) {
                 switch (msg.what) {
                     case Constant.Bluetooth.LIGHT_OPEN:

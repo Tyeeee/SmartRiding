@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.yjt.app.ui.activity.MapActivity">
+    tools:context="com.yjt.app.ui.activity.SingleLineMapActivity">
 
     <com.amap.api.maps.MapView
         android:id="@+id/mvMap"
