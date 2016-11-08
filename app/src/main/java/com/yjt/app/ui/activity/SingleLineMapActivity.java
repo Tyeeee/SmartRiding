@@ -18,6 +18,8 @@ import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.route.BusRouteResult;
 import com.amap.api.services.route.DrivePath;
 import com.amap.api.services.route.DriveRouteResult;
+import com.amap.api.services.route.RidePath;
+import com.amap.api.services.route.RideRouteResult;
 import com.amap.api.services.route.RouteResult;
 import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkPath;
@@ -26,7 +28,8 @@ import com.yjt.app.R;
 import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Temp;
 import com.yjt.app.ui.base.BaseActivity;
-import com.yjt.app.ui.widget.CustomOverlay;
+import com.yjt.app.ui.widget.CustomDrivePathOverlay;
+import com.yjt.app.ui.widget.CustomRidePathOverlay;
 import com.yjt.app.ui.widget.fab.FloatingActionButton;
 import com.yjt.app.ui.widget.fab.FloatingActionMenu;
 import com.yjt.app.utils.BundleUtil;
@@ -148,8 +151,9 @@ public class SingleLineMapActivity extends BaseActivity implements View.OnClickL
 //                mAmap.addMarker(new MarkerOptions().position(MapUtil.getInstance().convertToLatLng(mPassPoint)).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
 //            }
             mAmap.addMarker(new MarkerOptions().position(MapUtil.getInstance().convertToLatLng(mEndPoint)).icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_end)));
-            mSearch.calculateDriveRouteAsyn(new RouteSearch.DriveRouteQuery(new RouteSearch.FromAndTo(mStartPoint, mEndPoint), RouteSearch.DrivingNoHighWaySaveMoney, null, null, null));
+//            mSearch.calculateDriveRouteAsyn(new RouteSearch.DriveRouteQuery(new RouteSearch.FromAndTo(mStartPoint, mEndPoint), RouteSearch.DrivingNoHighWaySaveMoney, null, null, null));
 //            mSearch.calculateWalkRouteAsyn(new RouteSearch.WalkRouteQuery(new RouteSearch.FromAndTo(mStartPoint, mEndPoint), RouteSearch.WalkMultipath));
+            mSearch.calculateRideRouteAsyn(new RouteSearch.RideRouteQuery(new RouteSearch.FromAndTo(mStartPoint, mEndPoint), RouteSearch.RidingFast));
         } else {
             ToastUtil.getInstance().showToast(this, getString(R.string.route_prompt1), Toast.LENGTH_SHORT);
         }
@@ -203,7 +207,6 @@ public class SingleLineMapActivity extends BaseActivity implements View.OnClickL
         }
     }
 
-
     @Override
     public void onMapLoaded() {
         LogUtil.print("---->onMapLoaded");
@@ -255,7 +258,7 @@ public class SingleLineMapActivity extends BaseActivity implements View.OnClickL
                 if (paths != null && paths.size() > 0) {
                     for (DrivePath path : driveRouteResult.getPaths()) {
                         LogUtil.print("---->path:" + paths.size());
-                        CustomOverlay overLay = new CustomOverlay(mAmap, path, driveRouteResult.getStartPos(), driveRouteResult.getTargetPos(), null);
+                        CustomDrivePathOverlay overLay = new CustomDrivePathOverlay(mAmap, path, driveRouteResult.getStartPos(), driveRouteResult.getTargetPos(), null);
                         overLay.setRouteWidth(getResources().getDimension(R.dimen.dp_10));
                         overLay.setColor(true);
                         overLay.setNodeIconVisible(true);
@@ -268,18 +271,6 @@ public class SingleLineMapActivity extends BaseActivity implements View.OnClickL
                     SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.route_prompt2), Snackbar.LENGTH_SHORT);
                 }
             }
-//            if (driveRouteResult != null && driveRouteResult.getPaths() != null && driveRouteResult.getPaths().size() > 0) {
-//                CustomOverlay overLay = new CustomOverlay(mAmap, driveRouteResult.getPaths().get(0), driveRouteResult.getStartPos(), driveRouteResult.getTargetPos(), null);
-//                overLay.setRouteWidth(getResources().getDimension(R.dimen.dp_15));
-//                overLay.setColor(true);
-//                overLay.setNodeIconVisible(true);
-//                overLay.setPassMarkerVisible(true);
-//                overLay.removeMarkerAndLine();
-//                overLay.addRouteToMap();
-//                overLay.zoomToSpan();
-//            } else {
-//                SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.route_prompt2), Snackbar.LENGTH_SHORT);
-//            }
         } else {
             MapUtil.getInstance().showMapError(this, resultCode);
         }
@@ -307,6 +298,39 @@ public class SingleLineMapActivity extends BaseActivity implements View.OnClickL
                     }
                 } else {
                     ToastUtil.getInstance().showToast(this, getString(R.string.route_prompt2), Toast.LENGTH_SHORT);
+                }
+            }
+        } else {
+            MapUtil.getInstance().showMapError(this, resultCode);
+        }
+
+        fabMenu.addButton(fabDetail);
+        fabMenu.addButton(fabNavigation);
+    }
+
+    @Override
+    public void onRideRouteSearched(RideRouteResult rideRouteResult, int resultCode) {
+        LogUtil.print("---->onRideRouteSearched");
+        this.mResult = rideRouteResult;
+        ViewUtil.getInstance().hideDialog(mDialog, this);
+        mAmap.clear();
+        if (resultCode == Constant.Map.GEOCODE_SEARCH_SUCCESS) {
+            if (rideRouteResult != null) {
+                List<RidePath> paths = rideRouteResult.getPaths();
+                if (paths != null && paths.size() > 0) {
+                    for (RidePath path : rideRouteResult.getPaths()) {
+                        LogUtil.print("---->path:" + paths.size());
+                        CustomRidePathOverlay overLay = new CustomRidePathOverlay(mAmap, path, rideRouteResult.getStartPos(), rideRouteResult.getTargetPos(), null);
+                        overLay.setRouteWidth(getResources().getDimension(R.dimen.dp_8));
+                        overLay.setColor(true);
+                        overLay.setNodeIconVisible(true);
+                        overLay.setPassMarkerVisible(true);
+                        overLay.removeMarkerAndLine();
+                        overLay.addRouteToMap(Color.GREEN);
+                        overLay.zoomToSpan();
+                    }
+                } else {
+                    SnackBarUtil.getInstance().showSnackBar(this, getString(R.string.route_prompt2), Snackbar.LENGTH_SHORT);
                 }
             }
         } else {

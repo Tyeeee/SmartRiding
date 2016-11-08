@@ -18,6 +18,7 @@ import com.yjt.app.constant.Constant;
 import com.yjt.app.constant.Temp;
 import com.yjt.app.ui.activity.MultiLineMapActivity;
 import com.yjt.app.ui.activity.RouteActivity;
+import com.yjt.app.ui.activity.SingleLineMapActivity;
 import com.yjt.app.ui.base.BaseFragment;
 import com.yjt.app.ui.widget.SearchTextView;
 import com.yjt.app.utils.InputUtil;
@@ -130,7 +131,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     LogUtil.print("--->跳转 PassLatitude:" + mPassLatitude);
                     LogUtil.print("--->跳转 EndLongitude:" + mEndLongitude);
                     LogUtil.print("--->跳转 EndLatitude:" + mEndLatitude);
-                    startActivity(getActivity(), MultiLineMapActivity.class, bundle);
+//                    startActivity(getActivity(), MultiLineMapActivity.class, bundle);
+                    startActivity(getActivity(), SingleLineMapActivity.class, bundle);
                     stvStartPoint.setText(null);
                     stvPassPoint.setText(null);
                     stvEndPoint.setText(null);

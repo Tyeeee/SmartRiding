@@ -20,6 +20,7 @@ import com.amap.api.navi.model.AMapLaneInfo;
 import com.amap.api.navi.model.AMapNaviCross;
 import com.amap.api.navi.model.AMapNaviInfo;
 import com.amap.api.navi.model.AMapNaviLocation;
+import com.amap.api.navi.model.AMapNaviStaticInfo;
 import com.amap.api.navi.model.AMapNaviTrafficFacilityInfo;
 import com.amap.api.navi.model.AimLessModeCongestionInfo;
 import com.amap.api.navi.model.AimLessModeStat;
@@ -43,8 +44,6 @@ import com.yjt.app.utils.ToastUtil;
 import com.yjt.app.utils.ViewUtil;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class MultiLineMapActivity extends BaseActivity implements View.OnClickListener, AMap.OnMarkerClickListener, AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter, AMap.OnMapLoadedListener, AMapNaviListener {
@@ -54,9 +53,12 @@ public class MultiLineMapActivity extends BaseActivity implements View.OnClickLi
     private FloatingActionButton fabSelection;
     private FloatingActionButton fabNavigation;
 
-    private List<NaviLatLng> mStartLatLngs = new ArrayList<>();
-    private List<NaviLatLng> mPassLatLngs = new ArrayList<>();
-    private List<NaviLatLng> mEndLatLngs = new ArrayList<>();
+    //    private List<NaviLatLng> mStartLatLngs = new ArrayList<>();
+//    private List<NaviLatLng> mPassLatLngs = new ArrayList<>();
+//    private List<NaviLatLng> mEndLatLngs = new ArrayList<>();
+    private NaviLatLng mStartLatLng;
+    private NaviLatLng mPassLatLng;
+    private NaviLatLng mEndLatLng;
     private SparseArray<RouteOverLay> mRouteOverLays = new SparseArray<>();
     private AMap mAmap;
     private int mRouteIndex;
@@ -119,9 +121,9 @@ public class MultiLineMapActivity extends BaseActivity implements View.OnClickLi
         mvMap.onDestroy();
         AMapNavi.getInstance(BaseApplication.getInstance()).removeAMapNaviListener(this);
         AMapNavi.getInstance(BaseApplication.getInstance()).destroy();
-        mStartLatLngs.clear();
-        mPassLatLngs.clear();
-        mEndLatLngs.clear();
+//        mStartLatLngs.clear();
+//        mPassLatLngs.clear();
+//        mEndLatLngs.clear();
         mRouteOverLays.clear();
     }
 
@@ -164,21 +166,24 @@ public class MultiLineMapActivity extends BaseActivity implements View.OnClickLi
             double longitude = BundleUtil.getInstance().getDoubleData(this, Temp.START_LOCATION_LONGITUDE.getContent());
             LogUtil.print("---->显示 StartLongitude:" + longitude);
             LogUtil.print("---->显示 StartLatitude:" + latitude);
-            mStartLatLngs.add(new NaviLatLng(latitude, longitude));
+//            mStartLatLngs.add(new NaviLatLng(latitude, longitude));
+            mStartLatLng = new NaviLatLng(latitude, longitude);
         }
         if (BundleUtil.getInstance().hasBundleExtraValue(this, Temp.PASS_LOCATION_LONGITUDE.getContent()) && BundleUtil.getInstance().hasBundleExtraValue(this, Temp.PASS_LOCATION_LATITUDE.getContent())) {
             double latitude = BundleUtil.getInstance().getDoubleData(this, Temp.PASS_LOCATION_LATITUDE.getContent());
             double longitude = BundleUtil.getInstance().getDoubleData(this, Temp.PASS_LOCATION_LONGITUDE.getContent());
             LogUtil.print("---->显示 PassLongitude:" + longitude);
             LogUtil.print("---->显示 PassLatitude:" + latitude);
-            mPassLatLngs.add(new NaviLatLng(latitude, longitude));
+//            mPassLatLngs.add(new NaviLatLng(latitude, longitude));
+            mPassLatLng = new NaviLatLng(latitude, longitude);
         }
         if (BundleUtil.getInstance().hasBundleExtraValue(this, Temp.END_LOCATION_LONGITUDE.getContent()) && BundleUtil.getInstance().hasBundleExtraValue(this, Temp.END_LOCATION_LATITUDE.getContent())) {
             double latitude = BundleUtil.getInstance().getDoubleData(this, Temp.END_LOCATION_LATITUDE.getContent());
             double longitude = BundleUtil.getInstance().getDoubleData(this, Temp.END_LOCATION_LONGITUDE.getContent());
             LogUtil.print("---->显示 EndLongitude:" + longitude);
             LogUtil.print("---->显示 EndLatitude:" + latitude);
-            mEndLatLngs.add(new NaviLatLng(latitude, longitude));
+//            mEndLatLngs.add(new NaviLatLng(latitude, longitude));
+            mEndLatLng = new NaviLatLng(latitude, longitude);
         }
 
         if (mAmap == null) {
@@ -280,14 +285,15 @@ public class MultiLineMapActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onInitNaviSuccess() {
         LogUtil.print("---->onInitNaviSuccess");
-        try {
-            AMapNavi.getInstance(BaseApplication.getInstance()).calculateDriveRoute(mStartLatLngs
-                    , mEndLatLngs
-                    , mPassLatLngs
-                    , AMapNavi.getInstance(BaseApplication.getInstance()).strategyConvert(true, true, true, false, true));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            AMapNavi.getInstance(BaseApplication.getInstance()).calculateDriveRoute(mStartLatLngs
+//                    , mEndLatLngs
+//                    , mPassLatLngs
+//                    , AMapNavi.getInstance(BaseApplication.getInstance()).strategyConvert(true, true, true, false, true));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        AMapNavi.getInstance(BaseApplication.getInstance()).calculateRideRoute(mStartLatLng, mEndLatLng);
     }
 
     @Override
@@ -322,6 +328,11 @@ public class MultiLineMapActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onArriveDestination(NaviStaticInfo naviStaticInfo) {
+        LogUtil.print("---->onArriveDestination");
+    }
+
+    @Override
+    public void onArriveDestination(AMapNaviStaticInfo aMapNaviStaticInfo) {
         LogUtil.print("---->onArriveDestination");
     }
 

@@ -27,7 +27,6 @@ import com.yjt.app.utils.ToastUtil;
 import com.yjt.app.utils.ViewUtil;
 
 import java.lang.ref.WeakReference;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +35,6 @@ public class MultiRouteDetailActivity extends BaseActivity {
 
     private DriveRouteResult mResult;
     private TextView tvDistance;
-    private TextView tvCost;
     private RecyclerView rvRouteDetail;
     private LinearLayoutManager mLayoutManager;
     private FixedStickyViewAdapter mAdapter;
@@ -78,7 +76,6 @@ public class MultiRouteDetailActivity extends BaseActivity {
     protected void findViewById() {
         ViewUtil.getInstance().setToolBar(this, R.id.tbTitle, true);
         tvDistance = ViewUtil.getInstance().findView(this, R.id.tvDistance);
-        tvCost = ViewUtil.getInstance().findView(this, R.id.tvCost);
         rvRouteDetail = ViewUtil.getInstance().findView(this, R.id.rvRouteDetail);
     }
 
@@ -94,7 +91,6 @@ public class MultiRouteDetailActivity extends BaseActivity {
             mResult = BundleUtil.getInstance().getParcelableData(this, Temp.ROUTE_INFO.getContent());
             mPath = mResult.getPaths().get(0);
             tvDistance.setText(MapUtil.getInstance().getFriendlyTime((int) mPath.getDuration()) + Regex.LEFT_PARENTHESIS.getRegext() + MapUtil.getInstance().getFriendlyLength((int) mPath.getDistance()) + Regex.RIGHT_PARENTHESIS.getRegext());
-            tvCost.setText("乘出租车约:" + new BigDecimal(mResult.getTaxiCost()).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue() + "元");
             mLayoutManager = new LinearLayoutManager(this);
             mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             rvRouteDetail.setHasFixedSize(true);

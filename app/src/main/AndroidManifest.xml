@@ -123,6 +123,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
+        <service android:name="com.amap.api.location.APSService"/>
     </application>
 
 </manifest>

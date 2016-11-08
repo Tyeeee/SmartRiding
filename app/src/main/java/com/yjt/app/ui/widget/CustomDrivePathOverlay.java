@@ -24,7 +24,7 @@ import com.yjt.app.utils.MapUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomOverlay {
+public class CustomDrivePathOverlay {
 
     private AMap mAMap;
     private LatLng mStartPoint;
@@ -44,7 +44,7 @@ public class CustomOverlay {
     private List<Marker> mStationMarkers = new ArrayList<Marker>();
     private List<Polyline> mPolyLines = new ArrayList<Polyline>();
 
-    public CustomOverlay(AMap aMap, DrivePath path, LatLonPoint startPoint, LatLonPoint endPoint, List<LatLonPoint> passPoints) {
+    public CustomDrivePathOverlay(AMap aMap, DrivePath path, LatLonPoint startPoint, LatLonPoint endPoint, List<LatLonPoint> passPoints) {
         this.mAMap = aMap;
         this.mDrivePath = path;
         this.mStartPoint = MapUtil.getInstance().convertToLatLng(startPoint);

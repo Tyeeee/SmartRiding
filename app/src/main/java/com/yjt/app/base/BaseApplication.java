@@ -60,8 +60,7 @@ public class BaseApplication extends MultiDexApplication {
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        LogUtil.d("---->" + getClass().getName(), this.getClass().getSimpleName()
-                + " onLowMemory() invoked!!");
+        LogUtil.d("---->" + getClass().getName(), this.getClass().getSimpleName() + " onLowMemory() invoked!!");
         AnimationUtil.releaseInstance();
         BluetoothUtil.releaseInstance();
         CrashHandler.releaseInstance();

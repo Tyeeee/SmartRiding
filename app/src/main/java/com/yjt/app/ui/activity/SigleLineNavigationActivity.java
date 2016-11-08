@@ -21,6 +21,7 @@ import com.amap.api.navi.model.AMapLaneInfo;
 import com.amap.api.navi.model.AMapNaviCross;
 import com.amap.api.navi.model.AMapNaviInfo;
 import com.amap.api.navi.model.AMapNaviLocation;
+import com.amap.api.navi.model.AMapNaviStaticInfo;
 import com.amap.api.navi.model.AMapNaviTrafficFacilityInfo;
 import com.amap.api.navi.model.AimLessModeCongestionInfo;
 import com.amap.api.navi.model.AimLessModeStat;
@@ -49,8 +50,6 @@ import com.yjt.app.utils.ToastUtil;
 import com.yjt.app.utils.ViewUtil;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 
@@ -58,9 +57,12 @@ public class SigleLineNavigationActivity extends FragmentActivity implements AMa
 
     private AMapNaviView nvMap;
     private RouteResult mResult;
-    private List<NaviLatLng> mStartLatLngs = new ArrayList<>();
-    private List<NaviLatLng> mPassLatLngs = new ArrayList<>();
-    private List<NaviLatLng> mEndLatLngs = new ArrayList<>();
+//    private List<NaviLatLng> mStartLatLngs = new ArrayList<>();
+//    private List<NaviLatLng> mPassLatLngs = new ArrayList<>();
+//    private List<NaviLatLng> mEndLatLngs = new ArrayList<>();
+
+    private NaviLatLng mStartLatLng;
+    private NaviLatLng mEndLatLng;
 
     private BluetoothService mService;
     private BluetoothGattCharacteristic mCharacteristic;
@@ -175,8 +177,10 @@ public class SigleLineNavigationActivity extends FragmentActivity implements AMa
         LogUtil.print("---->mCharacteristic:" + mCharacteristic);
         if (BundleUtil.getInstance().hasIntentExtraValue(this, Temp.ROUTE_INFO.getContent())) {
             mResult = BundleUtil.getInstance().getParcelableData(this, Temp.ROUTE_INFO.getContent());
-            mStartLatLngs.add(MapUtil.getInstance().parseCoordinate(mResult.getStartPos().toString()));
-            mEndLatLngs.add(MapUtil.getInstance().parseCoordinate(mResult.getTargetPos().toString()));
+//            mStartLatLngs.add(MapUtil.getInstance().parseCoordinate(mResult.getStartPos().toString()));
+//            mEndLatLngs.add(MapUtil.getInstance().parseCoordinate(mResult.getTargetPos().toString()));
+            mStartLatLng = MapUtil.getInstance().parseCoordinate(mResult.getStartPos().toString());
+            mEndLatLng = MapUtil.getInstance().parseCoordinate(mResult.getTargetPos().toString());
         } else {
             ToastUtil.getInstance().showToast(this, getString(R.string.route_prompt3), Toast.LENGTH_SHORT);
         }
@@ -257,14 +261,15 @@ public class SigleLineNavigationActivity extends FragmentActivity implements AMa
     public void onInitNaviSuccess() {
         LogUtil.print("---->onInitNaviSuccess");
 //        AMapNavi.getInstance(BaseApplication.getInstance()).calculateWalkRoute(MapUtil.getInstance().parseCoordinate(mResult.getStartPos().toString()), MapUtil.getInstance().parseCoordinate(mResult.getTargetPos().toString()));
-        try {
-            AMapNavi.getInstance(BaseApplication.getInstance()).calculateDriveRoute(mStartLatLngs
-                    , mEndLatLngs
-                    , mPassLatLngs
-                    , AMapNavi.getInstance(BaseApplication.getInstance()).strategyConvert(true, true, true, false, true));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            AMapNavi.getInstance(BaseApplication.getInstance()).calculateDriveRoute(mStartLatLngs
+//                    , mEndLatLngs
+//                    , mPassLatLngs
+//                    , AMapNavi.getInstance(BaseApplication.getInstance()).strategyConvert(true, true, true, false, true));
+        AMapNavi.getInstance(BaseApplication.getInstance()).calculateRideRoute(mStartLatLng, mEndLatLng);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
@@ -305,6 +310,12 @@ public class SigleLineNavigationActivity extends FragmentActivity implements AMa
     }
 
     @Override
+    public void onArriveDestination(AMapNaviStaticInfo aMapNaviStaticInfo) {
+        LogUtil.print("---->onArriveDestination");
+        mHandler.sendMessage(MessageUtil.getMessage(Constant.Bluetooth.LIGHT_CLOSE));
+    }
+
+    @Override
     public void onCalculateRouteSuccess() {
         LogUtil.print("---->onCalculateRouteSuccess");
         if (SharedPreferenceUtil.getInstance().getInt(File.FILE_NAME.getContent(), Context.MODE_PRIVATE, File.NAVIGATION_DEMONSTRATION_PATTERN.getContent(), Constant.Common.DEFAULT_VALUE) == Constant.Map.NAVIGATION_GPS) {
@@ -333,11 +344,6 @@ public class SigleLineNavigationActivity extends FragmentActivity implements AMa
     @Override
     public void onCalculateMultipleRoutesSuccess(int[] routeIds) {
         LogUtil.print("---->onCalculateMultipleRoutesSuccess");
-        if (SharedPreferenceUtil.getInstance().getInt(File.FILE_NAME.getContent(), Context.MODE_PRIVATE, File.NAVIGATION_DEMONSTRATION_PATTERN.getContent(), Constant.Common.DEFAULT_VALUE) == Constant.Map.NAVIGATION_GPS) {
-            AMapNavi.getInstance(BaseApplication.getInstance()).startNavi(NaviType.GPS);
-        } else {
-            AMapNavi.getInstance(BaseApplication.getInstance()).startNavi(NaviType.EMULATOR);
-        }
     }
 
     @Override

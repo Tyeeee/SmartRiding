@@ -20,6 +20,7 @@ import com.amap.api.navi.model.AMapLaneInfo;
 import com.amap.api.navi.model.AMapNaviCross;
 import com.amap.api.navi.model.AMapNaviInfo;
 import com.amap.api.navi.model.AMapNaviLocation;
+import com.amap.api.navi.model.AMapNaviStaticInfo;
 import com.amap.api.navi.model.AMapNaviTrafficFacilityInfo;
 import com.amap.api.navi.model.AimLessModeCongestionInfo;
 import com.amap.api.navi.model.AimLessModeStat;
@@ -293,6 +294,12 @@ public class MultiLineNavigationActivity extends FragmentActivity implements AMa
     }
 
     @Override
+    public void onArriveDestination(AMapNaviStaticInfo aMapNaviStaticInfo) {
+        LogUtil.print("---->onArriveDestination");
+        mHandler.sendMessage(MessageUtil.getMessage(Constant.Bluetooth.LIGHT_CLOSE));
+    }
+
+    @Override
     public void onCalculateRouteSuccess() {
         LogUtil.print("---->onCalculateRouteSuccess");
         if (SharedPreferenceUtil.getInstance().getInt(File.FILE_NAME.getContent(), Context.MODE_PRIVATE, File.NAVIGATION_DEMONSTRATION_PATTERN.getContent(), Constant.Common.DEFAULT_VALUE) == Constant.Map.NAVIGATION_GPS) {
@@ -311,6 +318,7 @@ public class MultiLineNavigationActivity extends FragmentActivity implements AMa
     @Override
     public void onReCalculateRouteForYaw() {
         LogUtil.print("---->onReCalculateRouteForYaw");
+
     }
 
     @Override

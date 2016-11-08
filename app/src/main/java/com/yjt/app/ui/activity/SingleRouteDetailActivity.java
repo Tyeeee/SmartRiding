@@ -9,9 +9,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amap.api.services.route.DrivePath;
-import com.amap.api.services.route.DriveRouteResult;
-import com.amap.api.services.route.DriveStep;
+import com.amap.api.services.route.RidePath;
+import com.amap.api.services.route.RideRouteResult;
+import com.amap.api.services.route.RideStep;
 import com.yjt.app.R;
 import com.yjt.app.constant.Regex;
 import com.yjt.app.constant.Temp;
@@ -27,20 +27,18 @@ import com.yjt.app.utils.ToastUtil;
 import com.yjt.app.utils.ViewUtil;
 
 import java.lang.ref.WeakReference;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class SingleRouteDetailActivity extends BaseActivity {
 
-    private DriveRouteResult mResult;
+    private RideRouteResult mResult;
     private TextView tvDistance;
-    private TextView tvCost;
     private RecyclerView rvRouteDetail;
     private LinearLayoutManager mLayoutManager;
     private FixedStickyViewAdapter mAdapter;
-    private DrivePath mPath;
+    private RidePath mPath;
     private RouteDetailHandler mHandler;
 
     private static class RouteDetailHandler extends Handler {
@@ -78,7 +76,6 @@ public class SingleRouteDetailActivity extends BaseActivity {
     protected void findViewById() {
         ViewUtil.getInstance().setToolBar(this, R.id.tbTitle, true);
         tvDistance = ViewUtil.getInstance().findView(this, R.id.tvDistance);
-        tvCost = ViewUtil.getInstance().findView(this, R.id.tvCost);
         rvRouteDetail = ViewUtil.getInstance().findView(this, R.id.rvRouteDetail);
     }
 
@@ -94,7 +91,6 @@ public class SingleRouteDetailActivity extends BaseActivity {
             mResult = BundleUtil.getInstance().getParcelableData(this, Temp.ROUTE_INFO.getContent());
             mPath = mResult.getPaths().get(0);
             tvDistance.setText(MapUtil.getInstance().getFriendlyTime((int) mPath.getDuration()) + Regex.LEFT_PARENTHESIS.getRegext() + MapUtil.getInstance().getFriendlyLength((int) mPath.getDistance()) + Regex.RIGHT_PARENTHESIS.getRegext());
-            tvCost.setText("乘出租车约:" + new BigDecimal(mResult.getTaxiCost()).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue() + "元");
             mLayoutManager = new LinearLayoutManager(this);
             mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             rvRouteDetail.setHasFixedSize(true);
@@ -105,7 +101,7 @@ public class SingleRouteDetailActivity extends BaseActivity {
                 @Override
                 public void run() {
                     List<RouteDetail> details = new ArrayList<>();
-                    List<DriveStep> steps = mPath.getSteps();
+                    List<RideStep> steps = mPath.getSteps();
                     int size = steps.size();
                     for (int i = -1; i <= size; i++) {
                         if (i < 0) {
@@ -117,7 +113,7 @@ public class SingleRouteDetailActivity extends BaseActivity {
                             detail.setRoutDetail(getString(R.string.start_off));
                             details.add(detail);
                         } else if (i < size) {
-                            DriveStep step = steps.get(i);
+                            RideStep step = steps.get(i);
                             RouteDetail detail = new RouteDetail();
                             detail.setDirection(MapUtil.getInstance().getDriveActionID(step.getAction()));
                             detail.setLineVisible(View.VISIBLE);
